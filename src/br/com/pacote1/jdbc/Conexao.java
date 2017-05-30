@@ -10,6 +10,11 @@ public class Conexao {
 		Connection con = null;
 		
 		try {
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+			} catch (ClassNotFoundException e) {
+				System.out.println("Driver não encontrado!");
+			}
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/crud_web", "root", "");
 			System.out.println("Conectado com sucesso!");
 		} catch (SQLException e) {
