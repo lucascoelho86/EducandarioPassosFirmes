@@ -71,7 +71,7 @@
          		<br>
 				<b><label>Função</label></b>
 				<br>
-				<select name="perfil">
+				<select name="funcao">
 					<option value="0">Selecionar</option>
 					<option value="1">Administrativo</option>
 					<option value="2">Professor</option>
@@ -80,6 +80,23 @@
 				</select>
 				<br>
 				<br>
+				<b><label>* Se o funcionário tiver a função de professor selecionar a materia que deverá lecionar</label></b>
+				<div class="campo" >
+					<b><label>Português</label></b>
+					<input type="checkbox" name="MatPort" value = "2">
+					<b><label>Matemática</label></b>				
+					<input type="checkbox" name="MatMate" value = "3">
+					<b><label>Ciências</label></b>				
+					<input type="checkbox" name="MatCien" value = "4">
+					<b><label>Geografia</label></b>				
+					<input type="checkbox" name="MatGeo" value = "5">
+					<b><label>Inglês</label></b>				
+					<input type="checkbox" name="MatIng" value = "6">
+					<b><label>História</label></b>				
+					<input type="checkbox" name="MatHist" value = "7">
+					<b><label>Natureza e Sociedade</label></b>				
+					<input type="checkbox" name="MatNatSoc" value = "1">
+				</div>
 				<div class="campo">
 					<input type="submit" value="Continuar"/>
 				</div>

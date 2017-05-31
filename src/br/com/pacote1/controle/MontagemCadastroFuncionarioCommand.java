@@ -9,10 +9,14 @@ import br.com.pacote1.entidades.Funcionario;
 import br.com.pacote1.entidades.PerfilFuncao;
 import br.com.pacote1.entidades.Pessoa;
 import br.com.pacote1.entidades.PessoaPerfil;
+import br.com.pacote1.entidades.Professor;
+import br.com.pacote1.entidades.ProfessorDisciplina;
 import br.com.pacote1.jdbc.FuncionarioDAO;
 import br.com.pacote1.jdbc.PerfilFuncaoDAO;
 import br.com.pacote1.jdbc.PessoaDAO;
 import br.com.pacote1.jdbc.PessoaPerfilDAO;
+import br.com.pacote1.jdbc.ProfessorDAO;
+import br.com.pacote1.jdbc.ProfessorDisciplinaDAO;
 
 public class MontagemCadastroFuncionarioCommand implements Command {
 	
@@ -27,6 +31,8 @@ public class MontagemCadastroFuncionarioCommand implements Command {
 		PessoaPerfilDAO pessoaPerfilDAO = new PessoaPerfilDAO();
 		Funcionario funcionario = new Funcionario();
 		FuncionarioDAO FuncionarioDAO = new FuncionarioDAO();
+		Professor professor = new Professor();
+		ProfessorDAO professorDAO = new ProfessorDAO();
 		
 		String nome = request.getParameter("nome");
 		String dataNascimento = request.getParameter("dataNascimento");
@@ -39,7 +45,14 @@ public class MontagemCadastroFuncionarioCommand implements Command {
 		String estado = request.getParameter("estado");
 		String telefone = request.getParameter("telefone");
 		String funcao = request.getParameter("funcao");
-		String senha = request.getParameter("senha");
+		String senha = request.getParameter("senha");		
+		String portugues = request.getParameter("MatPort");
+		String matematica = request.getParameter("MatMate");
+		String ciencias = request.getParameter("MatCien");
+		String geografia = request.getParameter("MatGeo");
+		String ingles = request.getParameter("MatIng");
+		String historia = request.getParameter("MatHist");
+		String naturezaSociedade = request.getParameter("MatNatSoc");
 		
 		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDate data = LocalDate.parse(dataNascimento, formato);
@@ -65,7 +78,64 @@ public class MontagemCadastroFuncionarioCommand implements Command {
 		funcionario.setSenha(senha);
 		FuncionarioDAO.cadastrar(funcionario);
 		
+		if(funcao.equals("2") || funcao.equals("4")){
+			professor.setId(cpf);
+			professorDAO.cadastrar(professor);
+			
+			adicionarDisciplina(cpf, portugues, matematica, ciencias, geografia, ingles, historia, naturezaSociedade);
+			
+		}
+		
 		return proximo;
+	}
+	
+	public void adicionarDisciplina(String pCpf, String pPortugues, String pMatematica, String pCiencias, String pGeografia,
+			String pIngles, String pHistoria, String pMaturezaSociedade){
+		ProfessorDisciplina professorDisciplina = new ProfessorDisciplina();
+		ProfessorDisciplinaDAO professorDisciplinaDAO = new ProfessorDisciplinaDAO();
+
+		if(pPortugues != null){
+			professorDisciplina.setId_professor(pCpf);
+			professorDisciplina.setId_disciplina(Integer.valueOf(pPortugues));
+			professorDisciplinaDAO.cadastrar(professorDisciplina);
+		}
+		
+		if(pMatematica != null){
+			professorDisciplina.setId_professor(pCpf);
+			professorDisciplina.setId_disciplina(Integer.valueOf(pMatematica));
+			professorDisciplinaDAO.cadastrar(professorDisciplina);
+		}
+		
+		if(pCiencias != null){
+			professorDisciplina.setId_professor(pCpf);
+			professorDisciplina.setId_disciplina(Integer.valueOf(pCiencias));
+			professorDisciplinaDAO.cadastrar(professorDisciplina);
+		}
+		
+		if(pGeografia != null){
+			professorDisciplina.setId_professor(pCpf);
+			professorDisciplina.setId_disciplina(Integer.valueOf(pGeografia));
+			professorDisciplinaDAO.cadastrar(professorDisciplina);
+		}
+		
+		if(pIngles != null){
+			professorDisciplina.setId_professor(pCpf);
+			professorDisciplina.setId_disciplina(Integer.valueOf(pIngles));
+			professorDisciplinaDAO.cadastrar(professorDisciplina);
+		}
+		
+		if(pHistoria != null){
+			professorDisciplina.setId_professor(pCpf);
+			professorDisciplina.setId_disciplina(Integer.valueOf(pHistoria));
+			professorDisciplinaDAO.cadastrar(professorDisciplina);
+		}
+		
+		if(pMaturezaSociedade != null){
+			professorDisciplina.setId_professor(pCpf);
+			professorDisciplina.setId_disciplina(Integer.valueOf(pMaturezaSociedade));
+			professorDisciplinaDAO.cadastrar(professorDisciplina);
+		}
+		
 	}
 	
 	public int buscarPerfilPelaFuncao(int pFuncao){

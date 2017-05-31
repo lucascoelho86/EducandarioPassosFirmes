@@ -4,26 +4,24 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import br.com.pacote1.entidades.PessoaPerfil;
+import br.com.pacote1.entidades.Professor;
 
-public class PessoaPerfilDAO {
+public class ProfessorDAO {
 
 	private Connection con = Conexao.getConnection();
 	
-	 public void cadastrar(PessoaPerfil pPessoaPerfil){
+	public void cadastrar(Professor pProfessor){
 		
-		String sql = "INSERT INTO PESSOA_PERFIL (id_pessoa, id_perfil) values (?, ?)";
+		String sql = "INSERT INTO PROFESSOR (id_funcionario) values (?)";
 		
 		try {
 			PreparedStatement preparador = con.prepareStatement(sql);
 			
-			preparador.setString(1, pPessoaPerfil.getId());
-			preparador.setInt(2, pPessoaPerfil.getId_perfil());
+			preparador.setString(1, pProfessor.getId());
 			
 			preparador.execute();
 			preparador.close();
 			
-			System.out.println("Cadastrado com sucesso!");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
