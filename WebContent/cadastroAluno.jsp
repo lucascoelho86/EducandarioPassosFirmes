@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>HOME</title>
+<title>CADASTRO</title>
 </head>
 <body>
 	<form method="post" action="PessoaControle?acao=cadastroAluno">

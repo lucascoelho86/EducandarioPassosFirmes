@@ -19,6 +19,8 @@ public class MontagemCadastroCommand implements Command {
 			proximo = "cadastroAluno.jsp";
 		}else if(cadastrarFunc != null){
 			proximo = "cadastroFuncionario.jsp";
+		}else if(consultarAluno != null){
+			proximo = "consultarAluno.jsp";
 		}
 				
 		return proximo;
