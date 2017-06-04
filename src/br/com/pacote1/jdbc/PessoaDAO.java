@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -183,6 +184,70 @@ public class PessoaDAO {
 		
 		return lista;
 		
-	}	
+	}
+	
+	public List<Pessoa> consultar(String pMatricula, String pNome){
+		String sql = "SELECT * FROM PESSOA ";
+		String where = "WHERE ";
+		String sql2 = "ID_PESSOA = ?";
+		String sql3 = "NOME LIKE ?";
+		String conector = "";
+		String sqlComplementar = "";
+		Pessoa pessoa = null;
+		List<Pessoa> listPessoa = new ArrayList<Pessoa>();
+		int contador=0;
+		try{
+			
+			if(pMatricula != null && !pMatricula.equals("")){
+				sqlComplementar = sql2;
+				conector = "\n AND ";
+			}
+			
+			if(pNome != null && !pNome.equals("")){
+				sqlComplementar = sqlComplementar + conector + sql3;
+			}
+			
+			if(!sqlComplementar.equals("")){
+				sql = sql + where + sqlComplementar;
+			}
+			
+			PreparedStatement preparador = con.prepareStatement(sql);
+			
+			if(pMatricula != null && !pMatricula.equals("")){
+				contador++;
+				preparador.setString(contador, pMatricula);
+			}
+			
+			if(pNome != null && !pNome.equals("")){
+				contador++;
+				preparador.setString(contador, "%" + pNome);
+			}
+			
+			ResultSet resultado = preparador.executeQuery();
+			
+			while(resultado.next()){
+				pessoa = new Pessoa();
+				
+				pessoa.setId(resultado.getString("id_pessoa"));
+				pessoa.setDtNascimento(LocalDate.parse(resultado.getString("dt_nascimento")));
+				pessoa.setNaturalidade(resultado.getString("naturalidade"));
+				pessoa.setEndereco(resultado.getString("endereco"));
+				pessoa.setNumero(resultado.getInt("numero"));
+				pessoa.setBairro(resultado.getString("bairro"));
+				pessoa.setCidade(resultado.getString("cidade"));
+				pessoa.setEstado(resultado.getString("estado"));
+				pessoa.setTelefone(resultado.getString("telefone"));
+				pessoa.setNome(resultado.getString("nome"));
+				
+				listPessoa.add(pessoa);
+				
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return listPessoa;
+		
+	}
 	
 }

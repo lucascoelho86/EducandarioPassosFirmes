@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.pacote1.entidades.Aluno;
-import br.com.pacote1.entidades.Pessoa;
 
 public class AlunoDAO {
 
@@ -61,6 +60,34 @@ public class AlunoDAO {
 		}
 		
 		return listAluno;
+	}
+	
+	public Aluno consultar(String pMatricula){
+		
+		String sql = "SELECT * FROM Aluno WHERE id_pessoa = ?";
+		
+		Aluno aluno = null;
+		
+		try {
+			PreparedStatement preparador = con.prepareStatement(sql);
+			
+			preparador.setString(1, pMatricula);
+			
+			ResultSet resultado = preparador.executeQuery();
+
+			while(resultado.next()){
+				aluno = new Aluno();
+				aluno.setId(resultado.getString("id_pessoa"));
+				
+			}
+			
+			preparador.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return aluno;
 	}
 	
 }

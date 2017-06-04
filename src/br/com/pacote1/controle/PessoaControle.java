@@ -23,7 +23,8 @@ public class PessoaControle extends HttpServlet {
 		comandos.put("cadastro", new MontagemCadastroCommand());
 		comandos.put("cadastroAluno", new MontagemCadastroAlunoCommand());
 		comandos.put("cadastroFuncionario", new MontagemCadastroFuncionarioCommand());
-		comandos.put("consultarAluno", new MontagemCadastroAlunoCommand());
+		comandos.put("consultarAluno", new MontagemConsultarAlunoCommand());
+		comandos.put("alterarAluno", new MontagemConsultarAlunoCommand());
 	}
 
 	@Override
@@ -47,6 +48,20 @@ public class PessoaControle extends HttpServlet {
 			}
 		}
 		return comando;
+	}
+	
+	/**
+	 * Retorna um atributo do request como Object
+	 *
+	 * @param pNmAtributo Atributo a ser retornado como Object
+	 * @param pRequest Request HTTP
+	 *
+	 * @return
+	 *
+	 * @throws ExcecaoParametroRequestInvalido Nao utilizada
+	 */
+	public static Object getAtributoOpcional(String pNmAtributo, HttpServletRequest pRequest){
+		return pRequest.getAttribute(pNmAtributo);
 	}
 
 }

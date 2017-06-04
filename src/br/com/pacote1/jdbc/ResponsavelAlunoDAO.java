@@ -2,8 +2,13 @@ package br.com.pacote1.jdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import br.com.pacote1.entidades.Pessoa;
 import br.com.pacote1.entidades.ResponsavelAluno;
 
 public class ResponsavelAlunoDAO {
@@ -28,5 +33,46 @@ public class ResponsavelAlunoDAO {
 			e.printStackTrace();
 		}
 	}
+	 
+	 public ResponsavelAluno consultar(String pMatricula){
+			String sql = "SELECT * FROM RESPONSAVEL_ALUNO ";
+			String where = "WHERE ";
+			String sql2 = "ID_ALUNO = ?";
+			String sqlComplementar = "";
+			ResponsavelAluno responsavelAluno = null;
+			int contador=0;
+			try{
+				
+				if(pMatricula != null && !pMatricula.equals("")){
+					sqlComplementar = sql2;
+				}
+				
+				if(!sqlComplementar.equals("")){
+					sql = sql + where + sqlComplementar;
+				}
+				
+				PreparedStatement preparador = con.prepareStatement(sql);
+				
+				if(pMatricula != null && !pMatricula.equals("")){
+					contador++;
+					preparador.setString(contador, pMatricula);
+				}
+				
+				ResultSet resultado = preparador.executeQuery();
+				
+				if(resultado.next()){
+					responsavelAluno = new ResponsavelAluno();
+					
+					responsavelAluno.setIdResponsavel(resultado.getString("id_responsavel"));
+					responsavelAluno.setIdAluno(resultado.getString("id_aluno"));
+					
+				}
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			
+			return responsavelAluno;
+			
+		}
 	
 }
