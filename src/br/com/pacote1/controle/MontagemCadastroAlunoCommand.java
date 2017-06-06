@@ -52,7 +52,8 @@ public class MontagemCadastroAlunoCommand implements Command {
 		String cidade = request.getParameter("cidade");
 		String estado = request.getParameter("estado");
 		String telefone = request.getParameter("telefone");
-		String perfil = request.getParameter("perfil");
+		String perfilAluno = request.getParameter("perfilAluno");
+		String perfilResp = request.getParameter("perfilResp");
 		String nomeResponsavel = request.getParameter("nomeResponsavel");
 		String cpfResponsavel = request.getParameter("cpfResponsavel");
 		String turma = request.getParameter("turma");
@@ -103,7 +104,7 @@ public class MontagemCadastroAlunoCommand implements Command {
 		alunoDAO.cadastrar(aluno);
 		
 		pessoaPerfil.setId(matricula);
-		pessoaPerfil.setId_perfil(Integer.valueOf(perfil));		
+		pessoaPerfil.setId_perfil(Integer.valueOf(perfilAluno));		
 		pessoaPerfilDAO.cadastrar(pessoaPerfil);
 		
 		responsavel.setId(cpfResponsavel);		
@@ -111,7 +112,7 @@ public class MontagemCadastroAlunoCommand implements Command {
 		
 		pessoaPerfil = new PessoaPerfil();
 		pessoaPerfil.setId(cpfResponsavel);
-		pessoaPerfil.setId_perfil(Integer.valueOf(perfil));		
+		pessoaPerfil.setId_perfil(Integer.valueOf(perfilResp));		
 		pessoaPerfilDAO.cadastrar(pessoaPerfil);
 		
 		responsavelAluno.setIdResponsavel(cpfResponsavel);

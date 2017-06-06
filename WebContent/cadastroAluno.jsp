@@ -10,7 +10,8 @@
 	<form method="post" action="PessoaControle?acao=cadastroAluno">
 		<fieldset id="fieldset_aluno">
 				<legend>CADASTRO DE ALUNO</legend>
-				<input type="hidden" name="perfil" value="4" />
+				<input type="hidden" name="perfilAluno" value="4" />
+				<input type="hidden" name="perfilResp" value="5" />
 				<div class="campo">
 					<label>Nome</label>
 					<input type="text" name="nome" size="50">

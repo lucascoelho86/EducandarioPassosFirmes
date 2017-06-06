@@ -141,7 +141,7 @@ public class MontagemAlteracaoFuncionarioCommand implements Command {
 	public int buscarPerfilPelaFuncao(int pFuncao){
 		PerfilFuncaoDAO perfilFuncaoDAO = new PerfilFuncaoDAO();
 		
-		PerfilFuncao perfilFuncao = perfilFuncaoDAO.consultar(pFuncao);
+		PerfilFuncao perfilFuncao = perfilFuncaoDAO.consultar(null, pFuncao);
 		
 		int perfil = perfilFuncao.getId_perfil();
 		

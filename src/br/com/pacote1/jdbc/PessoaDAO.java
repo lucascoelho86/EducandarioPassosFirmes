@@ -229,7 +229,7 @@ public class PessoaDAO {
 			
 			if(pNome != null && !pNome.equals("")){
 				contador++;
-				preparador.setString(contador, "%" + pNome);
+				preparador.setString(contador, "%" + pNome + "%");
 			}
 			
 			ResultSet resultado = preparador.executeQuery();

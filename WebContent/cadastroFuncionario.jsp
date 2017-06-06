@@ -82,20 +82,20 @@
 				<br>
 				<b><label>* Se o funcionário tiver a função de professor selecionar a materia que deverá lecionar</label></b>
 				<div class="campo" >
-					<b><label>Português</label></b>
 					<input type="checkbox" name="MatPort" value = "2">
-					<b><label>Matemática</label></b>				
+					<b><label>Português</label></b>
 					<input type="checkbox" name="MatMate" value = "3">
-					<b><label>Ciências</label></b>				
+					<b><label>Matemática</label></b>				
 					<input type="checkbox" name="MatCien" value = "4">
-					<b><label>Geografia</label></b>				
+					<b><label>Ciências</label></b>				
 					<input type="checkbox" name="MatGeo" value = "5">
-					<b><label>Inglês</label></b>				
+					<b><label>Geografia</label></b>				
 					<input type="checkbox" name="MatIng" value = "6">
-					<b><label>História</label></b>				
+					<b><label>Inglês</label></b>				
 					<input type="checkbox" name="MatHist" value = "7">
-					<b><label>Natureza e Sociedade</label></b>				
+					<b><label>História</label></b>				
 					<input type="checkbox" name="MatNatSoc" value = "1">
+					<b><label>Natureza e Sociedade</label></b>					
 				</div>
 				<div class="campo">
 					<input type="submit" value="Continuar"/>

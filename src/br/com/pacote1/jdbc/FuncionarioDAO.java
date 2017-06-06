@@ -70,6 +70,7 @@ public class FuncionarioDAO {
 			while(resultado.next()){
 				funcionario = new Funcionario();
 				funcionario.setId(resultado.getString("id_pessoa"));
+				funcionario.setSenha(resultado.getString("senha"));
 				
 			}
 			

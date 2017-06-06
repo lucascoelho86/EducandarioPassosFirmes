@@ -2,8 +2,10 @@ package br.com.pacote1.jdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import br.com.pacote1.entidades.Aluno;
 import br.com.pacote1.entidades.PessoaPerfil;
 
 public class PessoaPerfilDAO {
@@ -28,5 +30,33 @@ public class PessoaPerfilDAO {
 			e.printStackTrace();
 		}
 	}
+	 
+	 public PessoaPerfil consultar(String pId){
+			
+			String sql = "SELECT * FROM PESSOA_PERFIL WHERE id_pessoa = ?";
+			
+			PessoaPerfil pessoaPerfil = null;
+			
+			try {
+				PreparedStatement preparador = con.prepareStatement(sql);
+				
+				preparador.setString(1, pId);
+				
+				ResultSet resultado = preparador.executeQuery();
+
+				while(resultado.next()){
+					pessoaPerfil = new PessoaPerfil();
+					pessoaPerfil.setId(resultado.getString("id_pessoa"));
+					pessoaPerfil.setId_perfil(resultado.getInt("id_perfil"));					
+				}
+				
+				preparador.close();
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			return pessoaPerfil;
+		}
 	
 }

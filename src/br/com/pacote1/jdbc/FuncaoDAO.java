@@ -5,30 +5,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import br.com.pacote1.entidades.PerfilFuncao;
+import br.com.pacote1.entidades.Funcao;
 
-public class PerfilFuncaoDAO {
+public class FuncaoDAO {
 
 	private Connection con = Conexao.getConnection();
 	
-	 public PerfilFuncao consultar(Integer pPerfil, Integer pFuncao){
-			String sql = "SELECT * FROM PERFIL_FUNCAO ";
+	 public Funcao consultar(Integer pFuncao){
+			String sql = "SELECT * FROM FUNCAO ";
 			String where = "WHERE ";
-			String sql2 = "ID_PERFIL = ?";
-			String sql3 = "ID_FUNCAO = ?";
-			String conector = "";
+			String sql2 = "ID_FUNCAO = ?";
 			String sqlComplementar = "";
-			PerfilFuncao perfilFuncao = null;
+			Funcao funcao = null;
 			int contador=0;
 			try{
 				
-				if(pPerfil != null){
-					sqlComplementar = sql2;
-					conector = "\n AND ";
-				}
-				
 				if(pFuncao != null){
-					sqlComplementar = sqlComplementar + conector + sql3;
+					sqlComplementar = sql2;
 				}
 				
 				if(!sqlComplementar.equals("")){
@@ -36,11 +29,6 @@ public class PerfilFuncaoDAO {
 				}
 				
 				PreparedStatement preparador = con.prepareStatement(sql);
-				
-				if(pPerfil != null){
-					contador++;
-					preparador.setInt(contador, pPerfil);
-				}
 				
 				if(pFuncao != null){
 					contador++;
@@ -50,17 +38,17 @@ public class PerfilFuncaoDAO {
 				ResultSet resultado = preparador.executeQuery();
 				
 				while(resultado.next()){
-					perfilFuncao = new PerfilFuncao();
+					funcao = new Funcao();
 					
-					perfilFuncao.setId_perfil(resultado.getInt("id_perfil"));
-					perfilFuncao.setId_funcao(resultado.getInt("id_funcao"));
+					funcao.setId_funcao(resultado.getInt("id_funcao"));
+					funcao.setDs_funcao(resultado.getString("ds_funcao"));
 					
 				}
 			}catch(SQLException e){
 				e.printStackTrace();
 			}
 			
-			return perfilFuncao;
+			return funcao;
 			
 		}
 	

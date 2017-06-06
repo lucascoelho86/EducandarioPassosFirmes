@@ -1,7 +1,9 @@
+<%@page import="java.util.Iterator"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@page import="br.com.pacote1.entidades.Pessoa"%>
-<%@page import="br.com.pacote1.entidades.Turma"%>
+<%@page import="br.com.pacote1.entidades.Funcionario"%>
+<%@page import="br.com.pacote1.entidades.ProfessorDisciplina"%>
 <%@page import="java.util.List"%>
 <%@page import="br.com.pacote1.controle.PessoaControle"%>
 <%@ page import="java.util.ArrayList"%>
@@ -19,14 +21,16 @@ try {
 <% 
          	
 	List<Pessoa> listPessoa = null;
-	List<Pessoa> listPessoaResponsavel = null;
+	List<ProfessorDisciplina> listProfessorDisciplina = null;
+	ProfessorDisciplina professorDisciplina = null;
 	Pessoa pessoa = new Pessoa();
-	Pessoa pessoaResponsavel = new Pessoa();
-	Turma turma = null;
+	Funcionario funcionario = null;
+	String idFuncao = "";
 
 	listPessoa = (List<Pessoa>)PessoaControle.getAtributoOpcional("listPessoa", request);
-	listPessoaResponsavel = (List<Pessoa>)PessoaControle.getAtributoOpcional("listResponsavel", request);
-	turma = (Turma)PessoaControle.getAtributoOpcional("turma", request);
+	listProfessorDisciplina = (List<ProfessorDisciplina>)PessoaControle.getAtributoOpcional("listProfessorDisciplina", request);
+	funcionario = (Funcionario)PessoaControle.getAtributoOpcional("funcionario", request);
+	idFuncao = (String)PessoaControle.getAtributoOpcional("idFuncao", request);
          	
 	if(listPessoa == null){
 		listPessoa = new ArrayList<Pessoa>();
@@ -34,14 +38,12 @@ try {
 		pessoa = listPessoa.get(0);
 	}
 	
-	if(listPessoaResponsavel == null){
-		listPessoaResponsavel = new ArrayList<Pessoa>();
-	}else{
-		pessoaResponsavel = listPessoaResponsavel.get(0);
+	if(listProfessorDisciplina == null){
+		listProfessorDisciplina = new ArrayList<ProfessorDisciplina>();
 	}
 	
-	if(turma == null){
-		turma = new Turma();
+	if(funcionario == null){
+		funcionario = new Funcionario();
 	}
 %>
 
@@ -49,32 +51,29 @@ try {
 	<form method="post" action="PessoaControle?acao=alterarFuncionario">
 		<fieldset id="fieldset_aluno">
 				<legend>ALTERAR CADASTRO DE FUNCIONÁRIO</legend>
-				<input type="hidden" name="perfil" value="4" />
-				<input type="hidden" name="matricula" value="<%=pessoa.getId()%>"/>
-				<input type="hidden" name="idTurmaAtual" value="<%= turma.getIdTurma() %>"/>
 				
 				<TABLE id="table_filtro" class="filtro" cellpadding="0" cellspacing="5">
 	                <TBODY>
 	                    <TR>
-	                        <TH class="campoformulario" align="left" width="15%">Nome:</TH>
+	                        <TH class="campoformulario" align="left" width="10%">Nome:</TH>
 	                        <TD class="campoformulario">
 	                        	<input type="text" name="nome" size="50" value="<%=pessoa.getNome()%>">
 	                        </TD>
-	                        <TH class="campoformulario" align="right" width="15%">CPF:</TH>
+	                        <TH class="campoformulario" align="right" width="10%">CPF:</TH>
 	                        <TD class="campoformulario">
 	                        	<input type="text" name="cpf" value ="<%= pessoa.getId() %>">
 	                        </TD>
-	                        <TH class="campoformulario" align="right" width="15%">Naturalidade:</TH>
+	                        <TH class="campoformulario" align="right" width="10%">Naturalidade:</TH>
 	                        <TD class="campoformulario">
 	                        	<input type="text" name="naturalidade"  value ="<%= pessoa.getNaturalidade() %>">
 	                        </TD>
 	                    </TR>
 	                    <TR>
-	                    	<TH class="campoformulario" align="right" width="15%">Dt Nascimento:</TH>
+	                    	<TH class="campoformulario" align="left" width="10%">Dt Nascimento:</TH>
 	                        <TD class="campoformulario">
 	                        	<input type="text" name="dataNascimento"  value ="<%= pessoa.getDtNascimento() %>">
 	                        </TD>
-	                    	<TH class="campoformulario" align="left" width="15%">Endereço:</TH>
+	                    	<TH class="campoformulario" align="right" width="10%">Endereço:</TH>
 	                        <TD class="campoformulario">
 	                        	<input type="text" name="endereço"  value ="<%= pessoa.getEndereco() %>">
 	                        </TD>
@@ -84,11 +83,11 @@ try {
 	                        </TD> 
 	                    </TR>	                    
 	                    <TR>
-	                    	<TH class="campoformulario" align="right" width="15%">Bairro:</TH>
+	                    	<TH class="campoformulario" align="left" width="10%">Bairro:</TH>
 	                        <TD class="campoformulario">
 	                        	<input type="text" name="bairro" value ="<%= pessoa.getBairro() %>">
 	                        </TD>
-	                        <TH class="campoformulario" align="left" width="15%">Cidade:</TH>
+	                        <TH class="campoformulario" align="right" width="10%">Cidade:</TH>
 	                        <TD class="campoformulario">
 	                        	<input type="text" name="cidade" value = "<%= pessoa.getCidade() %>">
 	                        </TD>  
@@ -98,17 +97,197 @@ try {
 	                        </TD>
 	                    </TR>
 	                    <TR>
-	                    <TH class="campoformulario" align="right" width="15%">Telefone:</TH>
+	                    <TH class="campoformulario" align="left" width="10%">Telefone:</TH>
 	                        <TD class="campoformulario">
 	                        	<input type="text" name="telefone" value = "<%= pessoa.getTelefone() %>">
 	                        </TD>
-	                        <TH class="campoformulario" align="right" width="30%">Cadastrar Senha:</TH>
+	                        <TH class="campoformulario" align="right" width="10%">Cadastrar Senha:</TH>
 	                        <TD class="campoformulario">
-	                        	<input type="text" name="senha">
+	                        	<input type="text" name="senha" value = "<%= funcionario.getSenha() %>">
 	                        </TD>                      	
 	                    </TR>
 	                </TBODY>
          		</TABLE>
+         		<br>
+				<b><label>Função</label></b>
+				<br>
+				<select name="funcao">
+				
+					<%
+					
+					for(int x = 0; x < 4; x++){
+						if(x == 0){
+							if(x == Integer.valueOf(idFuncao)){
+						%>
+						<option value="<%= x %>" selected>Selecionar</option>
+						<%}else{%>
+						<option value="<%= x %>">Selecionar</option>
+						<%}						
+						}
+						%>
+						
+						<%if(x == 1){
+							if(x == Integer.valueOf(idFuncao)){
+						%>
+						<option value="<%= x %>" selected>Administrativo</option>
+						<%}else{%>
+						<option value="<%= x %>">Administrativo</option>
+						<%}						
+						}
+						%>
+						
+						<%if(x == 2){
+							if(x == Integer.valueOf(idFuncao)){
+						%>
+						<option value="<%= x %>" selected>Professor</option>
+						<%}else{%>
+						<option value="<%= x %>">Professor</option>
+						<%}						
+						}
+						%>
+						
+						<%if(x == 3){
+							if(x == Integer.valueOf(idFuncao)){
+						%>
+						<option value="<%= x %>" selected>Coordenador</option>
+						<%}else{%>
+						<option value="<%= x %>">Coordenador</option>
+						<%}						
+						}
+						%>
+						
+						<%if(x == 4){
+							if(x == Integer.valueOf(idFuncao)){
+						%>
+						<option value="<%= x %>" selected>Coordenador/Professor</option>
+						<%}else{%>
+						<option value="<%= x %>">Coordenador/Professor</option>
+						<%}						
+						}
+						%>
+						
+					<%
+					}
+					
+					%>
+				</select>
+				<br>
+				<br>
+				<b><label>* Se o funcionário tiver a função de professor selecionar a materia que deverá lecionar</label></b>
+				<div class="campo" >
+				
+					<%
+					boolean matPort = false;
+					boolean MatMate = false;
+					boolean MatCien = false;
+					boolean MatGeo = false;
+					boolean MatIng = false;
+					boolean MatHist = false;
+					boolean MatNatSoc = false;
+					for(int i = 0; i<listProfessorDisciplina.size(); i++){
+						professorDisciplina = listProfessorDisciplina.get(i);
+						if(professorDisciplina.getId_disciplina() == 2){
+							matPort = true;
+						}else if(professorDisciplina.getId_disciplina() == 3){
+							MatMate = true;
+						}else if(professorDisciplina.getId_disciplina() == 4){
+							MatCien = true;
+						}else if(professorDisciplina.getId_disciplina() == 5){
+							MatGeo = true;
+						}else if(professorDisciplina.getId_disciplina() == 6){
+							MatIng = true;
+						}else if(professorDisciplina.getId_disciplina() == 7){
+							MatHist = true;
+						}else if(professorDisciplina.getId_disciplina() == 1){
+							MatNatSoc = true;
+						}
+					}					
+					%>					
+					<%
+					if(matPort){
+					%>
+						<input type="checkbox" name="MatPort" value = "2" checked="checked">
+					<%
+					}else{
+					%>
+						<input type="checkbox" name="MatPort" value = "2">
+					<%
+					}
+					%>					
+					<b><label>Português</label></b>
+					<%
+					if(MatMate){
+					%>
+						<input type="checkbox" name="MatMate" value = "3" checked="checked">
+					<%
+					}else{
+					%>
+						<input type="checkbox" name="MatMate" value = "3">
+					<%
+					}
+					%>				
+					<b><label>Matemática</label></b>	
+					<%
+					if(MatCien){
+					%>
+						<input type="checkbox" name="MatCien" value = "4" checked="checked">
+					<%
+					}else{
+					%>
+						<input type="checkbox" name="MatCien" value = "4">
+					<%
+					}
+					%>					
+					<b><label>Ciências</label></b>
+					<%
+					if(MatGeo){
+					%>
+						<input type="checkbox" name="MatGeo" value = "5" checked="checked">
+					<%
+					}else{
+					%>
+						<input type="checkbox" name="MatGeo" value = "5">
+					<%
+					}
+					%>					
+					<b><label>Geografia</label></b>
+					<%
+					if(MatIng){
+					%>
+						<input type="checkbox" name="MatIng" value = "6" checked="checked">
+					<%
+					}else{
+					%>
+						<input type="checkbox" name="MatIng" value = "6">
+					<%
+					}
+					%>					
+					<b><label>Inglês</label></b>
+					<%
+					if(MatHist){
+					%>
+						<input type="checkbox" name="MatHist" value = "7" checked="checked">
+					<%
+					}else{
+					%>
+						<input type="checkbox" name="MatHist" value = "7">
+					<%
+					}
+					%>					
+					<b><label>História</label></b>
+					<%
+					if(MatNatSoc){
+					%>
+						<input type="checkbox" name="MatNatSoc" value = "1" checked="checked">
+					<%
+					}else{
+					%>
+						<input type="checkbox" name="MatNatSoc" value = "1">
+					<%
+					}
+					%>					
+					<b><label>Natureza e Sociedade</label></b>					
+				</div>
 				<div class="campo">
 					<input type="submit" value="Continuar"/>
 				</div>

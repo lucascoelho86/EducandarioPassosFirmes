@@ -1,9 +1,8 @@
 <%@page import="java.util.Iterator"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@page import="br.com.pacote1.entidades.Pessoa"%>
 <%@page import="br.com.pacote1.entidades.TurmaAluno"%>
-<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="br.com.pacote1.controle.PessoaControle"%>
 <%@ page import="java.util.ArrayList"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -19,22 +18,16 @@ try {
 
 <% 
          	
-	List<Pessoa> listPessoa = null;
-	List<TurmaAluno> listTurma = null;
+	ArrayList<String> colecao = null;
 	String cpfTela = "";
 	String nomeTela = "";
 
-	listPessoa = (List<Pessoa>)PessoaControle.getAtributoOpcional("listPessoa", request);
-	listTurma = (List<TurmaAluno>)PessoaControle.getAtributoOpcional("listTurma", request);
+	colecao = (ArrayList<String>)PessoaControle.getAtributoOpcional("dadosFunc", request);
 	cpfTela = (String)PessoaControle.getAtributoOpcional("cpf", request);
 	nomeTela = (String)PessoaControle.getAtributoOpcional("nome", request);
          	
-	if(listPessoa == null){
-		listPessoa = new ArrayList<Pessoa>();
-	}
-	
-	if(listTurma == null){
-		listTurma = new ArrayList<TurmaAluno>();
+	if(colecao == null){
+		colecao = new ArrayList<String>();
 	}
 	
 	if(cpfTela == null){
@@ -81,39 +74,32 @@ try {
 	                        <TH class="headertabeladados" align="left" width="" >Função</TH>
 	                    </TR>
 	                    <%
-								Iterator<Pessoa> it = listPessoa.iterator();
-		                		Pessoa pessoa = null;
-		                		String matricula = "";
+								Iterator<String> it = colecao.iterator();
+		                		String cpf = "";
 		                		String nome = "";
+		                		String funcao = "";
+		                		String idFuncao = "";
 		                		String chavePrimaria = "";
 		                
 		                		while(it.hasNext()){
-		                			pessoa = it.next();
-		                			matricula = pessoa.getId();
-		                			nome = pessoa.getNome();
+		                			String dados = it.next();
 		                			
-		                			Iterator<TurmaAluno> itTurmaAluno = listTurma.iterator();
-		                			TurmaAluno turmaAluno = null;
-		                			int cdTurma = 0;
+		                			String dadosFuncionario[] = dados.split(";");
 		                			
-		                			while(itTurmaAluno.hasNext()){
-		                				turmaAluno = itTurmaAluno.next();
-		                				
-		                				if(matricula.equals(turmaAluno.getIdAluno())){
-		                					cdTurma = turmaAluno.getIdTurma();
-		                					break;
-		                				}
-		                			}
+		                			cpf = dadosFuncionario[0];
+		                			nome = dadosFuncionario[1];
+		                			funcao = dadosFuncionario[2];
+		                			idFuncao = dadosFuncionario[3];
 		                			
-		                			chavePrimaria = matricula + ";" + nome + ";" + cdTurma;
+		                			chavePrimaria = cpf + ";" + nome + ";" + idFuncao;
 		                			%>
 		                			<TR>
 										<TD class="tabeladados">
 											<INPUT type="radio" id="rdb_consulta" name="chave" value="<%=chavePrimaria%>" checked>
 										</TD>
-										<TD class="tabeladados"><%= matricula %></TD>
+										<TD class="tabeladados"><%= cpf %></TD>
 										<TD class="tabeladados"><%= nome %></TD>
-										<TD class="tabeladados"><%= String.valueOf(cdTurma) %></TD>
+										<TD class="tabeladados"><%= funcao %></TD>
 								
 	                    			</TR>
 		                		<%
