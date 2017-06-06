@@ -18,19 +18,19 @@ import br.com.pacote1.jdbc.PessoaPerfilDAO;
 import br.com.pacote1.jdbc.ProfessorDAO;
 import br.com.pacote1.jdbc.ProfessorDisciplinaDAO;
 
-public class MontagemCadastroFuncionarioCommand implements Command {
+public class MontagemAlteracaoFuncionarioCommand implements Command {
 	
 	private String proximo;
 	
 	public String execute(HttpServletRequest request) {
 		
-		proximo = "cadastroFuncionario.jsp";
+		proximo = "alteracaoFuncionario.jsp";
 		Pessoa pessoa = new Pessoa();
 		PessoaDAO pessoaDAO = new PessoaDAO();
 		PessoaPerfil pessoaPerfil = new PessoaPerfil();
 		PessoaPerfilDAO pessoaPerfilDAO = new PessoaPerfilDAO();
 		Funcionario funcionario = new Funcionario();
-		FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+		FuncionarioDAO FuncionarioDAO = new FuncionarioDAO();
 		Professor professor = new Professor();
 		ProfessorDAO professorDAO = new ProfessorDAO();
 		
@@ -76,7 +76,7 @@ public class MontagemCadastroFuncionarioCommand implements Command {
 		
 		funcionario.setId(cpf);
 		funcionario.setSenha(senha);
-		funcionarioDAO.cadastrar(funcionario);
+		FuncionarioDAO.cadastrar(funcionario);
 		
 		if(funcao.equals("2") || funcao.equals("4")){
 			professor.setId(cpf);

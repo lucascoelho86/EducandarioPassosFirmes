@@ -13,7 +13,7 @@ public class MontagemCadastroCommand implements Command {
 		String cadastrarAluno = request.getParameter("CadastrarAluno");
 		String consultarAluno = request.getParameter("ConsultarAluno");
 		String cadastrarFunc = request.getParameter("CadastrarFunc");
-		String consultarFunc = request.getParameter("ConsultarAluno");
+		String consultarFunc = request.getParameter("ConsultarFunc");
 		
 		if (cadastrarAluno != null) {
 			proximo = "cadastroAluno.jsp";
@@ -21,6 +21,8 @@ public class MontagemCadastroCommand implements Command {
 			proximo = "cadastroFuncionario.jsp";
 		}else if(consultarAluno != null){
 			proximo = "consultarAluno.jsp";
+		}else if(consultarFunc != null){
+			proximo = "consultarFuncionario.jsp";
 		}
 				
 		return proximo;

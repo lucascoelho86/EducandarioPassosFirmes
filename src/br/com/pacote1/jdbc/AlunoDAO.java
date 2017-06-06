@@ -30,7 +30,7 @@ public class AlunoDAO {
 			e.printStackTrace();
 		}
 	}
-	
+	 
 	public List<Aluno> buscarAlunosAnoMatricula(String pAno){
 		
 		String sql = "SELECT * FROM Aluno WHERE SUBSTRING(id_pessoa, 1, 4) = ?";

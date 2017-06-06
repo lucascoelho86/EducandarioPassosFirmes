@@ -1,5 +1,9 @@
 package br.com.pacote1.controle;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,136 +29,64 @@ public class MontagemAlteracaoAlunoCommand implements Command {
 	public String execute(HttpServletRequest request) {
 		
 		proximo = "alteracaoAluno.jsp";
-		String matricula = "";
 		Pessoa pessoa = new Pessoa();
 		PessoaDAO pessoaDAO = new PessoaDAO();
-		Aluno aluno = new Aluno();
-		AlunoDAO alunoDAO = new AlunoDAO();
-		PessoaPerfil pessoaPerfil = new PessoaPerfil();
-		PessoaPerfilDAO pessoaPerfilDAO = new PessoaPerfilDAO();
-		Responsavel responsavel = new Responsavel();
-		ResponsavelDAO responsavelDAO = new ResponsavelDAO();
-		ResponsavelAluno responsavelAluno = new ResponsavelAluno();
-		ResponsavelAlunoDAO responsavelAlunoDAO = new ResponsavelAlunoDAO();
 		TurmaAluno turmaAluno = new TurmaAluno();
 		TurmaAlunoDAO turmaAlunoDAO = new TurmaAlunoDAO();
 		
-		String chave = request.getParameter("chave");
+		String nome = request.getParameter("nome");
+		String matricula = request.getParameter("matricula");
+		String dataNascimento = request.getParameter("dataNascimento");
+		String naturalidade = request.getParameter("naturalidade");
+		String endereco = request.getParameter("endereço");
+		String numero = request.getParameter("numero");
+		String bairro = request.getParameter("bairro");
+		String cidade = request.getParameter("cidade");
+		String estado = request.getParameter("estado");
+		String telefone = request.getParameter("telefone");
+		String nomeResponsavel = request.getParameter("nomeResponsavel");
+		String cpfResponsavel = request.getParameter("cpfResponsavel");
+		String turma = request.getParameter("turma");
+		String idTurmaAtual = request.getParameter("idTurmaAtual");
+		String dataNascimentoResp = request.getParameter("dataNascimentoResp");
+		String naturalidadeResp = request.getParameter("naturalidadeResp");
 		
-//		String dataNascimento = request.getParameter("dataNascimento");
-//		String naturalidade = request.getParameter("naturalidade");
-//		String endereco = request.getParameter("endereço");
-//		String numero = request.getParameter("numero");
-//		String bairro = request.getParameter("bairro");
-//		String cidade = request.getParameter("cidade");
-//		String estado = request.getParameter("estado");
-//		String telefone = request.getParameter("telefone");
-//		String perfil = request.getParameter("perfil");
-//		String nomeResponsavel = request.getParameter("nomeResponsavel");
-//		String cpfResponsavel = request.getParameter("cpfResponsavel");
-//		String turma = request.getParameter("turma");
-//		String dataNascimentoResp = request.getParameter("dataNascimentoResp");
-//		String naturalidadeResp = request.getParameter("naturalidadeResp");
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		LocalDate data = LocalDate.parse(dataNascimento, formato);
+		LocalDate dataResp = LocalDate.parse(dataNascimentoResp, formato);
 		
-//		Calendar cal = GregorianCalendar.getInstance();
-//		
-//		int ano = cal.get(Calendar.YEAR);
-//		int mes = cal.get(Calendar.MONTH);
-//		
-//		if(mes < 7){
-//			matricula = ano + "01" + (preencherValorEsquerda(Integer.valueOf(encontrarMaiorSequencial(ano, alunoDAO)) + 1, "0", 5));
-//			
-//		}else{
-//			matricula = ano + "02" + (preencherValorEsquerda(Integer.valueOf(encontrarMaiorSequencial(ano, alunoDAO)) + 1, "0", 5));
-//		}
-//		
-//		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-//		LocalDate data = LocalDate.parse(dataNascimento, formato);
-//		LocalDate dataResp = LocalDate.parse(dataNascimentoResp, formato);
-//		
-//		for(int x = 0; x < 2; x++){
-//			if(x == 0){
-//				pessoa.setId(matricula);
-//				pessoa.setNome(nome);
-//				pessoa.setDtNascimento(data);
-//				pessoa.setNaturalidade(naturalidade);
-//			}else{
-//				pessoa.setId(cpfResponsavel);
-//				pessoa.setNome(nomeResponsavel);
-//				pessoa.setDtNascimento(dataResp);
-//				pessoa.setNaturalidade(naturalidadeResp);
-//			}
-//			
-//			pessoa.setEndereco(endereco);
-//			pessoa.setNumero(Integer.valueOf(numero));
-//			pessoa.setBairro(bairro);
-//			pessoa.setCidade(cidade);
-//			pessoa.setEstado(estado);
-//			pessoa.setTelefone(telefone);
-//			
-//			pessoaDAO.cadastrar(pessoa);
-//			
-//		}
-//		
-//		aluno.setId(matricula);		
-//		alunoDAO.cadastrar(aluno);
-//		
-//		pessoaPerfil.setId(matricula);
-//		pessoaPerfil.setId_perfil(Integer.valueOf(perfil));		
-//		pessoaPerfilDAO.cadastrar(pessoaPerfil);
-//		
-//		responsavel.setId(cpfResponsavel);		
-//		responsavelDAO.cadastrar(responsavel);
-//		
-//		pessoaPerfil = new PessoaPerfil();
-//		pessoaPerfil.setId(cpfResponsavel);
-//		pessoaPerfil.setId_perfil(Integer.valueOf(perfil));		
-//		pessoaPerfilDAO.cadastrar(pessoaPerfil);
-//		
-//		responsavelAluno.setIdResponsavel(cpfResponsavel);
-//		responsavelAluno.setIdAluno(matricula);		
-//		responsavelAlunoDAO.cadastrar(responsavelAluno);
-//		
-//		turmaAluno.setIdTurma(Integer.valueOf(turma));
-//		turmaAluno.setIdAluno(matricula);		
-//		turmaAlunoDAO.cadastrar(turmaAluno);
+		for(int x = 0; x < 2; x++){
+			if(x == 0){
+				pessoa.setId(matricula);
+				pessoa.setNome(nome);
+				pessoa.setDtNascimento(data);
+				pessoa.setNaturalidade(naturalidade);
+			}else{
+				pessoa.setId(cpfResponsavel);
+				pessoa.setNome(nomeResponsavel);
+				pessoa.setDtNascimento(dataResp);
+				pessoa.setNaturalidade(naturalidadeResp);
+			}
+			
+			pessoa.setEndereco(endereco);
+			pessoa.setNumero(Integer.valueOf(numero));
+			pessoa.setBairro(bairro);
+			pessoa.setCidade(cidade);
+			pessoa.setEstado(estado);
+			pessoa.setTelefone(telefone);
+			
+			pessoaDAO.alterar(pessoa);
+			
+		}
+				
+		if(!turma.equals("0") && !idTurmaAtual.equals(turma)){
+			turmaAluno.setIdTurma(Integer.valueOf(turma));
+			turmaAluno.setIdAluno(matricula);
+			turmaAlunoDAO.alterar(turmaAluno);			
+		}
+		
 		
 		return proximo;
 	}
-	
-	public String encontrarMaiorSequencial(int pAno, AlunoDAO pAlunoDAO){
-		Aluno aluno = null;
-		String maiorSq = "";
-		
-		List<Aluno> listAluno = pAlunoDAO.buscarAlunosAnoMatricula(String.valueOf(pAno));
-		
-		Iterator<Aluno> itAluno = listAluno.listIterator();
-		
-		while(itAluno.hasNext()){
-			aluno = itAluno.next();
-			
-			maiorSq = aluno.getId().substring(6);
-		}
-		
-		if(maiorSq.equals("")){
-			maiorSq = "00000";
-		}
-		
-		return maiorSq;
-		
-	}
-	
-	public String preencherValorEsquerda(Integer pSqMatricula, String pValorPreencher, int tamanho){
-        StringBuffer sb = new StringBuffer(String.valueOf(pSqMatricula));
-
-        for (int i=sb.length() ; i<tamanho ; i++){
-
-        	sb.insert(0,pValorPreencher);
-
-        }
-
-        return sb.toString();
-
-    }
 	
 }

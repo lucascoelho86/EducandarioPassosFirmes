@@ -46,9 +46,9 @@ try {
 %>
 
 <body>
-	<form method="post" action="PessoaControle?acao=alterarAluno">
+	<form method="post" action="PessoaControle?acao=alterarFuncionario">
 		<fieldset id="fieldset_aluno">
-				<legend>ALTERAR CADASTRO DO ALUNO</legend>
+				<legend>ALTERAR CADASTRO DE FUNCIONÁRIO</legend>
 				<input type="hidden" name="perfil" value="4" />
 				<input type="hidden" name="matricula" value="<%=pessoa.getId()%>"/>
 				<input type="hidden" name="idTurmaAtual" value="<%= turma.getIdTurma() %>"/>
@@ -60,9 +60,9 @@ try {
 	                        <TD class="campoformulario">
 	                        	<input type="text" name="nome" size="50" value="<%=pessoa.getNome()%>">
 	                        </TD>
-	                        <TH class="campoformulario" align="right" width="15%">Dt Nascimento:</TH>
+	                        <TH class="campoformulario" align="right" width="15%">CPF:</TH>
 	                        <TD class="campoformulario">
-	                        	<input type="text" name="dataNascimento"  value ="<%= pessoa.getDtNascimento() %>">
+	                        	<input type="text" name="cpf" value ="<%= pessoa.getId() %>">
 	                        </TD>
 	                        <TH class="campoformulario" align="right" width="15%">Naturalidade:</TH>
 	                        <TD class="campoformulario">
@@ -70,6 +70,10 @@ try {
 	                        </TD>
 	                    </TR>
 	                    <TR>
+	                    	<TH class="campoformulario" align="right" width="15%">Dt Nascimento:</TH>
+	                        <TD class="campoformulario">
+	                        	<input type="text" name="dataNascimento"  value ="<%= pessoa.getDtNascimento() %>">
+	                        </TD>
 	                    	<TH class="campoformulario" align="left" width="15%">Endereço:</TH>
 	                        <TD class="campoformulario">
 	                        	<input type="text" name="endereço"  value ="<%= pessoa.getEndereco() %>">
@@ -78,12 +82,12 @@ try {
 	                        <TD class="campoformulario">
 	                        	<input type="text" name="numero" value = "<%= pessoa.getNumero() %>">
 	                        </TD> 
-	                        <TH class="campoformulario" align="right" width="15%">Bairro:</TH>
-	                        <TD class="campoformulario">
-	                        	<input type="text" name="bairro" value ="<%= pessoa.getBairro() %>">
-	                        </TD>                        	
 	                    </TR>	                    
 	                    <TR>
+	                    	<TH class="campoformulario" align="right" width="15%">Bairro:</TH>
+	                        <TD class="campoformulario">
+	                        	<input type="text" name="bairro" value ="<%= pessoa.getBairro() %>">
+	                        </TD>
 	                        <TH class="campoformulario" align="left" width="15%">Cidade:</TH>
 	                        <TD class="campoformulario">
 	                        	<input type="text" name="cidade" value = "<%= pessoa.getCidade() %>">
@@ -92,41 +96,16 @@ try {
 	                        <TD class="campoformulario">
 	                        	<input type="text" name="estado" value = "<%= pessoa.getEstado() %>">
 	                        </TD>
-	                        <TH class="campoformulario" align="right" width="15%">Telefone:</TH>
+	                    </TR>
+	                    <TR>
+	                    <TH class="campoformulario" align="right" width="15%">Telefone:</TH>
 	                        <TD class="campoformulario">
 	                        	<input type="text" name="telefone" value = "<%= pessoa.getTelefone() %>">
-	                        </TD>                 	
-	                    </TR>
-	                    <TR>
-	                       <TH class="campoformulario" align="left" width="15%">Nome Responsável:</TH>
-	                        <TD class="campoformulario">
-	                        	<input type="text" name="nomeResponsavel" size="50" value = "<%= pessoaResponsavel.getNome() %>">
-	                        </TD> 
-	                        <TH class="campoformulario" align="right" width="15%">CPF Responsável:</TH>
-	                        <TD class="campoformulario">
-	                        	<input type="text" name="cpfResponsavel" value = "<%= pessoaResponsavel.getId() %>">
 	                        </TD>
-	                        <TH class="campoformulario" align="left" width="15%">Dt Nascimento Responsável:</TH>
+	                        <TH class="campoformulario" align="right" width="30%">Cadastrar Senha:</TH>
 	                        <TD class="campoformulario">
-	                        	<input type="text" name="dataNascimentoResp" value = "<%= pessoaResponsavel.getDtNascimento() %>">
-	                        </TD>
-	                    </TR>
-	                    <TR>
-	                       <TH class="campoformulario" align="left" width="15%">Naturalidade Responsável:</TH>
-	                        <TD class="campoformulario">
-	                        	<input type="text" name="naturalidadeResp" value = "<%= pessoaResponsavel.getNaturalidade() %>">
-	                        </TD> 
-	                        <TH class="campoformulario" align="right" width="15%">Turma Atual:</TH>
-	                        <TD class="campoformulario">
-	                        	<input type="text" name="turmaAtual" value="<%= turma.getDsTurma() %>" readonly>
-	                        </TD>
-	                        <TH class="campoformulario" align="right" width="15%">Alterar Turma:</TH>
-	                        <TD class="campoformulario">
-	                        	<select name="turma">
-									<option value="0">Selecionar</option>
-									<option value="1">4A</option>
-								</select>
-	                        </TD>
+	                        	<input type="text" name="senha">
+	                        </TD>                      	
 	                    </TR>
 	                </TBODY>
          		</TABLE>

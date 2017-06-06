@@ -44,12 +44,21 @@ public class PessoaDAO {
 	
 	public void alterar(Pessoa pessoa){
 		
-		String sql = "UPDATE PESSOA SET nome=?, login=?, senha=? WHERE id_pessoa=?";
+		String sql = "UPDATE PESSOA SET dt_nascimento=?, naturalidade=?, endereco=?, numero=?, bairro=?, cidade=?, estado=?, telefone=?, nome=? WHERE id_pessoa=?";
 		
 		try {
 			PreparedStatement preparador = con.prepareStatement(sql);
 			
-			preparador.setString(1, pessoa.getNome());
+			preparador.setDate(1, Date.valueOf(pessoa.getDtNascimento()));
+			preparador.setString(2, pessoa.getNaturalidade());
+			preparador.setString(3, pessoa.getEndereco());
+			preparador.setInt(4, pessoa.getNumero());
+			preparador.setString(5, pessoa.getBairro());
+			preparador.setString(6, pessoa.getCidade());
+			preparador.setString(7, pessoa.getEstado());
+			preparador.setString(8, pessoa.getTelefone());
+			preparador.setString(9, pessoa.getNome());
+			preparador.setString(10, pessoa.getId());
 			
 			preparador.execute();
 			preparador.close();

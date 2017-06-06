@@ -54,4 +54,32 @@ public class FuncionarioDAO {
 		}
 	}
 	
+	public Funcionario consultar(String pCpf){
+		
+		String sql = "SELECT * FROM FUNCIONARIO WHERE id_pessoa = ?";
+		
+		Funcionario funcionario = null;
+		
+		try {
+			PreparedStatement preparador = con.prepareStatement(sql);
+			
+			preparador.setString(1, pCpf);
+			
+			ResultSet resultado = preparador.executeQuery();
+
+			while(resultado.next()){
+				funcionario = new Funcionario();
+				funcionario.setId(resultado.getString("id_pessoa"));
+				
+			}
+			
+			preparador.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return funcionario;
+	}
+	
 }

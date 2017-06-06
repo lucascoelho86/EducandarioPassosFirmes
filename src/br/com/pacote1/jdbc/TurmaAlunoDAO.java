@@ -34,6 +34,25 @@ public class TurmaAlunoDAO {
 		}
 	}
 	 
+	 public void alterar(TurmaAluno pTurmaAluno){
+			
+			String sql = "UPDATE TURMA_ALUNO SET id_turma=? WHERE id_aluno=?";
+			
+			try {
+				PreparedStatement preparador = con.prepareStatement(sql);
+				
+				preparador.setInt(1, pTurmaAluno.getIdTurma());
+				preparador.setString(2, pTurmaAluno.getIdAluno());
+								
+				preparador.execute();
+				preparador.close();
+				
+				System.out.println("Alterado com sucesso!");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+	}
+	 
 	 public List<TurmaAluno> consultar(Integer pTurma, String pMatricula){
 			String sql = "SELECT * FROM TURMA_ALUNO ";
 			String where = "WHERE ";
