@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import br.com.pacote1.entidades.Aluno;
 import br.com.pacote1.entidades.PessoaPerfil;
 
 public class PessoaPerfilDAO {
@@ -57,6 +56,26 @@ public class PessoaPerfilDAO {
 			}
 			
 			return pessoaPerfil;
+		}
+	 
+	 public void alterar(PessoaPerfil pPessoaPerfil){
+			
+			String sql = "UPDATE PESSOA_PERFIL SET id_pessoa=?, id_perfil=? WHERE id_pessoa=?";
+			
+			try {
+				PreparedStatement preparador = con.prepareStatement(sql);
+				
+				preparador.setString(1, pPessoaPerfil.getId());
+				preparador.setInt(2, pPessoaPerfil.getId_perfil());
+				preparador.setString(3, pPessoaPerfil.getId());
+				
+				preparador.execute();
+				preparador.close();
+				
+				System.out.println("Alterado com sucesso!");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	
 }

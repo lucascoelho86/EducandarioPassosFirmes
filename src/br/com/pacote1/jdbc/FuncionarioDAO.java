@@ -83,4 +83,25 @@ public class FuncionarioDAO {
 		return funcionario;
 	}
 	
+	public void alterar(Funcionario pFuncionario){
+		
+		String sql = "UPDATE FUNCIONARIO SET id_pessoa=?, senha=? WHERE id_pessoa=?";
+		
+		try {
+			PreparedStatement preparador = con.prepareStatement(sql);
+			
+			preparador.setString(1, pFuncionario.getId());
+			preparador.setString(2, pFuncionario.getSenha());
+			preparador.setString(3, pFuncionario.getId());
+			
+			preparador.execute();
+			preparador.close();
+			
+			System.out.println("Alterado com sucesso!");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 }

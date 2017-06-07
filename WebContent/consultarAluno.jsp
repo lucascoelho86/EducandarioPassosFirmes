@@ -75,11 +75,11 @@ try {
 				<TABLE id="table_filtro" class="filtro" cellpadding="0" cellspacing="0">
 		                <TBODY>
 		                    <TR>
-	                        <TH class="headertabeladados" width="2%">&nbsp;&nbsp;</TH>
-	                        <TH class="headertabeladados" align="left" width="" >Matrícula</TH>
-	                        <TH class="headertabeladados" align="left" width="" >Nome do Aluno</TH>
-	                        <TH class="headertabeladados" align="left" width="" >Turma</TH>
-	                    </TR>
+		                        <TH class="headertabeladados" width="2%">&nbsp;&nbsp;</TH>
+		                        <TH class="headertabeladados" align="left" width="5%" >Matrícula</TH>
+		                        <TH class="headertabeladados" align="left" width="10%" >Nome do Aluno</TH>
+		                        <TH class="headertabeladados" align="left" width="5%" >Turma</TH>
+	                    	</TR>
 	                    <%
 								Iterator<Pessoa> it = listPessoa.iterator();
 		                		Pessoa pessoa = null;
@@ -119,23 +119,24 @@ try {
 		                		<%
 		                		}
 								%>
-								
-								<TR>
-            <TD class="conteinerbarraacoes">
-            <TABLE id="table_barraacoes" class="barraacoes" cellpadding="0" cellspacing="0">
+		                </TBODY>
+	         	</TABLE>
+         	</fieldset>
+         	<br>
+         	<TABLE id="table_barraacoes" class="barraacoes" cellpadding="0" cellspacing="0">
                 <TBODY>
                     <TR>
+                    	<TH class="botaofuncao" align="left" width="45%"></TH>
                         <TD class="botaofuncao">
 							      <input type="submit" value="Alterar" name="botaoAlterar"/>
+                    	</TD>
+                    	<TH class="botaofuncao" align="left" width="40%"></TH>
+                    	<TD class="botaofuncao">
+							      <input type="submit" value="Excluir" name="botaoExcluir"/>
                     	</TD>
                     </TR>
                 </TBODY>
             </TABLE>
-            </TD>
-        </TR>
-		                </TBODY>
-	         	</TABLE>
-         	</fieldset>
 	</form>
 	
 	<%

@@ -68,19 +68,19 @@ public class MontagemAlteracaoFuncionarioCommand implements Command {
 		pessoa.setEstado(estado);
 		pessoa.setTelefone(telefone);
 			
-		pessoaDAO.cadastrar(pessoa);
+		pessoaDAO.alterar(pessoa);
 		
 		pessoaPerfil.setId(cpf);
 		pessoaPerfil.setId_perfil(buscarPerfilPelaFuncao(Integer.valueOf(funcao)));
-		pessoaPerfilDAO.cadastrar(pessoaPerfil);
+		pessoaPerfilDAO.alterar(pessoaPerfil);
 		
 		funcionario.setId(cpf);
 		funcionario.setSenha(senha);
-		FuncionarioDAO.cadastrar(funcionario);
+		FuncionarioDAO.alterar(funcionario);
 		
 		if(funcao.equals("2") || funcao.equals("4")){
 			professor.setId(cpf);
-			professorDAO.cadastrar(professor);
+			professorDAO.alterar(professor);
 			
 			adicionarDisciplina(cpf, portugues, matematica, ciencias, geografia, ingles, historia, naturezaSociedade);
 			
@@ -94,6 +94,9 @@ public class MontagemAlteracaoFuncionarioCommand implements Command {
 		ProfessorDisciplina professorDisciplina = new ProfessorDisciplina();
 		ProfessorDisciplinaDAO professorDisciplinaDAO = new ProfessorDisciplinaDAO();
 
+		professorDisciplina.setId_professor(pCpf);
+		professorDisciplinaDAO.excluir(professorDisciplina);
+		
 		if(pPortugues != null){
 			professorDisciplina.setId_professor(pCpf);
 			professorDisciplina.setId_disciplina(Integer.valueOf(pPortugues));

@@ -27,4 +27,24 @@ public class ProfessorDAO {
 		}
 	}
 	
+	public void alterar(Professor pProfessor){
+		
+		String sql = "UPDATE PROFESSOR SET id_funcionario=? WHERE id_funcionario=?";
+		
+		try {
+			PreparedStatement preparador = con.prepareStatement(sql);
+			
+			preparador.setString(1, pProfessor.getId());
+			preparador.setString(2, pProfessor.getId());
+			
+			preparador.execute();
+			preparador.close();
+			
+			System.out.println("Alterado com sucesso!");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 }

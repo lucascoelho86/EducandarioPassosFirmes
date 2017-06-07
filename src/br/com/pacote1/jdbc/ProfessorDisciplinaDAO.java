@@ -4,11 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.pacote1.entidades.Pessoa;
 import br.com.pacote1.entidades.ProfessorDisciplina;
 
 public class ProfessorDisciplinaDAO {
@@ -75,6 +73,44 @@ public class ProfessorDisciplinaDAO {
 		
 		return listProfessorDisciplina;
 		
+	}
+	
+	public void alterar(ProfessorDisciplina pProfessorDisciplina){
+		
+		String sql = "UPDATE PROFESSOR_DISCIPLINA SET id_professor=?, id_disciplina=? WHERE id_professor=?";
+		
+		try {
+			PreparedStatement preparador = con.prepareStatement(sql);
+			
+			preparador.setString(1, pProfessorDisciplina.getId_professor());
+			preparador.setInt(2, pProfessorDisciplina.getId_disciplina());
+			preparador.setString(3, pProfessorDisciplina.getId_professor());
+			
+			preparador.execute();
+			preparador.close();
+			
+			System.out.println("Alterado com sucesso!");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void excluir(ProfessorDisciplina pProfessorDisciplina){
+		
+		String sql = "DELETE FROM PROFESSOR_DISCIPLINA WHERE id_professor=?";
+		
+		try {
+			PreparedStatement preparador = con.prepareStatement(sql);
+			
+			preparador.setString(1, pProfessorDisciplina.getId_professor());
+			
+			preparador.execute();
+			preparador.close();
+			
+			System.out.println("Deletado com sucesso!");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
