@@ -69,14 +69,14 @@ public class PessoaDAO {
 		}
 	}
 	
-	public void excluir(Pessoa pessoa){
+	public void excluir(String pId){
 		
 		String sql = "DELETE FROM PESSOA WHERE id_pessoa=?";
 		
 		try {
 			PreparedStatement preparador = con.prepareStatement(sql);
 			
-//			preparador.setInt(1, pessoa.getId());
+			preparador.setString(1, pId);
 			
 			preparador.execute();
 			preparador.close();

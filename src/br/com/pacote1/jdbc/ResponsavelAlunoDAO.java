@@ -1,14 +1,12 @@
 package br.com.pacote1.jdbc;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
-import br.com.pacote1.entidades.Pessoa;
 import br.com.pacote1.entidades.ResponsavelAluno;
 
 public class ResponsavelAlunoDAO {
@@ -34,11 +32,12 @@ public class ResponsavelAlunoDAO {
 		}
 	}
 	 
-	 public ResponsavelAluno consultar(String pMatricula){
+	 public List<ResponsavelAluno> consultar(String pMatricula){
 			String sql = "SELECT * FROM RESPONSAVEL_ALUNO ";
 			String where = "WHERE ";
 			String sql2 = "ID_ALUNO = ?";
 			String sqlComplementar = "";
+			List<ResponsavelAluno> listResponsavelAluno = new ArrayList<ResponsavelAluno>();
 			ResponsavelAluno responsavelAluno = null;
 			int contador=0;
 			try{
@@ -66,13 +65,32 @@ public class ResponsavelAlunoDAO {
 					responsavelAluno.setIdResponsavel(resultado.getString("id_responsavel"));
 					responsavelAluno.setIdAluno(resultado.getString("id_aluno"));
 					
+					listResponsavelAluno.add(responsavelAluno);
 				}
 			}catch(SQLException e){
 				e.printStackTrace();
 			}
 			
-			return responsavelAluno;
+			return listResponsavelAluno;
 			
-		}
+	}
+	 
+	 public void excluir(String pId){
+			
+			String sql = "DELETE FROM RESPONSAVEL_ALUNO WHERE id_aluno=?";
+			
+			try {
+				PreparedStatement preparador = con.prepareStatement(sql);
+				
+				preparador.setString(1, pId);
+				
+				preparador.execute();
+				preparador.close();
+				
+				System.out.println("Excluído com sucesso!");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+	}
 	
 }

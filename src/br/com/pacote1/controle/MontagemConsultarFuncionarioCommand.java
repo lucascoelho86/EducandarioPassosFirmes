@@ -46,6 +46,7 @@ public class MontagemConsultarFuncionarioCommand implements Command {
 		
 		String chave = request.getParameter("chave");
 		String botaoAlterar = request.getParameter("botaoAlterar");
+		String botaoExcluir = request.getParameter("botaoExcluir");
 		String cpf = request.getParameter("cpf");
 		String nome = request.getParameter("nome");
 		
@@ -66,6 +67,14 @@ public class MontagemConsultarFuncionarioCommand implements Command {
 			request.setAttribute("listProfessorDisciplina", listProfessorDisciplina);
 			request.setAttribute("funcionario", funcionario);
 			request.setAttribute("idFuncao", idFuncao);
+		
+		}else if(chave != null && botaoExcluir != null){
+			proximo = "excluirFuncionario.jsp";
+			
+			String arrayChave[] = chave.split(";");
+			
+			request.setAttribute("chave",  arrayChave);
+			
 		}else{
 			
 			if(cpf != null && !cpf.equals("")){

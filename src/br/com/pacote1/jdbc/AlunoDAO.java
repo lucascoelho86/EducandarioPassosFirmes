@@ -90,4 +90,22 @@ public class AlunoDAO {
 		return aluno;
 	}
 	
+	public void excluir(String pId){
+		
+		String sql = "DELETE FROM Aluno WHERE id_pessoa=?";
+		
+		try {
+			PreparedStatement preparador = con.prepareStatement(sql);
+			
+			preparador.setString(1, pId);
+			
+			preparador.execute();
+			preparador.close();
+			
+			System.out.println("Excluído com sucesso!");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 }

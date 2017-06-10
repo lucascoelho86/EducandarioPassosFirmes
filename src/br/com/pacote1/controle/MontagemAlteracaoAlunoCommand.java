@@ -2,24 +2,12 @@ package br.com.pacote1.controle;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import br.com.pacote1.entidades.Aluno;
 import br.com.pacote1.entidades.Pessoa;
-import br.com.pacote1.entidades.PessoaPerfil;
-import br.com.pacote1.entidades.Responsavel;
-import br.com.pacote1.entidades.ResponsavelAluno;
 import br.com.pacote1.entidades.TurmaAluno;
-import br.com.pacote1.jdbc.AlunoDAO;
 import br.com.pacote1.jdbc.PessoaDAO;
-import br.com.pacote1.jdbc.PessoaPerfilDAO;
-import br.com.pacote1.jdbc.ResponsavelAlunoDAO;
-import br.com.pacote1.jdbc.ResponsavelDAO;
 import br.com.pacote1.jdbc.TurmaAlunoDAO;
 
 public class MontagemAlteracaoAlunoCommand implements Command {

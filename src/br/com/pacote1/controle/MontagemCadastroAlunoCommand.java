@@ -2,6 +2,7 @@ package br.com.pacote1.controle;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
@@ -42,6 +43,7 @@ public class MontagemCadastroAlunoCommand implements Command {
 		ResponsavelAlunoDAO responsavelAlunoDAO = new ResponsavelAlunoDAO();
 		TurmaAluno turmaAluno = new TurmaAluno();
 		TurmaAlunoDAO turmaAlunoDAO = new TurmaAlunoDAO();
+		List<Pessoa> listPessoa = new ArrayList<Pessoa>();
 		
 		String nome = request.getParameter("nome");
 		String dataNascimento = request.getParameter("dataNascimento");
@@ -82,21 +84,33 @@ public class MontagemCadastroAlunoCommand implements Command {
 				pessoa.setNome(nome);
 				pessoa.setDtNascimento(data);
 				pessoa.setNaturalidade(naturalidade);
+				pessoa.setEndereco(endereco);
+				pessoa.setNumero(Integer.valueOf(numero));
+				pessoa.setBairro(bairro);
+				pessoa.setCidade(cidade);
+				pessoa.setEstado(estado);
+				pessoa.setTelefone(telefone);
+				
+				pessoaDAO.cadastrar(pessoa);
 			}else{
-				pessoa.setId(cpfResponsavel);
-				pessoa.setNome(nomeResponsavel);
-				pessoa.setDtNascimento(dataResp);
-				pessoa.setNaturalidade(naturalidadeResp);
+				
+				listPessoa = pessoaDAO.consultar(cpfResponsavel, null);
+				
+				if(listPessoa.isEmpty()){
+					pessoa.setId(cpfResponsavel);
+					pessoa.setNome(nomeResponsavel);
+					pessoa.setDtNascimento(dataResp);
+					pessoa.setNaturalidade(naturalidadeResp);
+					pessoa.setEndereco(endereco);
+					pessoa.setNumero(Integer.valueOf(numero));
+					pessoa.setBairro(bairro);
+					pessoa.setCidade(cidade);
+					pessoa.setEstado(estado);
+					pessoa.setTelefone(telefone);
+					
+					pessoaDAO.cadastrar(pessoa);					
+				}
 			}
-			
-			pessoa.setEndereco(endereco);
-			pessoa.setNumero(Integer.valueOf(numero));
-			pessoa.setBairro(bairro);
-			pessoa.setCidade(cidade);
-			pessoa.setEstado(estado);
-			pessoa.setTelefone(telefone);
-			
-			pessoaDAO.cadastrar(pessoa);
 			
 		}
 		
@@ -107,14 +121,15 @@ public class MontagemCadastroAlunoCommand implements Command {
 		pessoaPerfil.setId_perfil(Integer.valueOf(perfilAluno));		
 		pessoaPerfilDAO.cadastrar(pessoaPerfil);
 		
-		responsavel.setId(cpfResponsavel);		
-		responsavelDAO.cadastrar(responsavel);
-		
-		pessoaPerfil = new PessoaPerfil();
-		pessoaPerfil.setId(cpfResponsavel);
-		pessoaPerfil.setId_perfil(Integer.valueOf(perfilResp));		
-		pessoaPerfilDAO.cadastrar(pessoaPerfil);
-		
+		if(listPessoa.isEmpty()){
+			responsavel.setId(cpfResponsavel);		
+			responsavelDAO.cadastrar(responsavel);
+			
+			pessoaPerfil = new PessoaPerfil();
+			pessoaPerfil.setId(cpfResponsavel);
+			pessoaPerfil.setId_perfil(Integer.valueOf(perfilResp));		
+			pessoaPerfilDAO.cadastrar(pessoaPerfil);
+		}
 		responsavelAluno.setIdResponsavel(cpfResponsavel);
 		responsavelAluno.setIdAluno(matricula);		
 		responsavelAlunoDAO.cadastrar(responsavelAluno);

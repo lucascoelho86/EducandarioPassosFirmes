@@ -46,5 +46,23 @@ public class ProfessorDAO {
 		}
 	}
 	
+	public void excluir(String pId){
+		
+		String sql = "DELETE FROM PROFESSOR WHERE id_funcionario=?";
+		
+		try {
+			PreparedStatement preparador = con.prepareStatement(sql);
+			
+			preparador.setString(1, pId);
+			
+			preparador.execute();
+			preparador.close();
+			
+			System.out.println("Excluído com sucesso!");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 }

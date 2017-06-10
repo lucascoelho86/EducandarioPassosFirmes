@@ -1,14 +1,12 @@
 package br.com.pacote1.jdbc;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.pacote1.entidades.Pessoa;
 import br.com.pacote1.entidades.TurmaAluno;
 
 public class TurmaAlunoDAO {
@@ -108,5 +106,23 @@ public class TurmaAlunoDAO {
 			return listTurma;
 			
 		}
+	 
+	 public void excluir(String pId){
+			
+			String sql = "DELETE FROM TURMA_ALUNO WHERE id_aluno=?";
+			
+			try {
+				PreparedStatement preparador = con.prepareStatement(sql);
+				
+				preparador.setString(1, pId);
+				
+				preparador.execute();
+				preparador.close();
+				
+				System.out.println("Excluído com sucesso!");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+	}
 	
 }

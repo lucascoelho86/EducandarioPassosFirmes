@@ -3,6 +3,8 @@
     pageEncoding="ISO-8859-1"%>
 <%@page import="br.com.pacote1.entidades.Pessoa"%>
 <%@page import="br.com.pacote1.entidades.TurmaAluno"%>
+<%@page import="br.com.pacote1.entidades.Turma"%>
+<%@page import="br.com.pacote1.jdbc.TurmaDAO"%>
 <%@page import="java.util.List"%>
 <%@page import="br.com.pacote1.controle.PessoaControle"%>
 <%@ page import="java.util.ArrayList"%>
@@ -86,6 +88,8 @@ try {
 		                		String matricula = "";
 		                		String nome = "";
 		                		String chavePrimaria = "";
+		                		Turma turma = new Turma();
+		                		TurmaDAO turmaDAO = new TurmaDAO();
 		                
 		                		while(it.hasNext()){
 		                			pessoa = it.next();
@@ -95,17 +99,20 @@ try {
 		                			Iterator<TurmaAluno> itTurmaAluno = listTurma.iterator();
 		                			TurmaAluno turmaAluno = null;
 		                			int cdTurma = 0;
+		                			String dsTurma = "";
 		                			
 		                			while(itTurmaAluno.hasNext()){
 		                				turmaAluno = itTurmaAluno.next();
 		                				
 		                				if(matricula.equals(turmaAluno.getIdAluno())){
 		                					cdTurma = turmaAluno.getIdTurma();
+		                					turma = turmaDAO.consultar(cdTurma);
+		                					dsTurma = turma.getDsTurma();
 		                					break;
 		                				}
 		                			}
 		                			
-		                			chavePrimaria = matricula + ";" + nome + ";" + cdTurma;
+		                			chavePrimaria = matricula + ";" + nome + ";" + cdTurma + ";" + dsTurma;
 		                			%>
 		                			<TR>
 										<TD class="tabeladados">
@@ -113,7 +120,7 @@ try {
 										</TD>
 										<TD class="tabeladados"><%= matricula %></TD>
 										<TD class="tabeladados"><%= nome %></TD>
-										<TD class="tabeladados"><%= String.valueOf(cdTurma) %></TD>
+										<TD class="tabeladados"><%= dsTurma %></TD>
 								
 	                    			</TR>
 		                		<%

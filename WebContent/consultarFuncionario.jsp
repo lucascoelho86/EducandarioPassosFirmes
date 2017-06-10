@@ -91,7 +91,7 @@ try {
 		                			funcao = dadosFuncionario[2];
 		                			idFuncao = dadosFuncionario[3];
 		                			
-		                			chavePrimaria = cpf + ";" + nome + ";" + idFuncao;
+		                			chavePrimaria = cpf + ";" + nome + ";" + idFuncao + ";" + funcao;
 		                			%>
 		                			<TR>
 										<TD class="tabeladados">

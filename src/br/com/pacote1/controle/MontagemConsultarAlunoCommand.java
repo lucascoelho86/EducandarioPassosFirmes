@@ -38,10 +38,12 @@ public class MontagemConsultarAlunoCommand implements Command {
 		Turma turma = null;
 		TurmaDAO turmaDAO = new TurmaDAO();
 		ResponsavelAluno responsavelAluno = null;
+		List<ResponsavelAluno> listResponsavelAluno = new ArrayList<ResponsavelAluno>();
 		ResponsavelAlunoDAO responsavelAlunoDAO = new ResponsavelAlunoDAO();
 		
 		String chave = request.getParameter("chave");
 		String botaoAlterar = request.getParameter("botaoAlterar");
+		String botaoExcluir = request.getParameter("botaoExcluir");
 		String matricula = request.getParameter("matricula");
 		String nome = request.getParameter("nome");
 		
@@ -54,13 +56,22 @@ public class MontagemConsultarAlunoCommand implements Command {
 			
 			turma = turmaDAO.consultar(Integer.valueOf(arrayChave[2]));
 			
-			responsavelAluno = responsavelAlunoDAO.consultar(arrayChave[0]);
+			listResponsavelAluno = responsavelAlunoDAO.consultar(arrayChave[0]);
+			
+			responsavelAluno = listResponsavelAluno.get(0);
 			
 			listPessoaResponsavel = pessoaDAO.consultar(responsavelAluno.getIdResponsavel(), null);
 			
 			request.setAttribute("listPessoa", listPessoa);
 			request.setAttribute("listResponsavel", listPessoaResponsavel);
 			request.setAttribute("turma", turma);
+		
+		}else if(chave != null && botaoExcluir != null){
+			proximo = "excluirAluno.jsp";
+			
+			String arrayChave[] = chave.split(";");
+			
+			request.setAttribute("chave",  arrayChave);
 			
 		}else{
 			
