@@ -48,6 +48,8 @@ try {
 %>
 
 <body>
+	<jsp:include page="cabecalho.jsp"/>
+	<br>
 	<form method="post" action="PessoaControle?acao=alterarFuncionario">
 		<fieldset id="fieldset_aluno">
 				<legend>ALTERAR CADASTRO DE FUNCIONÁRIO</legend>
@@ -71,7 +73,22 @@ try {
 	                    <TR>
 	                    	<TH class="campoformulario" align="left" width="10%">Dt Nascimento:</TH>
 	                        <TD class="campoformulario">
-	                        	<input type="text" name="dataNascimento"  value ="<%= pessoa.getDtNascimento() %>">
+	                        	<%
+	                        	String data = pessoa.getDtNascimento().toString();
+
+	                        	if(data != null && !data.equals("")){
+	                        		String ano = data.substring(0, 4);
+	                        		String mes = data.substring(5, 7);
+	                        		String dia = data.substring(8);
+	                        	%>
+	                        		<input type="text" name="dataNascimento"  value ="<%= dia + "/" + mes + "/" + ano %>">
+	                        	<%	
+	                        	}else{
+	                        	%>
+	                        		<input type="text" name="dataNascimento">
+	                        	<%	
+	                        	}
+	                        	%>
 	                        </TD>
 	                    	<TH class="campoformulario" align="right" width="10%">Endereço:</TH>
 	                        <TD class="campoformulario">
@@ -290,6 +307,9 @@ try {
 				</div>
 				<div class="campo">
 					<input type="submit" value="Continuar"/>
+				</div>
+				<div class="campo">
+					<input type="button" value="Voltar" onClick="javascript:history.back();">
 				</div>
 			</fieldset>
 	</form>

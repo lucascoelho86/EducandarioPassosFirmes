@@ -7,6 +7,8 @@
 <title>HOME</title>
 </head>
 <body>
+	<jsp:include page="cabecalho.jsp"/>
+	<br>
 	<form method="post" action="PessoaControle?acao=cadastro">
 		<fieldset id="fieldset_aluno">
 				<legend>ALUNO</legend>
@@ -15,6 +17,8 @@
 					<input type="checkbox" name="CadastrarAluno">
 					<label>Consultar</label>				
 					<input type="checkbox" name="ConsultarAluno">
+					<label>Notas</label>				
+					<input type="checkbox" name="NotasAluno">
 				</div>
 			</fieldset>
 			<fieldset id="fieldset_funcionario">
@@ -29,6 +33,9 @@
 		<br>
 		<div class="campo">
 			<input type="submit" value="Continuar"/>
+		</div>
+		<div class="campo">
+			<input type="button" value="Sair" onClick="javascript:history.back();">
 		</div>
 	</form>
 </body>

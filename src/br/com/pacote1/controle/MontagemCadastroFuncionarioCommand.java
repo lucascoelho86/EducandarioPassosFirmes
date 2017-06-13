@@ -3,6 +3,7 @@ package br.com.pacote1.controle;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+
 import javax.servlet.http.HttpServletRequest;
 
 import br.com.pacote1.entidades.Funcionario;
@@ -24,7 +25,7 @@ public class MontagemCadastroFuncionarioCommand implements Command {
 	
 	public String execute(HttpServletRequest request) {
 		
-		proximo = "cadastroFuncionario.jsp";
+		proximo = "sucesso.jsp";
 		Pessoa pessoa = new Pessoa();
 		PessoaDAO pessoaDAO = new PessoaDAO();
 		PessoaPerfil pessoaPerfil = new PessoaPerfil();

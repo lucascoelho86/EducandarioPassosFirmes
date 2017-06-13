@@ -24,7 +24,7 @@ public class MontagemAlteracaoFuncionarioCommand implements Command {
 	
 	public String execute(HttpServletRequest request) {
 		
-		proximo = "alteracaoFuncionario.jsp";
+		proximo = "sucesso.jsp";
 		Pessoa pessoa = new Pessoa();
 		PessoaDAO pessoaDAO = new PessoaDAO();
 		PessoaPerfil pessoaPerfil = new PessoaPerfil();

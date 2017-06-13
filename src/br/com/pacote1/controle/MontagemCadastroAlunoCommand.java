@@ -29,7 +29,7 @@ public class MontagemCadastroAlunoCommand implements Command {
 	
 	public String execute(HttpServletRequest request) {
 		
-		proximo = "cadastroAluno.jsp";
+		proximo = "sucesso.jsp";
 		String matricula = "";
 		Pessoa pessoa = new Pessoa();
 		PessoaDAO pessoaDAO = new PessoaDAO();

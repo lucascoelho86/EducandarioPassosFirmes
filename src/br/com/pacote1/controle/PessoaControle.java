@@ -29,6 +29,7 @@ public class PessoaControle extends HttpServlet {
 		comandos.put("alterarFuncionario", new MontagemAlteracaoFuncionarioCommand());
 		comandos.put("excluirFuncionario", new MontagemExcluirFuncionarioCommand());
 		comandos.put("excluirAluno", new MontagemExcluirAlunoCommand());
+		comandos.put("cadastrarNotas", new MontagemNotasAlunoCommand());
 	}
 
 	@Override

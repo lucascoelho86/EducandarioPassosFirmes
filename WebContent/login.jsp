@@ -7,6 +7,8 @@
 <title>Login</title>
 </head>
 <body>
+	<jsp:include page="cabecalho.jsp"/>
+	<br>
 	<form method="post" action="PessoaControle?acao=login">
 		
 		<fieldset id="fieldset_login">		
@@ -24,7 +26,7 @@
 				</div>
 				<input type="password" id="senha" name="senha" maxlength="15"/>
 			</div>
-			
+			<br>
 			<div class="campo">
 				<input type="submit" value="Logar"/>
 			</div>

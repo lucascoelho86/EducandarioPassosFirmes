@@ -1,26 +1,36 @@
 package br.com.pacote1.controle;
 
+import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.JOptionPane;
 
+import br.com.pacote1.documentos.ExcRepositorio;
+import br.com.pacote1.documentos.GerarBoletim;
 import br.com.pacote1.entidades.Aluno;
 import br.com.pacote1.entidades.Pessoa;
 import br.com.pacote1.entidades.ResponsavelAluno;
 import br.com.pacote1.entidades.Turma;
 import br.com.pacote1.entidades.TurmaAluno;
 import br.com.pacote1.jdbc.AlunoDAO;
+import br.com.pacote1.jdbc.Conexao;
 import br.com.pacote1.jdbc.PessoaDAO;
 import br.com.pacote1.jdbc.ResponsavelAlunoDAO;
 import br.com.pacote1.jdbc.TurmaAlunoDAO;
 import br.com.pacote1.jdbc.TurmaDAO;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 
 public class MontagemConsultarAlunoCommand implements Command {
 	
 	private String proximo;
 	
-	public String execute(HttpServletRequest request) {
+	public String execute(HttpServletRequest request){
 		
 		proximo = "consultarAluno.jsp";
 		Aluno aluno = null;
@@ -44,6 +54,7 @@ public class MontagemConsultarAlunoCommand implements Command {
 		String chave = request.getParameter("chave");
 		String botaoAlterar = request.getParameter("botaoAlterar");
 		String botaoExcluir = request.getParameter("botaoExcluir");
+		String botaoRelatorio = request.getParameter("botaoRelatorio");
 		String matricula = request.getParameter("matricula");
 		String nome = request.getParameter("nome");
 		
@@ -72,6 +83,17 @@ public class MontagemConsultarAlunoCommand implements Command {
 			String arrayChave[] = chave.split(";");
 			
 			request.setAttribute("chave",  arrayChave);
+		
+		}else if(chave != null && botaoRelatorio != null){
+			GerarBoletim rep = new GerarBoletim();
+			JasperPrint relat;
+			
+			try {
+				rep.inserir(chave);
+				relat = rep.gerar(tratarColecaoRelatorio());
+			} catch (ExcRepositorio e) {
+				e.printStackTrace();
+			}
 			
 		}else{
 			
@@ -161,6 +183,21 @@ public class MontagemConsultarAlunoCommand implements Command {
 		
 		
 		return proximo;
+	}
+	
+	public HashMap<String, Object> tratarColecaoRelatorio(){
+		HashMap<String, Object> hashMap = new HashMap<String, Object>();
+		
+		hashMap.put("matricula", "20170100001");
+		hashMap.put("nome", "Lucas");
+		hashMap.put("turma", "Maternal");
+		hashMap.put("disciplina", "Matemática");
+		hashMap.put("notaTeste", Double.valueOf(10.0));
+		hashMap.put("notaProva", Double.valueOf(10.0));
+		hashMap.put("notaTrabalho", Double.valueOf(10.0));
+		hashMap.put("notaFinal", Double.valueOf(10.0));
+		
+		return hashMap;
 	}
 	
 }

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Boletim" pageWidth="595" pageHeight="842" columnWidth="495" leftMargin="50" rightMargin="50" topMargin="20" bottomMargin="20" uuid="7b256207-fcfb-413f-9a81-0af1d77fbce4">
+	<property name="ireport.zoom" value="1.7715610000000013"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="disciplina" class="java.lang.String"/>
+	<field name="matricula" class="java.lang.String"/>
+	<field name="nome" class="java.lang.String"/>
+	<field name="turma" class="java.lang.String"/>
+	<field name="notaTeste" class="java.lang.Double"/>
+	<field name="notaProva" class="java.lang.Double"/>
+	<field name="notaTrabalho" class="java.lang.Double"/>
+	<field name="notaFinal" class="java.lang.Double"/>
+	<group name="nomeEscola">
+		<groupExpression><![CDATA[$F{matricula}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<staticText>
+					<reportElement x="0" y="0" width="495" height="20" uuid="43aa6b39-55b5-4394-9618-9e1cd643895f"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[EDUCANDÁRIO PASSOS FIRMES]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="dadosAluno">
+		<groupExpression><![CDATA[$F{matricula}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement x="0" y="0" width="100" height="20" uuid="a0a6116a-9277-42dc-837b-93f492ae1217"/>
+					<box leftPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Justified" verticalAlignment="Middle">
+						<font fontName="Arial"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{matricula}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="100" y="0" width="300" height="20" uuid="f9a114c2-9ef1-4d51-9a83-4f2e7af07119"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="400" y="0" width="95" height="20" uuid="9b0657e9-0628-4ae0-8e6a-65e07904bdcf"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{turma}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="informacoes">
+		<groupExpression><![CDATA[$F{matricula}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<staticText>
+					<reportElement x="0" y="0" width="175" height="20" uuid="efc23fab-dbdf-479e-86af-a25d2871366a"/>
+					<box leftPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Disciplinas/Unidade]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="175" y="0" width="80" height="20" uuid="3ae44f71-0449-404c-acfc-808c1500ed95"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nota Teste]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="255" y="0" width="80" height="20" uuid="9a923d78-f400-41c3-9f01-9fee3ed60262"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nota Prova]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="335" y="0" width="80" height="20" uuid="0c471b2e-62a3-47c3-9be0-a4c9cf16d234"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nota Trabalho]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="415" y="0" width="80" height="20" uuid="31f54165-ebfe-451c-8ac8-6aa4e7b59701"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nota Final]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band height="50"/>
+	</background>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<printWhenExpression><![CDATA[$F{disciplina} != null]]></printWhenExpression>
+			<textField>
+				<reportElement x="0" y="0" width="175" height="20" uuid="ae290865-1e82-4fff-81ba-6d8c297509ab"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{disciplina}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="175" y="0" width="80" height="20" uuid="70379a6e-96e0-453b-9046-6aa40b7c2a07"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{notaTeste}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="255" y="0" width="80" height="20" uuid="1028bc64-16bb-4a91-acbe-dadd7d4c2bf5"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{notaProva}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="335" y="0" width="80" height="20" uuid="97094579-7a4c-4121-bdf8-32c93a4c5d63"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{notaTrabalho}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="415" y="0" width="80" height="20" uuid="57111b9b-6c56-4f12-9000-b4dabf975c80"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{notaFinal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

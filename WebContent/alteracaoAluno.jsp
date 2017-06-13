@@ -5,6 +5,10 @@
 <%@page import="java.util.List"%>
 <%@page import="br.com.pacote1.controle.PessoaControle"%>
 <%@ page import="java.util.ArrayList"%>
+<%@ page import="java.time.LocalDate"%>
+<%@ page import="java.time.format.DateTimeFormatter"%>
+<%@ page import="java.util.Date"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -46,6 +50,8 @@ try {
 %>
 
 <body>
+	<jsp:include page="cabecalho.jsp"/>
+	<br>
 	<form method="post" action="PessoaControle?acao=alterarAluno">
 		<fieldset id="fieldset_aluno">
 				<legend>ALTERAR CADASTRO DO ALUNO</legend>
@@ -62,7 +68,22 @@ try {
 	                        </TD>
 	                        <TH class="campoformulario" align="right" width="15%">Dt Nascimento:</TH>
 	                        <TD class="campoformulario">
-	                        	<input type="text" name="dataNascimento"  value ="<%= pessoa.getDtNascimento() %>">
+	                        	<%
+	                        	String data = pessoa.getDtNascimento().toString();
+
+	                        	if(data != null && !data.equals("")){
+	                        		String ano = data.substring(0, 4);
+	                        		String mes = data.substring(5, 7);
+	                        		String dia = data.substring(8);
+	                        	%>
+	                        		<input type="text" name="dataNascimento"  value ="<%= dia + "/" + mes + "/" + ano %>">
+	                        	<%	
+	                        	}else{
+	                        	%>
+	                        		<input type="text" name="dataNascimento">
+	                        	<%	
+	                        	}
+	                        	%>
 	                        </TD>
 	                        <TH class="campoformulario" align="right" width="15%">Naturalidade:</TH>
 	                        <TD class="campoformulario">
@@ -108,7 +129,22 @@ try {
 	                        </TD>
 	                        <TH class="campoformulario" align="left" width="15%">Dt Nascimento Responsável:</TH>
 	                        <TD class="campoformulario">
-	                        	<input type="text" name="dataNascimentoResp" value = "<%= pessoaResponsavel.getDtNascimento() %>">
+	                        	<%
+	                        	String dataResp = pessoa.getDtNascimento().toString();
+
+	                        	if(data != null && !data.equals("")){
+	                        		String ano = dataResp.substring(0, 4);
+	                        		String mes = dataResp.substring(5, 7);
+	                        		String dia = dataResp.substring(8);
+	                        	%>
+	                        		<input type="text" name="dataNascimentoResp" value = "<%= dia + "/" + mes + "/" + ano %>">
+	                        	<%	
+	                        	}else{
+	                        	%>
+	                        		<input type="text" name="dataNascimentoResp">
+	                        	<%	
+	                        	}
+	                        	%>
 	                        </TD>
 	                    </TR>
 	                    <TR>
@@ -132,6 +168,9 @@ try {
          		</TABLE>
 				<div class="campo">
 					<input type="submit" value="Continuar"/>
+				</div>
+				<div class="campo">
+					<input type="button" value="Voltar" onClick="javascript:history.back();">
 				</div>
 			</fieldset>
 	</form>

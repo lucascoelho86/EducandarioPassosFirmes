@@ -7,6 +7,8 @@
 <title>CADASTRO</title>
 </head>
 <body>
+	<jsp:include page="cabecalho.jsp"/>
+	<br>
 	<form method="post" action="PessoaControle?acao=cadastroFuncionario">
 	
 		<fieldset id="fieldset_funcionario">
@@ -99,6 +101,9 @@
 				</div>
 				<div class="campo">
 					<input type="submit" value="Continuar"/>
+				</div>
+				<div class="campo">
+					<input type="button" value="Voltar" onClick="javascript:history.back();">
 				</div>
 			</fieldset>
 	</form>

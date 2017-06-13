@@ -29,6 +29,8 @@ try {
 %>
 
 <body>
+	<jsp:include page="cabecalho.jsp"/>
+	<br>
 	<form method="post" action="PessoaControle?acao=excluirAluno">
 		<fieldset id="fieldset_aluno">
 				<legend>EXCLUIR CADASTRO DE ALUNO</legend>

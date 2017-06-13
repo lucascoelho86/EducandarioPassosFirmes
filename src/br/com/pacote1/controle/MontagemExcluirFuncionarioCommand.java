@@ -15,7 +15,7 @@ public class MontagemExcluirFuncionarioCommand implements Command {
 	
 	public String execute(HttpServletRequest request) {
 		
-		proximo = "excluirFuncionario.jsp";
+		proximo = "sucesso.jsp";
 		PessoaDAO pessoaDAO = new PessoaDAO();
 		PessoaPerfilDAO pessoaPerfilDAO = new PessoaPerfilDAO();
 		FuncionarioDAO funcionarioDAO = new FuncionarioDAO();

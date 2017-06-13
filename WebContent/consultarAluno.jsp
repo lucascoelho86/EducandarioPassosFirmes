@@ -49,6 +49,8 @@ try {
 %>
 
 <body>
+	<jsp:include page="cabecalho.jsp"/>
+	<br>
 	<form method="post" action="PessoaControle?acao=consultarAluno">
 		<fieldset id="fieldset_aluno">
 				<legend>CONSULTAR ALUNO</legend>
@@ -133,13 +135,21 @@ try {
          	<TABLE id="table_barraacoes" class="barraacoes" cellpadding="0" cellspacing="0">
                 <TBODY>
                     <TR>
-                    	<TH class="botaofuncao" align="left" width="45%"></TH>
+                    	<TH class="botaofuncao" align="left" width="20%"></TH>
+                        <TD class="botaofuncao">
+							      <input type="submit" value="Relatório" name="botaoRelatorio"/>
+                    	</TD>
+                    	<TH class="botaofuncao" align="left" width="20%"></TH>
                         <TD class="botaofuncao">
 							      <input type="submit" value="Alterar" name="botaoAlterar"/>
                     	</TD>
                     	<TH class="botaofuncao" align="left" width="40%"></TH>
                     	<TD class="botaofuncao">
 							      <input type="submit" value="Excluir" name="botaoExcluir"/>
+                    	</TD>
+                    	<TH class="botaofuncao" align="left" width="30%"></TH>
+                    	<TD class="botaofuncao">
+							      <input type="button" value="Voltar" onClick="javascript:history.back();">
                     	</TD>
                     </TR>
                 </TBODY>

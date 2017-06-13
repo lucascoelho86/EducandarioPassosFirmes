@@ -40,6 +40,8 @@ try {
 %>
 
 <body>
+	<jsp:include page="cabecalho.jsp"/>
+	<br>
 	<form method="post" action="PessoaControle?acao=consultarFuncionario">
 		<fieldset id="fieldset_aluno">
 				<legend>CONSULTAR FUNCIONÁRIO</legend>
@@ -119,6 +121,10 @@ try {
                     	<TH class="botaofuncao" align="left" width="40%"></TH>
                     	<TD class="botaofuncao">
 							      <input type="submit" value="Excluir" name="botaoExcluir"/>
+                    	</TD>
+                    	<TH class="botaofuncao" align="left" width="40%"></TH>
+                    	<TD class="botaofuncao">
+							      <input type="button" value="Voltar" onClick="javascript:history.back();">
                     	</TD>
                     </TR>
                 </TBODY>

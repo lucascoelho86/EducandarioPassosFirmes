@@ -19,7 +19,7 @@ public class MontagemExcluirAlunoCommand implements Command {
 	
 	public String execute(HttpServletRequest request) {
 		
-		proximo = "excluirAluno.jsp";
+		proximo = "sucesso.jsp";
 		PessoaDAO pessoaDAO = new PessoaDAO();
 		AlunoDAO alunoDAO = new AlunoDAO();
 		PessoaPerfilDAO pessoaPerfilDAO = new PessoaPerfilDAO();

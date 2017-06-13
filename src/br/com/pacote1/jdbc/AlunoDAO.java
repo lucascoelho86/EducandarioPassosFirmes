@@ -64,26 +64,37 @@ public class AlunoDAO {
 	
 	public Aluno consultar(String pMatricula){
 		
-		String sql = "SELECT * FROM Aluno WHERE id_pessoa = ?";
-		
+		String sql = "SELECT * FROM ALUNO ";
+		String where = "WHERE ";
+		String sql2 = "ID_PESSOA = ?";
+		String sqlComplementar = "";
 		Aluno aluno = null;
-		
-		try {
+		int contador=0;
+		try{
+			if(pMatricula != null && !pMatricula.equals("")){
+				sqlComplementar = sql2;
+			}
+			
+			if(!sqlComplementar.equals("")){
+				sql = sql + where + sqlComplementar;
+			}
+			
 			PreparedStatement preparador = con.prepareStatement(sql);
 			
-			preparador.setString(1, pMatricula);
+			if(pMatricula != null && !pMatricula.equals("")){
+				contador++;
+				preparador.setString(contador, pMatricula);
+			}
 			
 			ResultSet resultado = preparador.executeQuery();
-
-			while(resultado.next()){
+			
+			if(resultado.next()){
 				aluno = new Aluno();
+				
 				aluno.setId(resultado.getString("id_pessoa"));
 				
 			}
-			
-			preparador.close();
-			
-		} catch (SQLException e) {
+		}catch(SQLException e){
 			e.printStackTrace();
 		}
 		
