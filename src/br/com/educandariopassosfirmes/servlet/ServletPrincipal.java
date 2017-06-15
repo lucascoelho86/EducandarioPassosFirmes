@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/PessoaControle")
+@WebServlet("/ServletPrincipal")
 public class ServletPrincipal extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -30,6 +30,7 @@ public class ServletPrincipal extends HttpServlet {
 		comandos.put("excluirFuncionario", new ServletMontagemExcluirFuncionario());
 		comandos.put("excluirAluno", new ServletMontagemExcluirAluno());
 		comandos.put("cadastrarNotas", new ServletMontagemNotasAluno());
+		comandos.put("sucesso", new ServletRedirecionarMenuOuLogin());
 	}
 
 	@Override

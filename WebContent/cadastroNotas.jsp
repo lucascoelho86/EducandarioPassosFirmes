@@ -68,7 +68,7 @@ try {
 <body>
 	<jsp:include page="cabecalho.jsp"/>
 	<br>
-	<form method="post" action="PessoaControle?acao=cadastrarNotas">
+	<form method="post" action="ServletPrincipal?acao=cadastrarNotas">
 		<fieldset id="fieldset_aluno">
 				<legend>NOTAS</legend>
 				<TABLE id="table_filtro" class="filtro" cellpadding="0" cellspacing="0">

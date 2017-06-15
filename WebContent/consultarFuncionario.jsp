@@ -42,7 +42,7 @@ try {
 <body>
 	<jsp:include page="cabecalho.jsp"/>
 	<br>
-	<form method="post" action="PessoaControle?acao=consultarFuncionario">
+	<form method="post" action="ServletPrincipal?acao=consultarFuncionario">
 		<fieldset id="fieldset_aluno">
 				<legend>CONSULTAR FUNCIONÁRIO</legend>
 				<TABLE id="table_filtro" class="filtro" cellpadding="0" cellspacing="5">
@@ -58,7 +58,7 @@ try {
 	                        </TD>
 	                        <TH class="campoformulario" width="15%"></TH>
 	                        <TD class="campoformulario">
-	                        	<input type="submit" value="Continuar"/>
+	                        	<input type="submit" name="consultar" value="Continuar"/>
 	                        </TD>
 	                    </TR>
 	                </TBODY>
@@ -124,7 +124,7 @@ try {
                     	</TD>
                     	<TH class="botaofuncao" align="left" width="40%"></TH>
                     	<TD class="botaofuncao">
-							      <input type="button" value="Voltar" onClick="javascript:history.back();">
+							      <input type="submit" name="menu" value="Voltar">
                     	</TD>
                     </TR>
                 </TBODY>

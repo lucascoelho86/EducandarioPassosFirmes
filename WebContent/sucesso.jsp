@@ -11,7 +11,7 @@
 <body>
 	<jsp:include page="cabecalho.jsp"/>
 	<br>
-	<form method="post" action="PessoaControle?acao=sucesso">
+	<form method="post" action="ServletPrincipal?acao=sucesso">
 		<fieldset id="fieldset_aluno">
 			<p align="center">
 				<b>SOLICITAÇÃO REALIZADA COM SUCESSO!</b>
@@ -22,11 +22,11 @@
 	                    <TR>
 	                        <TH class="campoformulario" align="right" width="20%">VOLTAR PARA O MENU INICIAL?</TH>
 	                        <TD class="campoformulario">
-	                        	<input type="submit" value="Menu"/>
+	                        	<input type="submit" name="menu" value="Menu"/>
 	                        </TD>	                        
 	                        <TH class="campoformulario" align="right" width="">SAIR?</TH>
 	                        <TD class="campoformulario">
-	                        	<input type="submit" value="Sair"/>
+	                        	<input type="submit" name="sair" value="Sair"/>
 	                        </TD>
 	                    </TR>
 	                </TBODY>

@@ -9,7 +9,7 @@
 <body>
 	<jsp:include page="cabecalho.jsp"/>
 	<br>
-	<form method="post" action="PessoaControle?acao=login">
+	<form method="post" action="ServletPrincipal?acao=login">
 		
 		<fieldset id="fieldset_login">		
 			<legend>Login do Sistema</legend>

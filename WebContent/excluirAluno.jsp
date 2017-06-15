@@ -31,7 +31,7 @@ try {
 <body>
 	<jsp:include page="cabecalho.jsp"/>
 	<br>
-	<form method="post" action="PessoaControle?acao=excluirAluno">
+	<form method="post" action="ServletPrincipal?acao=excluirAluno">
 		<fieldset id="fieldset_aluno">
 				<legend>EXCLUIR CADASTRO DE ALUNO</legend>
 				<input type="hidden" name="idFuncao" value="<%=idFuncao%>" />

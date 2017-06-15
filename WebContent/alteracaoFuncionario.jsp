@@ -50,7 +50,7 @@ try {
 <body>
 	<jsp:include page="cabecalho.jsp"/>
 	<br>
-	<form method="post" action="PessoaControle?acao=alterarFuncionario">
+	<form method="post" action="ServletPrincipal?acao=alterarFuncionario">
 		<fieldset id="fieldset_aluno">
 				<legend>ALTERAR CADASTRO DE FUNCIONÁRIO</legend>
 				

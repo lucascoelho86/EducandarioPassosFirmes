@@ -15,8 +15,11 @@ public class ServletMontagemCadastro extends Servlet {
 		String cadastrarFunc = request.getParameter("CadastrarFunc");
 		String consultarFunc = request.getParameter("ConsultarFunc");
 		String notasAluno = request.getParameter("NotasAluno");
+		String botaoSair = request.getParameter("sair");
 		
-		if (cadastrarAluno != null) {
+		if(botaoSair != null){
+			proximo = "login.jsp";
+		}else if (cadastrarAluno != null) {
 			proximo = "cadastroAluno.jsp";
 		}else if(cadastrarFunc != null){
 			proximo = "cadastroFuncionario.jsp";

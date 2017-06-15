@@ -51,7 +51,7 @@ try {
 <body>
 	<jsp:include page="cabecalho.jsp"/>
 	<br>
-	<form method="post" action="PessoaControle?acao=consultarAluno">
+	<form method="post" action="ServletPrincipal?acao=consultarAluno">
 		<fieldset id="fieldset_aluno">
 				<legend>CONSULTAR ALUNO</legend>
 				<TABLE id="table_filtro" class="filtro" cellpadding="0" cellspacing="5">
@@ -67,7 +67,7 @@ try {
 	                        </TD>
 	                        <TH class="campoformulario" width="15%"></TH>
 	                        <TD class="campoformulario">
-	                        	<input type="submit" value="Continuar"/>
+	                        	<input type="submit" name="botaoConsultar" value="Continuar"/>
 	                        </TD>
 	                    </TR>
 	                </TBODY>
@@ -137,7 +137,7 @@ try {
                     <TR>
                     	<TH class="botaofuncao" align="left" width="20%"></TH>
                         <TD class="botaofuncao">
-							      <input type="submit" value="Relatório" name="botaoRelatorio"/>
+							      <input type="submit" value="Boletim" name="botaoRelatorio"/>
                     	</TD>
                     	<TH class="botaofuncao" align="left" width="20%"></TH>
                         <TD class="botaofuncao">
@@ -149,7 +149,7 @@ try {
                     	</TD>
                     	<TH class="botaofuncao" align="left" width="30%"></TH>
                     	<TD class="botaofuncao">
-							      <input type="button" value="Voltar" onClick="javascript:history.back();">
+							      <input type="submit" name="menu" value="Voltar">
                     	</TD>
                     </TR>
                 </TBODY>

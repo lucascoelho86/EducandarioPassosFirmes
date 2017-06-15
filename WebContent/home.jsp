@@ -9,7 +9,7 @@
 <body>
 	<jsp:include page="cabecalho.jsp"/>
 	<br>
-	<form method="post" action="PessoaControle?acao=cadastro">
+	<form method="post" action="ServletPrincipal?acao=cadastro">
 		<fieldset id="fieldset_aluno">
 				<legend>ALUNO</legend>
 				<div class="campo" >
@@ -34,8 +34,9 @@
 		<div class="campo">
 			<input type="submit" value="Continuar"/>
 		</div>
+		<br>
 		<div class="campo">
-			<input type="button" value="Sair" onClick="javascript:history.back();">
+			<input type="submit" name="sair" value="Sair">
 		</div>
 	</form>
 </body>

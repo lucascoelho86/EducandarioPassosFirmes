@@ -52,7 +52,7 @@ try {
 <body>
 	<jsp:include page="cabecalho.jsp"/>
 	<br>
-	<form method="post" action="PessoaControle?acao=alterarAluno">
+	<form method="post" action="ServletPrincipal?acao=alterarAluno">
 		<fieldset id="fieldset_aluno">
 				<legend>ALTERAR CADASTRO DO ALUNO</legend>
 				<input type="hidden" name="perfil" value="4" />

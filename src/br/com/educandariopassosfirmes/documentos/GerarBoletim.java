@@ -8,10 +8,8 @@ import java.util.List;
 
 import br.com.educandariopassosfirmes.dao.DisciplinaDAO;
 import br.com.educandariopassosfirmes.dao.NotaDAO;
-import br.com.educandariopassosfirmes.dao.PessoaDAO;
 import br.com.educandariopassosfirmes.entidades.Disciplina;
 import br.com.educandariopassosfirmes.entidades.Nota;
-import br.com.educandariopassosfirmes.entidades.Pessoa;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -34,7 +32,7 @@ public class GerarBoletim{
 		
         try {
             
-            JasperReport report = JasperCompileManager.compileReport("C:\\Users\\Lucas\\workspace\\projeto\\src\\br\\com\\pacote1\\documentos\\Boletim.jrxml");
+            JasperReport report = JasperCompileManager.compileReport("C:\\Users\\Lucas\\workspace\\projeto\\src\\br\\com\\educandariopassosfirmes\\documentos\\Boletim.jrxml");
 
             print = JasperFillManager.fillReport(report, new HashMap(),
                     new JRBeanCollectionDataSource(tratarColecaoRelatorio(pChave)));

@@ -24,8 +24,6 @@ public class ServletMontagemConsultarFuncionario extends Servlet {
 	
 	public String execute(HttpServletRequest request) {
 		
-		proximo = "consultarFuncionario.jsp";
-		
 		ArrayList<String> colecao = new ArrayList<String>();
 		
 		Pessoa pessoa = new Pessoa();
@@ -47,6 +45,8 @@ public class ServletMontagemConsultarFuncionario extends Servlet {
 		String chave = request.getParameter("chave");
 		String botaoAlterar = request.getParameter("botaoAlterar");
 		String botaoExcluir = request.getParameter("botaoExcluir");
+		String botaoVoltar = request.getParameter("menu");
+		String botaoConsultar = request.getParameter("consultar");
 		String cpf = request.getParameter("cpf");
 		String nome = request.getParameter("nome");
 		
@@ -75,7 +75,11 @@ public class ServletMontagemConsultarFuncionario extends Servlet {
 			
 			request.setAttribute("chave",  arrayChave);
 			
-		}else{
+		}else if(botaoVoltar != null){
+			proximo = "home.jsp";
+			
+		}else if(botaoConsultar != null){
+			proximo = "consultarFuncionario.jsp";
 			
 			if(cpf != null && !cpf.equals("")){
 				funcionario = funcionarioDAO.consultar(cpf);
@@ -148,6 +152,8 @@ public class ServletMontagemConsultarFuncionario extends Servlet {
 			request.setAttribute("cpf", cpf);
 			request.setAttribute("nome", nome);
 			
+		}else if(chave == null){
+			proximo = "consultarFuncionario.jsp";
 		}
 		
 		return proximo;

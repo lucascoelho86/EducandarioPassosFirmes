@@ -11,7 +11,7 @@
 <body>
 	<jsp:include page="cabecalho.jsp"/>
 	<br>
-	<form method="post" action="PessoaControle?acao=cadastroAluno">
+	<form method="post" action="ServletPrincipal?acao=cadastroAluno">
 		<fieldset id="fieldset_aluno">
 				<legend>CADASTRO DE ALUNO</legend>
 				<input type="hidden" name="perfilAluno" value="4" />

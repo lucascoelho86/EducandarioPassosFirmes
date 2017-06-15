@@ -25,7 +25,6 @@ public class ServletMontagemConsultarAluno extends Servlet {
 	
 	public String execute(HttpServletRequest request){
 		
-		proximo = "consultarAluno.jsp";
 		Aluno aluno = null;
 		AlunoDAO alunoDAO = new AlunoDAO();
 		Pessoa pessoa = new Pessoa();
@@ -47,7 +46,9 @@ public class ServletMontagemConsultarAluno extends Servlet {
 		String chave = request.getParameter("chave");
 		String botaoAlterar = request.getParameter("botaoAlterar");
 		String botaoExcluir = request.getParameter("botaoExcluir");
+		String botaoVoltar = request.getParameter("menu");
 		String botaoRelatorio = request.getParameter("botaoRelatorio");
+		String botaoConsultar = request.getParameter("botaoConsultar");
 		String matricula = request.getParameter("matricula");
 		String nome = request.getParameter("nome");
 		
@@ -78,6 +79,7 @@ public class ServletMontagemConsultarAluno extends Servlet {
 			request.setAttribute("chave",  arrayChave);
 		
 		}else if(chave != null && botaoRelatorio != null){
+			proximo = "consultarAluno.jsp";
 			GerarBoletim rep = new GerarBoletim();
 			JasperPrint relat;
 			
@@ -88,7 +90,12 @@ public class ServletMontagemConsultarAluno extends Servlet {
 				e.printStackTrace();
 			}
 			
-		}else{
+		}else if(botaoVoltar != null){
+			proximo = "home.jsp";
+		
+		}else if(botaoConsultar != null){
+			
+			proximo = "consultarAluno.jsp";
 			
 			if(matricula != null && !matricula.equals("")){
 				aluno = alunoDAO.consultar(matricula);			
@@ -172,6 +179,8 @@ public class ServletMontagemConsultarAluno extends Servlet {
 			
 			request.setAttribute("matricula", matricula);
 			request.setAttribute("nome", nome);		
+		}else if(chave == null){
+			proximo = "consultarAluno.jsp";
 		}
 		
 		

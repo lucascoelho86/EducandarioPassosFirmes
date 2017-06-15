@@ -9,7 +9,7 @@
 <body>
 	<jsp:include page="cabecalho.jsp"/>
 	<br>
-	<form method="post" action="PessoaControle?acao=cadastroFuncionario">
+	<form method="post" action="ServletPrincipal?acao=cadastroFuncionario">
 	
 		<fieldset id="fieldset_funcionario">
 				<legend>CADASTRO DE FUNCIONÁRIO</legend>
