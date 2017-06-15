@@ -1,12 +1,12 @@
 <%@page import="java.util.Iterator"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@page import="br.com.pacote1.entidades.Pessoa"%>
-<%@page import="br.com.pacote1.entidades.TurmaAluno"%>
-<%@page import="br.com.pacote1.entidades.Turma"%>
-<%@page import="br.com.pacote1.jdbc.TurmaDAO"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.Pessoa"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.TurmaAluno"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.Turma"%>
+<%@page import="br.com.educandariopassosfirmes.dao.TurmaDAO"%>
 <%@page import="java.util.List"%>
-<%@page import="br.com.pacote1.controle.PessoaControle"%>
+<%@page import="br.com.educandariopassosfirmes.servlet.ServletPrincipal"%>
 <%@ page import="java.util.ArrayList"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -26,10 +26,10 @@ try {
 	String matriculaTela = "";
 	String nomeTela = "";
 
-	listPessoa = (List<Pessoa>)PessoaControle.getAtributoOpcional("listPessoa", request);
-	listTurma = (List<TurmaAluno>)PessoaControle.getAtributoOpcional("listTurma", request);
-	matriculaTela = (String)PessoaControle.getAtributoOpcional("matricula", request);
-	nomeTela = (String)PessoaControle.getAtributoOpcional("nome", request);
+	listPessoa = (List<Pessoa>)ServletPrincipal.getAtributoOpcional("listPessoa", request);
+	listTurma = (List<TurmaAluno>)ServletPrincipal.getAtributoOpcional("listTurma", request);
+	matriculaTela = (String)ServletPrincipal.getAtributoOpcional("matricula", request);
+	nomeTela = (String)ServletPrincipal.getAtributoOpcional("nome", request);
          	
 	if(listPessoa == null){
 		listPessoa = new ArrayList<Pessoa>();

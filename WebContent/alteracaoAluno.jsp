@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@page import="br.com.pacote1.entidades.Pessoa"%>
-<%@page import="br.com.pacote1.entidades.Turma"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.Pessoa"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.Turma"%>
 <%@page import="java.util.List"%>
-<%@page import="br.com.pacote1.controle.PessoaControle"%>
+<%@page import="br.com.educandariopassosfirmes.servlet.ServletPrincipal"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="java.time.LocalDate"%>
 <%@ page import="java.time.format.DateTimeFormatter"%>
@@ -28,9 +28,9 @@ try {
 	Pessoa pessoaResponsavel = new Pessoa();
 	Turma turma = null;
 
-	listPessoa = (List<Pessoa>)PessoaControle.getAtributoOpcional("listPessoa", request);
-	listPessoaResponsavel = (List<Pessoa>)PessoaControle.getAtributoOpcional("listResponsavel", request);
-	turma = (Turma)PessoaControle.getAtributoOpcional("turma", request);
+	listPessoa = (List<Pessoa>)ServletPrincipal.getAtributoOpcional("listPessoa", request);
+	listPessoaResponsavel = (List<Pessoa>)ServletPrincipal.getAtributoOpcional("listResponsavel", request);
+	turma = (Turma)ServletPrincipal.getAtributoOpcional("turma", request);
          	
 	if(listPessoa == null){
 		listPessoa = new ArrayList<Pessoa>();

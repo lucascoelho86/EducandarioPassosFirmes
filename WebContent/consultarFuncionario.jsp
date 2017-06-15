@@ -1,9 +1,9 @@
 <%@page import="java.util.Iterator"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@page import="br.com.pacote1.entidades.TurmaAluno"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.TurmaAluno"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="br.com.pacote1.controle.PessoaControle"%>
+<%@page import="br.com.educandariopassosfirmes.servlet.ServletPrincipal"%>
 <%@ page import="java.util.ArrayList"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -22,9 +22,9 @@ try {
 	String cpfTela = "";
 	String nomeTela = "";
 
-	colecao = (ArrayList<String>)PessoaControle.getAtributoOpcional("dadosFunc", request);
-	cpfTela = (String)PessoaControle.getAtributoOpcional("cpf", request);
-	nomeTela = (String)PessoaControle.getAtributoOpcional("nome", request);
+	colecao = (ArrayList<String>)ServletPrincipal.getAtributoOpcional("dadosFunc", request);
+	cpfTela = (String)ServletPrincipal.getAtributoOpcional("cpf", request);
+	nomeTela = (String)ServletPrincipal.getAtributoOpcional("nome", request);
          	
 	if(colecao == null){
 		colecao = new ArrayList<String>();

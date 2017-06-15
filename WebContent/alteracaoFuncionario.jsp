@@ -1,11 +1,11 @@
 <%@page import="java.util.Iterator"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@page import="br.com.pacote1.entidades.Pessoa"%>
-<%@page import="br.com.pacote1.entidades.Funcionario"%>
-<%@page import="br.com.pacote1.entidades.ProfessorDisciplina"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.Pessoa"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.Funcionario"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.ProfessorDisciplina"%>
 <%@page import="java.util.List"%>
-<%@page import="br.com.pacote1.controle.PessoaControle"%>
+<%@page import="br.com.educandariopassosfirmes.servlet.ServletPrincipal"%>
 <%@ page import="java.util.ArrayList"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -27,10 +27,10 @@ try {
 	Funcionario funcionario = null;
 	String idFuncao = "";
 
-	listPessoa = (List<Pessoa>)PessoaControle.getAtributoOpcional("listPessoa", request);
-	listProfessorDisciplina = (List<ProfessorDisciplina>)PessoaControle.getAtributoOpcional("listProfessorDisciplina", request);
-	funcionario = (Funcionario)PessoaControle.getAtributoOpcional("funcionario", request);
-	idFuncao = (String)PessoaControle.getAtributoOpcional("idFuncao", request);
+	listPessoa = (List<Pessoa>)ServletPrincipal.getAtributoOpcional("listPessoa", request);
+	listProfessorDisciplina = (List<ProfessorDisciplina>)ServletPrincipal.getAtributoOpcional("listProfessorDisciplina", request);
+	funcionario = (Funcionario)ServletPrincipal.getAtributoOpcional("funcionario", request);
+	idFuncao = (String)ServletPrincipal.getAtributoOpcional("idFuncao", request);
          	
 	if(listPessoa == null){
 		listPessoa = new ArrayList<Pessoa>();

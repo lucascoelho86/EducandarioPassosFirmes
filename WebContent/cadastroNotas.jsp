@@ -1,15 +1,15 @@
 <%@page import="java.util.Iterator"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@page import="br.com.pacote1.entidades.Pessoa"%>
-<%@page import="br.com.pacote1.entidades.TurmaAluno"%>
-<%@page import="br.com.pacote1.entidades.Turma"%>
-<%@page import="br.com.pacote1.entidades.Nota"%>
-<%@page import="br.com.pacote1.jdbc.TurmaDAO"%>
-<%@page import="br.com.pacote1.entidades.Disciplina"%>
-<%@page import="br.com.pacote1.jdbc.DisciplinaDAO"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.Pessoa"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.TurmaAluno"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.Turma"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.Nota"%>
+<%@page import="br.com.educandariopassosfirmes.dao.TurmaDAO"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.Disciplina"%>
+<%@page import="br.com.educandariopassosfirmes.dao.DisciplinaDAO"%>
 <%@page import="java.util.List"%>
-<%@page import="br.com.pacote1.controle.PessoaControle"%>
+<%@page import="br.com.educandariopassosfirmes.servlet.ServletPrincipal"%>
 <%@ page import="java.util.ArrayList"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -32,13 +32,13 @@ try {
 	String disciplinaTela = "";
 	String unidadeTela = "";
 
-	listPessoa = (List<Pessoa>)PessoaControle.getAtributoOpcional("listPessoa", request);
-	listNotas = (List<Nota>)PessoaControle.getAtributoOpcional("listNotas", request);
-	matriculaTela = (String)PessoaControle.getAtributoOpcional("matricula", request);
-	nomeTela = (String)PessoaControle.getAtributoOpcional("nome", request);
-	turmaTela = (String)PessoaControle.getAtributoOpcional("turma", request);
-	disciplinaTela = (String)PessoaControle.getAtributoOpcional("disciplina", request);
-	unidadeTela = (String)PessoaControle.getAtributoOpcional("unidade", request);
+	listPessoa = (List<Pessoa>)ServletPrincipal.getAtributoOpcional("listPessoa", request);
+	listNotas = (List<Nota>)ServletPrincipal.getAtributoOpcional("listNotas", request);
+	matriculaTela = (String)ServletPrincipal.getAtributoOpcional("matricula", request);
+	nomeTela = (String)ServletPrincipal.getAtributoOpcional("nome", request);
+	turmaTela = (String)ServletPrincipal.getAtributoOpcional("turma", request);
+	disciplinaTela = (String)ServletPrincipal.getAtributoOpcional("disciplina", request);
+	unidadeTela = (String)ServletPrincipal.getAtributoOpcional("unidade", request);
          	
 	if(listPessoa == null){
 		listPessoa = new ArrayList<Pessoa>();

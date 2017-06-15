@@ -1,11 +1,11 @@
 <%@page import="java.util.Iterator"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@page import="br.com.pacote1.entidades.Pessoa"%>
-<%@page import="br.com.pacote1.entidades.Funcionario"%>
-<%@page import="br.com.pacote1.entidades.ProfessorDisciplina"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.Pessoa"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.Funcionario"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.ProfessorDisciplina"%>
 <%@page import="java.util.List"%>
-<%@page import="br.com.pacote1.controle.PessoaControle"%>
+<%@page import="br.com.educandariopassosfirmes.servlet.ServletPrincipal"%>
 <%@ page import="java.util.ArrayList"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -20,7 +20,7 @@ try {
 
 <% 
     	
-	String arrayChave[] = (String[])PessoaControle.getAtributoOpcional("chave", request);
+	String arrayChave[] = (String[])ServletPrincipal.getAtributoOpcional("chave", request);
 	
 	String cpf = arrayChave[0];
 	String nome = arrayChave[1];
