@@ -32,7 +32,7 @@ public class Select {
 	 * @param pUltimoCampo
 	 * @return
 	 */
-	public String getHTML(String pValue, String pDescricao, boolean pCampoSelecionado, int pPrimeiroCampo, boolean pUltimoCampo) {
+	public String getHTML(int pValue, String pDescricao, boolean pCampoSelecionado, int pPrimeiroCampo, boolean pUltimoCampo) {
 		String html = "";
 
 		if(pPrimeiroCampo == 0) {

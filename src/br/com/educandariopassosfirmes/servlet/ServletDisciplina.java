@@ -39,6 +39,9 @@ public class ServletDisciplina extends ServletGenerico {
 	public static final String NM_PARAMETRO_TX_QUARTA_UNIDADE = "txQuartaUnidade";
 	public static final String NM_PARAMETRO_CAMPO_CARGA_HORARIA = "txQuartaUnidade";
 	
+	//Constantes utilizadas na inclusão de disciplinas
+	public static final String NM_TIPO_ENSINO_BASICO = "Educação Infantil";
+	public static final String NM_TIPO_ENSINO_FUNDAMENTAL = "Ensino Fundamental I";
 
 	@Override
 	protected void doGet(HttpServletRequest request,
@@ -105,6 +108,8 @@ public class ServletDisciplina extends ServletGenerico {
 		String assuntoSegundaUnidade = "";
 		String assuntoTerceiraUnidade = "";
 		String assuntoQuartaUnidade = "";
+		String cargaHoraria = "";
+		//String cargaHoraria = "";
 
 		// recupera os parametros do request
 		sigla = request.getParameter(this.NM_PARAMETRO_SIGLA_DISCIPLINA);
@@ -113,6 +118,8 @@ public class ServletDisciplina extends ServletGenerico {
 		assuntoSegundaUnidade = request.getParameter(this.NM_PARAMETRO_TX_SEGUNDA_UNIDADE);
 		assuntoTerceiraUnidade = request.getParameter(this.NM_PARAMETRO_TX_TERCEIRA_UNIDADE);
 		assuntoQuartaUnidade = request.getParameter(this.NM_PARAMETRO_TX_QUARTA_UNIDADE);
+		cargaHoraria = request.getParameter(this.NM_PARAMETRO_CAMPO_CARGA_HORARIA);
+		cargaHoraria = request.getParameter(this.NM_PARAMETRO_CAMPO_CARGA_HORARIA);
 
 		//monta a entidade categoria produto para incluir
 		//EntidadeCategoriaProduto eCategoriaProduto = new EntidadeCategoriaProduto();

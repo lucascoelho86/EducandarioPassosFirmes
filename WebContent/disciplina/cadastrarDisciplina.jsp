@@ -81,7 +81,13 @@ function cadastrar(){
 				
 				<th align="right"> Tipo de Ensino: </th>
 				<td>
-					<%=Select.getInstancia().getHTML("1", "teste", false, 0, true) %>				
+					<%for(int x=0; x < 2; x++){
+						if(x==0){%>
+							<%=Select.getInstancia().getHTML(x + 1, ServletDisciplina.NM_TIPO_ENSINO_BASICO, false, x, false)%>
+						<%}else{%>
+							<%=Select.getInstancia().getHTML(x + 1, ServletDisciplina.NM_TIPO_ENSINO_FUNDAMENTAL, false, x, true)%>
+						<%}%>
+					<%}%>				
 				</td>
 			</tr>
 		</tbody>
