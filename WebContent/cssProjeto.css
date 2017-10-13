@@ -1,0 +1,9 @@
+.cabecalho {
+	background:url("img/imagem02.JPG") bottom center no-repeat;
+	min-height: 100px;
+	color: white;
+}
+
+.tituloRetornoDados {
+	background-color: #6495ED;
+}
