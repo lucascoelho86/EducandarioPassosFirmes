@@ -1,12 +1,16 @@
 package br.com.educandariopassosfirmes.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import br.com.educandariopassosfirmes.dao.DisciplinaDAO;
+import br.com.educandariopassosfirmes.entidades.Disciplina;
 
 
 /**
@@ -29,7 +33,9 @@ public class ServletDisciplina extends ServletGenerico {
 	public static final String NM_PARAMETRO_NomeCategoriaProduto = "nmCategoriaProduto";
 	public static final String NM_PARAMETRO_Descricao = "descricao";
 	public static final String NM_PARAMETRO_ArrayCategoriaProduto = "alCategoriaProduto";
-
+	
+	public static final String NM_PARAMETRO_CHAVE = "chave";
+	
 	//Parâmetros inclusão disciplina
 	public static final String NM_PARAMETRO_SIGLA_DISCIPLINA = "siglaDisciplina";
 	public static final String NM_PARAMETRO_DS_DISCIPLINA = "descricaoDisciplina";
@@ -37,7 +43,9 @@ public class ServletDisciplina extends ServletGenerico {
 	public static final String NM_PARAMETRO_TX_SEGUNDA_UNIDADE = "txSegundaUnidade";
 	public static final String NM_PARAMETRO_TX_TERCEIRA_UNIDADE = "txTerceiraUnidade";
 	public static final String NM_PARAMETRO_TX_QUARTA_UNIDADE = "txQuartaUnidade";
-	public static final String NM_PARAMETRO_CAMPO_CARGA_HORARIA = "txQuartaUnidade";
+	public static final String NM_PARAMETRO_CAMPO_CARGA_HORARIA = "cargaHoraria";
+	public static final String NM_PARAMETRO_SELECT_TIPO_ENSINO = "selectTipoEnsino";
+	public static final String NM_PARAMETRO_COLECAO_DISCIPLINA = "colecaoDisciplina";
 	
 	//Constantes utilizadas na inclusão de disciplinas
 	public static final String NM_TIPO_ENSINO_BASICO = "Educação Infantil";
@@ -70,7 +78,7 @@ public class ServletDisciplina extends ServletGenerico {
 			this.processarInclusao(request, response);
 		} else if (acao != null
 				&& acao.equalsIgnoreCase(this.NM_EVENTO_CONSULTAR_TODOS)) {
-			//this.consultarTodos(request, response);
+			this.consultarTodos(request, response);
 		} else if (acao != null
 				&& acao.equalsIgnoreCase(this.NM_EVENTO_EXCLUIR)) {
 			//this.excluir(request, response);
@@ -109,53 +117,51 @@ public class ServletDisciplina extends ServletGenerico {
 		String assuntoTerceiraUnidade = "";
 		String assuntoQuartaUnidade = "";
 		String cargaHoraria = "";
-		//String cargaHoraria = "";
+		String cdTipoEnsino = "";
 
 		// recupera os parametros do request
-		sigla = request.getParameter(this.NM_PARAMETRO_SIGLA_DISCIPLINA);
-		descricao = request.getParameter(this.NM_PARAMETRO_DS_DISCIPLINA);
-		assuntoPrimeiraUnidade = request.getParameter(this.NM_PARAMETRO_TX_PRIMEIRA_UNIDADE);
-		assuntoSegundaUnidade = request.getParameter(this.NM_PARAMETRO_TX_SEGUNDA_UNIDADE);
-		assuntoTerceiraUnidade = request.getParameter(this.NM_PARAMETRO_TX_TERCEIRA_UNIDADE);
-		assuntoQuartaUnidade = request.getParameter(this.NM_PARAMETRO_TX_QUARTA_UNIDADE);
-		cargaHoraria = request.getParameter(this.NM_PARAMETRO_CAMPO_CARGA_HORARIA);
-		cargaHoraria = request.getParameter(this.NM_PARAMETRO_CAMPO_CARGA_HORARIA);
+		sigla = request.getParameter(NM_PARAMETRO_SIGLA_DISCIPLINA);
+		descricao = request.getParameter(NM_PARAMETRO_DS_DISCIPLINA);
+		assuntoPrimeiraUnidade = request.getParameter(NM_PARAMETRO_TX_PRIMEIRA_UNIDADE);
+		assuntoSegundaUnidade = request.getParameter(NM_PARAMETRO_TX_SEGUNDA_UNIDADE);
+		assuntoTerceiraUnidade = request.getParameter(NM_PARAMETRO_TX_TERCEIRA_UNIDADE);
+		assuntoQuartaUnidade = request.getParameter(NM_PARAMETRO_TX_QUARTA_UNIDADE);
+		cargaHoraria = request.getParameter(NM_PARAMETRO_CAMPO_CARGA_HORARIA);
+		cdTipoEnsino = request.getParameter(NM_PARAMETRO_SELECT_TIPO_ENSINO);
 
-		//monta a entidade categoria produto para incluir
-		//EntidadeCategoriaProduto eCategoriaProduto = new EntidadeCategoriaProduto();
-		//eCategoriaProduto.setNome(nome);
-		//eCategoriaProduto.setDescricao(descricao);
+		//monta a entidade disciplina para incluir
+		Disciplina disciplina = new Disciplina();
+		disciplina.setSiglaDisciplina(sigla);
+		disciplina.setDsDisciplina(descricao);
+		disciplina.setAssuntoPrimeiraUnidade(assuntoPrimeiraUnidade);
+		disciplina.setAssuntoSegundaUnidade(assuntoSegundaUnidade);
+		disciplina.setAssuntoTerceiraUnidade(assuntoTerceiraUnidade);
+		disciplina.setAssuntoQuartaUnidade(assuntoQuartaUnidade);
+		disciplina.setCargaHorariaMinima(Integer.valueOf(cargaHoraria));
 
-		//inclui em categoria_produto
-		//DAOCategoriaProduto.incluir(eCategoriaProduto);
+		//inclui em DISCIPLINA
+		DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
+		disciplinaDAO.incluir(disciplina);
 		
 		this.redirecionarPagina(request, response, this.NM_JSP_CONSULTAR);
 
 	};
-/*
+
 	@Override
 	public void consultarTodos(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		// declara as variaveis
-		ArrayList<EntidadeCategoriaProduto> alCategoriaProduto;
-		
 		// recupera os parametros do request
-		String nomeCategoria = (String) request
-				.getParameter(this.NM_PARAMETRO_NomeCategoriaProduto);
+		String siglaDisciplina = (String) request.getParameter(NM_PARAMETRO_SIGLA_DISCIPLINA);
+		String dsDisciplina = (String) request.getParameter(NM_PARAMETRO_DS_DISCIPLINA);
 
-		//caso o campo de pesquisa por nome seja preenchido consulta por nome
-		//caso contrario consulta todos
-		if(nomeCategoria != null && !nomeCategoria.equals("")){
-			alCategoriaProduto = DAOCategoriaProduto.consultarPorNome(nomeCategoria);
-		} else {
-			alCategoriaProduto = DAOCategoriaProduto.consultarTodos();
-		}
-		
-		request.setAttribute(this.NM_PARAMETRO_ArrayCategoriaProduto, alCategoriaProduto);
+		DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
+		ArrayList<Disciplina>colecaoDisciplina = disciplinaDAO.consultar(siglaDisciplina, dsDisciplina);
+				
+		request.setAttribute(NM_PARAMETRO_COLECAO_DISCIPLINA, colecaoDisciplina);
 
 		this.redirecionarPagina(request, response, this.NM_JSP_CONSULTAR);
-	}*/
+	}
 /*
 	@Override
 	public void excluir(HttpServletRequest request, HttpServletResponse response)

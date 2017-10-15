@@ -32,11 +32,11 @@ public class Select {
 	 * @param pUltimoCampo
 	 * @return
 	 */
-	public String getHTML(int pValue, String pDescricao, boolean pCampoSelecionado, int pPrimeiroCampo, boolean pUltimoCampo) {
+	public String getHTML(String pIdSelect, String pNmSelect, int pValue, String pDescricao, boolean pCampoSelecionado, int pPrimeiroCampo, boolean pUltimoCampo) {
 		String html = "";
 
 		if(pPrimeiroCampo == 0) {
-			html = "<select> \n\t" + "<option " + "value=\"" + pPrimeiroCampo + "\">" + "Selecione uma opção" + "</option> \n\t";
+			html = "<select id=\"" + pIdSelect + "\" name=\"" + pNmSelect + "\"> \n\t" + "<option " + "value=\"" + pPrimeiroCampo + "\">" + "Selecione uma opção" + "</option> \n\t";
 		}
 		
 		if(pCampoSelecionado) {

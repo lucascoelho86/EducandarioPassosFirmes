@@ -3,9 +3,8 @@ package br.com.educandariopassosfirmes.entidades;
 public class Disciplina {
 
 	private int idDisciplina;
-	private int cdTipoDisciplina;
 	private String dsDisciplina;
-	private String dsTipoDisciplina;
+	private String siglaDisciplina;	
 	private int cargaHorariaMinima;
 	private String assuntoPrimeiraUnidade;
 	private String assuntoSegundaUnidade;
@@ -18,23 +17,17 @@ public class Disciplina {
 	public void setIdDisciplina(int idDisciplina) {
 		this.idDisciplina = idDisciplina;
 	}
-	public int getCdTipoDisciplina() {
-		return cdTipoDisciplina;
-	}
-	public void setCdTipoDisciplina(int cdTipoDisciplina) {
-		this.cdTipoDisciplina = cdTipoDisciplina;
-	}
 	public String getDsDisciplina() {
 		return dsDisciplina;
 	}
 	public void setDsDisciplina(String dsDisciplina) {
 		this.dsDisciplina = dsDisciplina;
 	}
-	public String getDsTipoDisciplina() {
-		return dsTipoDisciplina;
+	public String getSiglaDisciplina() {
+		return siglaDisciplina;
 	}
-	public void setDsTipoDisciplina(String dsTipoDisciplina) {
-		this.dsTipoDisciplina = dsTipoDisciplina;
+	public void setSiglaDisciplina(String siglaDisciplina) {
+		this.siglaDisciplina = siglaDisciplina;
 	}
 	public int getCargaHorariaMinima() {
 		return cargaHorariaMinima;
@@ -65,5 +58,6 @@ public class Disciplina {
 	}
 	public void setAssuntoQuartaUnidade(String assuntoQuartaUnidade) {
 		this.assuntoQuartaUnidade = assuntoQuartaUnidade;
-	}		
+	}
+	
 }

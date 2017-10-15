@@ -34,8 +34,8 @@ public class GerarBoletim{
             
             JasperReport report = JasperCompileManager.compileReport("C:\\Users\\Lucas\\workspace\\projeto\\src\\br\\com\\educandariopassosfirmes\\documentos\\Boletim.jrxml");
 
-            print = JasperFillManager.fillReport(report, new HashMap(),
-                    new JRBeanCollectionDataSource(tratarColecaoRelatorio(pChave)));
+            //print = JasperFillManager.fillReport(report, new HashMap(),
+              //      new JRBeanCollectionDataSource(tratarColecaoRelatorio(pChave)));
             
             //exporta o arquivo para a area de trabalho
             JasperExportManager.exportReportToPdfFile(print, "C:\\Users\\Lucas\\Desktop\\Boletim.pdf");
@@ -47,6 +47,7 @@ public class GerarBoletim{
 		return print;
 	}
 	
+	/*
 	public ArrayList<HashMap<String, Object>> tratarColecaoRelatorio(String pChave){
 		HashMap<String, Object> hashMap = new HashMap<String, Object>();
 		ArrayList<HashMap<String, Object>> camposRelatorio = new ArrayList<HashMap<String, Object>>();
@@ -127,5 +128,5 @@ public class GerarBoletim{
 		}
 		
 		return camposRelatorio;
-	}
+	}*/
 }

@@ -1,3 +1,6 @@
+<%@page import="java.util.Iterator"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.Disciplina"%>
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -30,6 +33,21 @@ function exibirInclusao(){
 
 </script>
 
+<%
+
+ArrayList<Disciplina>colecaoDisciplina;
+Iterator<Disciplina>itDisciplina;
+colecaoDisciplina = (ArrayList<Disciplina>) request.getAttribute(ServletDisciplina.NM_PARAMETRO_COLECAO_DISCIPLINA);
+
+if(colecaoDisciplina == null){
+	colecaoDisciplina = new ArrayList<Disciplina>();
+	itDisciplina = colecaoDisciplina.iterator();
+}else{
+	itDisciplina = colecaoDisciplina.iterator();
+}
+
+%>
+
 <body>
 
 <jsp:include page="cabecalho.jsp"/>
@@ -41,15 +59,15 @@ function exibirInclusao(){
 		<tbody>
 			<tr>
 			
-				<th width="12%"> Código Disciplina: </th>
+				<th width="12%"> Sigla Disciplina: </th>
 				<td>
-					<input type="text" id="id_cdDisciplina" name="name_cdDisciplina" value="">
+					<input type="text" id="<%=ServletDisciplina.NM_PARAMETRO_SIGLA_DISCIPLINA%>" name="<%=ServletDisciplina.NM_PARAMETRO_SIGLA_DISCIPLINA%>" value="">
 				
 				</td>			
 			
 				<th align="right"> Descrição Disciplina: </th>
 				<td>
-					<input type="text" id="id_dsDisciplina" name="name_dsDisciplina" value="" size="50">
+					<input type="text" id="<%=ServletDisciplina.NM_PARAMETRO_DS_DISCIPLINA%>" name="<%=ServletDisciplina.NM_PARAMETRO_DS_DISCIPLINA%>" value="" size="50">
 				
 				</td>
 				<td>
@@ -64,13 +82,36 @@ function exibirInclusao(){
 	<table class="tituloRetornoDados">
 	<tr>
 		<TH align="center" width="1%">X</TH>
-		<TH align="left" width="3%" >Código Disciplina</TH>
+		<TH align="left" width="3%" >Sigla Disciplina</TH>
 		<TH align="left" width="10%" >Descrição Disciplina</TH>
 	</tr>
 	</table>
+	<table class="tabeladados">
+		<%
+		String chave = "";
+		while(itDisciplina.hasNext()){
+			Disciplina disciplina = itDisciplina.next();
+			chave = disciplina.getIdDisciplina() + ";" + disciplina.getSiglaDisciplina() + ";" + disciplina.getDsDisciplina();
+			%>
+			<tr>
+				<th style="color: white"> SSS </th>
+				<td>
+					<input type="radio" id="rdb_consulta" name="<%=ServletDisciplina.NM_PARAMETRO_CHAVE%>" value="<%=chave%>">
+				</td>
+				<th style="color: white"> SSSS </th>
+				<td style="width:310px; display:block; text-align: left"><%=disciplina.getSiglaDisciplina().toUpperCase() %></td>
+				<td><%=disciplina.getDsDisciplina().toUpperCase() %></td>
+			</tr>
+			
+			
+			<%		
+		}
+	%>
+	</table>
+	<br>
 	<table>
 		<tr>
-			<td>
+			<td style="width:500px; display:block; text-align: center">
 					<button type="submit" id="botaoCadastrar" name="botaoCadastrar" onclick="exibirInclusao();">Incluir</button>
 					
 			</td>

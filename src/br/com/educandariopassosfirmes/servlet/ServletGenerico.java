@@ -38,10 +38,10 @@ public abstract class ServletGenerico extends HttpServlet {
 
 	public abstract void excluir(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException;
-
+*/
 	public abstract void consultarTodos(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException;
-*/
+
 	public void redirecionarPagina(HttpServletRequest request,
 			HttpServletResponse response, String nomeJsp)
 			throws ServletException, IOException {

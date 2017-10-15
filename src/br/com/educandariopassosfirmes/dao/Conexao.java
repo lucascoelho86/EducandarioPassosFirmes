@@ -17,7 +17,7 @@ public class Conexao {
 			} catch (ClassNotFoundException e) {
 				System.out.println("Driver não encontrado!");
 			}
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/crud_web", "root", "");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/projeto", "root", "");
 			System.out.println("Conectado com sucesso!");
 		} catch (SQLException e) {
 			System.out.println("Não pode conectar: " + e.getMessage());
