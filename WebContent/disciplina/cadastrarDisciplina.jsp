@@ -87,7 +87,7 @@ function cadastrar(){
 				<td>
 					<%
 						TipoEnsinoDAO tipoEnsinoDAO = new TipoEnsinoDAO();
-						ArrayList<TipoEnsino>consultaTipoEnsino = tipoEnsinoDAO.consultarTipoEnsino();
+						ArrayList<TipoEnsino>consultaTipoEnsino = tipoEnsinoDAO.consultarTodosTipoEnsino();
 						Iterator<TipoEnsino> itTipoEnsino = consultaTipoEnsino.iterator();
 						int contador = 0;
 						while(itTipoEnsino.hasNext()){

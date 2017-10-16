@@ -29,7 +29,7 @@ public abstract class ServletGenerico extends HttpServlet {
 	
 	public abstract void processarInclusao(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException;
-/*
+
 	public abstract void exibirAlteracao(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException;
 	
@@ -38,7 +38,7 @@ public abstract class ServletGenerico extends HttpServlet {
 
 	public abstract void excluir(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException;
-*/
+
 	public abstract void consultarTodos(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException;
 

@@ -2,6 +2,7 @@ package br.com.educandariopassosfirmes.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,7 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.com.educandariopassosfirmes.dao.DisciplinaDAO;
+import br.com.educandariopassosfirmes.dao.DisciplinaTipoEnsinoDAO;
 import br.com.educandariopassosfirmes.entidades.Disciplina;
+import br.com.educandariopassosfirmes.entidades.DisciplinaTipoEnsino;
 
 
 /**
@@ -20,14 +23,10 @@ import br.com.educandariopassosfirmes.entidades.Disciplina;
 public class ServletDisciplina extends ServletGenerico {
 
 	public static final String NM_JSP_CONSULTAR = "/disciplina/consultarDisciplina.jsp";
-	// private static final String NM_JSP_ALTERAR_MARCA_MOTO =
-	// "/marcaMoto/alterarMarcaMoto.jsp";
 
 	private static final String NM_JSP_INCLUIR_SERVICO = "/disciplina/cadastrarDisciplina.jsp";
 
-	private static final String NM_JSP_ALTERAR_SERVICO = "/categoriaProduto/alterarCategoriaProduto.jsp";
-
-	private static final String NM_SERVLET = ServletDisciplina.class.getSimpleName();
+	private static final String NM_JSP_ALTERAR_DISCIPLINA = "/disciplina/alterarDisciplina.jsp";
 
 	public static final String NM_PARAMETRO_CodigoCategoriaProduto = "cdCategoriaProduto";
 	public static final String NM_PARAMETRO_NomeCategoriaProduto = "nmCategoriaProduto";
@@ -37,6 +36,7 @@ public class ServletDisciplina extends ServletGenerico {
 	public static final String NM_PARAMETRO_CHAVE = "chave";
 	
 	//Parâmetros inclusão disciplina
+	public static final String NM_PARAMETRO_ID_DISCIPLINA = "idDisciplina";
 	public static final String NM_PARAMETRO_SIGLA_DISCIPLINA = "siglaDisciplina";
 	public static final String NM_PARAMETRO_DS_DISCIPLINA = "descricaoDisciplina";
 	public static final String NM_PARAMETRO_TX_PRIMEIRA_UNIDADE = "txPrimeiraUnidade";
@@ -46,6 +46,7 @@ public class ServletDisciplina extends ServletGenerico {
 	public static final String NM_PARAMETRO_CAMPO_CARGA_HORARIA = "cargaHoraria";
 	public static final String NM_PARAMETRO_SELECT_TIPO_ENSINO = "selectTipoEnsino";
 	public static final String NM_PARAMETRO_COLECAO_DISCIPLINA = "colecaoDisciplina";
+	public static final String NM_PARAMETRO_CD_TIPO_ENSINO = "cdTipoEnsino";
 	
 	//Constantes utilizadas na inclusão de disciplinas
 	public static final String NM_TIPO_ENSINO_BASICO = "Educação Infantil";
@@ -81,17 +82,16 @@ public class ServletDisciplina extends ServletGenerico {
 			this.consultarTodos(request, response);
 		} else if (acao != null
 				&& acao.equalsIgnoreCase(this.NM_EVENTO_EXCLUIR)) {
-			//this.excluir(request, response);
+			this.excluir(request, response);
 		} else if (acao != null
 				&& acao.equalsIgnoreCase(this.NM_EVENTO_EXIBIR_ALTERACAO)) {
-			//this.exibirAlteracao(request, response);
+			this.exibirAlteracao(request, response);
 		} else if (acao != null
 				&& acao.equalsIgnoreCase(this.NM_EVENTO_PROCESSAR_ALTERACAO)) {
-			//this.processarAlteracao(request, response);
+			this.processarAlteracao(request, response);
 		} else {
-			// caso nao tenha nenhum evento, redireciona para a pagina de
-			// consulta
-			this.redirecionarPagina(request, response, this.NM_JSP_CONSULTAR);
+			// caso nao tenha nenhum evento, redireciona para a pagina de consulta
+			this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
 		}
 
 	}
@@ -143,7 +143,13 @@ public class ServletDisciplina extends ServletGenerico {
 		DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
 		disciplinaDAO.incluir(disciplina);
 		
-		this.redirecionarPagina(request, response, this.NM_JSP_CONSULTAR);
+		Integer maiorIdDisciplina = disciplinaDAO.consultarMaiorIdDisciplina();
+		
+		//inclui em DISCIPLINA_TIPO_ENSINO
+		DisciplinaTipoEnsinoDAO disciplinaTipoEnsinoDAO = new DisciplinaTipoEnsinoDAO();
+		disciplinaTipoEnsinoDAO.incluir(maiorIdDisciplina, Integer.valueOf(cdTipoEnsino));
+		
+		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
 
 	};
 
@@ -156,83 +162,147 @@ public class ServletDisciplina extends ServletGenerico {
 		String dsDisciplina = (String) request.getParameter(NM_PARAMETRO_DS_DISCIPLINA);
 
 		DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
-		ArrayList<Disciplina>colecaoDisciplina = disciplinaDAO.consultar(siglaDisciplina, dsDisciplina);
+		ArrayList<Disciplina>colecaoDisciplina = disciplinaDAO.consultar(0, siglaDisciplina, dsDisciplina);
 				
 		request.setAttribute(NM_PARAMETRO_COLECAO_DISCIPLINA, colecaoDisciplina);
 
-		this.redirecionarPagina(request, response, this.NM_JSP_CONSULTAR);
+		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
 	}
-/*
+
 	@Override
 	public void excluir(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		// declara as variaveis
-		String codigo = "";
-
+		String chave = "";
+				
 		// recupera os parametros do request
-		codigo = request
-				.getParameter(this.NM_PARAMETRO_CodigoCategoriaProduto);
+		chave = request.getParameter(NM_PARAMETRO_CHAVE);
+				
+		String[] chaveDisciplina = chave.split(";");
+		String idDisciplina = chaveDisciplina[0];
 
-		//so exclui se o codigo do servico vier preenchido
-		if (codigo != null && !codigo.equals("")) {
-			DAOCategoriaProduto.excluir(Integer.valueOf(codigo));
-		}
+		DisciplinaTipoEnsinoDAO disciplinaTipoEnsinoDAO = new DisciplinaTipoEnsinoDAO();		
+		disciplinaTipoEnsinoDAO.excluir(Integer.valueOf(idDisciplina));
+		
+		DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
+		disciplinaDAO.excluir(Integer.valueOf(idDisciplina));
 
-		this.consultarTodos(request, response);
-	}*/
-/*
+		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
+	}
+
 	@Override
 	public void exibirAlteracao(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
 		// declara as variaveis
-		EntidadeCategoriaProduto eCategoriaProduto;
-		String codigoCategoria = "";
+		String chave = "";
 		
 		// recupera os parametros do request
-		codigoCategoria = request.getParameter(this.NM_PARAMETRO_CodigoCategoriaProduto);
+		chave = request.getParameter(NM_PARAMETRO_CHAVE);
 		
-		//consulta por codigo para recuperar os valores e setar no request				
-		ArrayList<EntidadeCategoriaProduto> alCategoriaProduto = DAOCategoriaProduto.consultarPorCodigo(Integer.valueOf(codigoCategoria));
-		eCategoriaProduto = alCategoriaProduto.get(0);
-	
+		String[] chaveDisciplina = chave.split(";");
+		String idDisciplina = chaveDisciplina[0];
+		String siglaDisciplina = "";
+		String dsDisciplina = "";
+		String assuntoPrimeiraUnidade = "";
+		String assuntoSegundaUnidade = "";
+		String assuntoTerceiraUnidade = "";
+		String assuntoQuartaUnidade = "";
+		Integer cargaHoraria = 0;
+		Integer cdTipoEnsino = 0;
+		DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
+		DisciplinaTipoEnsinoDAO disciplinaTipoEnsinoDAO = new DisciplinaTipoEnsinoDAO();
+				
+		//consulta pelo id da disciplina recuperar os valores e setar no request				
+		ArrayList<Disciplina> colecaoDisciplina = disciplinaDAO.consultar(Integer.valueOf(idDisciplina),"", "");
+		ArrayList<DisciplinaTipoEnsino> colecaoDisciplinaTpoEnsino = disciplinaTipoEnsinoDAO.consultarDisciplinaTipoEnsino(Integer.valueOf(idDisciplina));
+		
+		Iterator<Disciplina>itDisciplina = colecaoDisciplina.iterator();
+		while(itDisciplina.hasNext()) {
+			Disciplina disciplina = itDisciplina.next();
+			
+			siglaDisciplina = disciplina.getSiglaDisciplina();
+			dsDisciplina = disciplina.getDsDisciplina();
+			assuntoPrimeiraUnidade = disciplina.getAssuntoPrimeiraUnidade();
+			assuntoSegundaUnidade = disciplina.getAssuntoSegundaUnidade();
+			assuntoTerceiraUnidade = disciplina.getAssuntoTerceiraUnidade();
+			assuntoQuartaUnidade = disciplina.getAssuntoQuartaUnidade();
+			cargaHoraria = disciplina.getCargaHorariaMinima();
+		}
+		
+		Iterator<DisciplinaTipoEnsino>itDisciplinaTipoEnsino = colecaoDisciplinaTpoEnsino.iterator();
+		while(itDisciplinaTipoEnsino.hasNext()) {
+			DisciplinaTipoEnsino disciplinaTipoEnsino = itDisciplinaTipoEnsino.next();
+			
+			cdTipoEnsino = disciplinaTipoEnsino.getCdTipoEnsino();
+		}
+		
 		//seta os atributos no request para recuperar na JSP
-		request.setAttribute(this.NM_PARAMETRO_CodigoCategoriaProduto,
-				String.valueOf(eCategoriaProduto.getCodigo()));
-		request.setAttribute(this.NM_PARAMETRO_NomeCategoriaProduto,
-				eCategoriaProduto.getNome());
-		request.setAttribute(this.NM_PARAMETRO_Descricao,
-				eCategoriaProduto.getDescricao());
+		request.setAttribute(NM_PARAMETRO_ID_DISCIPLINA, idDisciplina);
+		request.setAttribute(NM_PARAMETRO_SIGLA_DISCIPLINA, siglaDisciplina);
+		request.setAttribute(NM_PARAMETRO_DS_DISCIPLINA, dsDisciplina);
+		request.setAttribute(NM_PARAMETRO_TX_PRIMEIRA_UNIDADE, assuntoPrimeiraUnidade);
+		request.setAttribute(NM_PARAMETRO_TX_SEGUNDA_UNIDADE, assuntoSegundaUnidade);
+		request.setAttribute(NM_PARAMETRO_TX_TERCEIRA_UNIDADE, assuntoTerceiraUnidade);
+		request.setAttribute(NM_PARAMETRO_TX_QUARTA_UNIDADE, assuntoQuartaUnidade);
+		request.setAttribute(NM_PARAMETRO_CAMPO_CARGA_HORARIA, cargaHoraria);
+		request.setAttribute(NM_PARAMETRO_CD_TIPO_ENSINO, cdTipoEnsino);
 
-		this.redirecionarPagina(request, response,
-				this.NM_JSP_ALTERAR_SERVICO);
-	}*/
-/*
+		this.redirecionarPagina(request, response, NM_JSP_ALTERAR_DISCIPLINA);
+	}
+
 	@Override
 	public void processarAlteracao(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
 		// declara as variaveis
-		String codigo = "";
-		String nome = "";
+		String idDisciplina = "";
+		String sigla = "";
 		String descricao = "";
+		String assuntoPrimeiraUnidade = "";
+		String assuntoSegundaUnidade = "";
+		String assuntoTerceiraUnidade = "";
+		String assuntoQuartaUnidade = "";
+		String cargaHoraria = "";
+		String cdTipoEnsino = "";
 
 		// recupera os parametros do request
-		codigo = request.getParameter(this.NM_PARAMETRO_CodigoCategoriaProduto);
-		nome = request.getParameter(this.NM_PARAMETRO_NomeCategoriaProduto);
-		descricao = request.getParameter(this.NM_PARAMETRO_Descricao);
+		idDisciplina = request.getParameter(NM_PARAMETRO_ID_DISCIPLINA);
+		sigla = request.getParameter(NM_PARAMETRO_SIGLA_DISCIPLINA);
+		descricao = request.getParameter(NM_PARAMETRO_DS_DISCIPLINA);
+		assuntoPrimeiraUnidade = request.getParameter(NM_PARAMETRO_TX_PRIMEIRA_UNIDADE);
+		assuntoSegundaUnidade = request.getParameter(NM_PARAMETRO_TX_SEGUNDA_UNIDADE);
+		assuntoTerceiraUnidade = request.getParameter(NM_PARAMETRO_TX_TERCEIRA_UNIDADE);
+		assuntoQuartaUnidade = request.getParameter(NM_PARAMETRO_TX_QUARTA_UNIDADE);
+		cargaHoraria = request.getParameter(NM_PARAMETRO_CAMPO_CARGA_HORARIA);
+		cdTipoEnsino = request.getParameter(NM_PARAMETRO_SELECT_TIPO_ENSINO);
 
-		//monta a entidade servico para alterar
-		EntidadeCategoriaProduto eCategoriaProduto = new EntidadeCategoriaProduto();
-		eCategoriaProduto.setCodigo(Integer.valueOf(codigo));
-		eCategoriaProduto.setNome(nome);
-		eCategoriaProduto.setDescricao(descricao);
+		//monta a entidade disciplina para alterar
+		Disciplina disciplina = new Disciplina();
+		disciplina.setIdDisciplina(Integer.valueOf(idDisciplina));
+		disciplina.setSiglaDisciplina(sigla);
+		disciplina.setDsDisciplina(descricao);
+		disciplina.setAssuntoPrimeiraUnidade(assuntoPrimeiraUnidade);
+		disciplina.setAssuntoSegundaUnidade(assuntoSegundaUnidade);
+		disciplina.setAssuntoTerceiraUnidade(assuntoTerceiraUnidade);
+		disciplina.setAssuntoQuartaUnidade(assuntoQuartaUnidade);
+		disciplina.setCargaHorariaMinima(Integer.valueOf(cargaHoraria));
 
-		//altera em categoria_produto
-		DAOCategoriaProduto.alterar(eCategoriaProduto);
+		//alterar em DISCIPLINA
+		DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
+		disciplinaDAO.alterar(disciplina);
 		
-		this.redirecionarPagina(request, response, this.NM_JSP_CONSULTAR);
-	}*/
+		//monta a entidade disciplinaTpoEnsino para alterar
+		DisciplinaTipoEnsino disciplinaTipoEnsino = new DisciplinaTipoEnsino();
+		disciplinaTipoEnsino.setIdDisciplina(Integer.valueOf(idDisciplina));
+		disciplinaTipoEnsino.setCdTipoEnsino(Integer.valueOf(cdTipoEnsino));
+		
+		//alterar em DISCIPLINA_TIPO_ENSINO
+		DisciplinaTipoEnsinoDAO disciplinaTipoEnsinoDAO = new DisciplinaTipoEnsinoDAO();
+		disciplinaTipoEnsinoDAO.alterar(disciplinaTipoEnsino);
+				
+		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
+	}
 
 }

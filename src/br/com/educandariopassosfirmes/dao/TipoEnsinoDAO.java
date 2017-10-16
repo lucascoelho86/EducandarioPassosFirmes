@@ -9,7 +9,7 @@ import br.com.educandariopassosfirmes.entidades.TipoEnsino;
 
 public class TipoEnsinoDAO extends Conexao {
 	
-	public ArrayList<TipoEnsino> consultarTipoEnsino(){
+	public ArrayList<TipoEnsino> consultarTodosTipoEnsino(){
 		ArrayList<TipoEnsino> colecaoRetorno = new ArrayList<TipoEnsino>();
 		String sql = "SELECT * FROM TIPO_ENSINO";
 		TipoEnsino tipoEnsino = null;
@@ -34,4 +34,5 @@ public class TipoEnsinoDAO extends Conexao {
 		
 		return colecaoRetorno;
 	}
+	
 }

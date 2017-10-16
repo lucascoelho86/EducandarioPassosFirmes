@@ -111,8 +111,16 @@ if(colecaoDisciplina == null){
 	<br>
 	<table>
 		<tr>
-			<td style="width:500px; display:block; text-align: center">
+			<td style="width:600px; text-align: center">
 					<button type="submit" id="botaoCadastrar" name="botaoCadastrar" onclick="exibirInclusao();">Incluir</button>
+					
+			</td>
+			<td style="width:700px; text-align: center">
+					<button type="submit" id="botaoAlterar" name="botaoAlterar" onclick="exibirAlteracao();">Alterar</button>
+					
+			</td>
+			<td style="width:800px; text-align: center">
+					<button type="submit" id="botaoExcluir" name="botaoExcluir" onclick="excluir();">Excluir</button>
 					
 			</td>
 		</tr>
