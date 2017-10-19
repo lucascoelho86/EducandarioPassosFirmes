@@ -12,8 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import br.com.educandariopassosfirmes.dao.DisciplinaDAO;
 import br.com.educandariopassosfirmes.dao.DisciplinaTipoEnsinoDAO;
+import br.com.educandariopassosfirmes.dao.TurmaDAO;
 import br.com.educandariopassosfirmes.entidades.Disciplina;
 import br.com.educandariopassosfirmes.entidades.DisciplinaTipoEnsino;
+import br.com.educandariopassosfirmes.entidades.Turma;
 
 
 /**
@@ -34,13 +36,15 @@ public class ServletTurma extends ServletGenerico {
 	public static final String NM_PARAMETRO_ID_DISCIPLINA = "idDisciplina";
 	public static final String NM_PARAMETRO_SIGLA_DISCIPLINA = "siglaDisciplina";
 	public static final String NM_PARAMETRO_DS_TURMA = "descricaoTurma";
+	public static final String NM_PARAMETRO_TURNO = "turno";
+	public static final String NM_PARAMETRO_QT_MAX_ALUNOS = "qtMaxAlunos";
 	public static final String NM_PARAMETRO_TX_PRIMEIRA_UNIDADE = "txPrimeiraUnidade";
 	public static final String NM_PARAMETRO_TX_SEGUNDA_UNIDADE = "txSegundaUnidade";
 	public static final String NM_PARAMETRO_TX_TERCEIRA_UNIDADE = "txTerceiraUnidade";
 	public static final String NM_PARAMETRO_TX_QUARTA_UNIDADE = "txQuartaUnidade";
 	public static final String NM_PARAMETRO_CAMPO_CARGA_HORARIA = "cargaHoraria";
 	public static final String NM_PARAMETRO_SELECT_TURNO = "selectTurno";
-	public static final String NM_PARAMETRO_COLECAO_DISCIPLINA = "colecaoDisciplina";
+	public static final String NM_PARAMETRO_COLECAO_TURMA = "colecaoTurma";
 	public static final String NM_PARAMETRO_CD_TIPO_ENSINO = "cdTipoEnsino";
 	
 	//Constantes utilizadas na inclusão de disciplinas
@@ -96,8 +100,7 @@ public class ServletTurma extends ServletGenerico {
 			HttpServletResponse response) throws ServletException, IOException {
 
 		// redireciona para a pagina de inclusao
-		this.redirecionarPagina(request, response,
-				this.NM_JSP_INCLUIR_SERVICO);
+		this.redirecionarPagina(request, response,	NM_JSP_INCLUIR_SERVICO);
 	};
 
 	@Override
@@ -105,44 +108,30 @@ public class ServletTurma extends ServletGenerico {
 			HttpServletResponse response) throws ServletException, IOException {
 
 		// declara as variaveis
-		String sigla = "";
 		String descricao = "";
-		String assuntoPrimeiraUnidade = "";
-		String assuntoSegundaUnidade = "";
-		String assuntoTerceiraUnidade = "";
-		String assuntoQuartaUnidade = "";
-		String cargaHoraria = "";
-		String cdTipoEnsino = "";
+		String turno = "";
+		String qtMaxAlunos = "";
 
 		// recupera os parametros do request
-		sigla = request.getParameter(NM_PARAMETRO_SIGLA_DISCIPLINA);
 		descricao = request.getParameter(NM_PARAMETRO_DS_TURMA);
-		assuntoPrimeiraUnidade = request.getParameter(NM_PARAMETRO_TX_PRIMEIRA_UNIDADE);
-		assuntoSegundaUnidade = request.getParameter(NM_PARAMETRO_TX_SEGUNDA_UNIDADE);
-		assuntoTerceiraUnidade = request.getParameter(NM_PARAMETRO_TX_TERCEIRA_UNIDADE);
-		assuntoQuartaUnidade = request.getParameter(NM_PARAMETRO_TX_QUARTA_UNIDADE);
-		cargaHoraria = request.getParameter(NM_PARAMETRO_CAMPO_CARGA_HORARIA);
-		cdTipoEnsino = request.getParameter(NM_PARAMETRO_SELECT_TURNO);
+		turno = request.getParameter(NM_PARAMETRO_TURNO);
+		qtMaxAlunos = request.getParameter(NM_PARAMETRO_QT_MAX_ALUNOS);
 
 		//monta a entidade disciplina para incluir
-		Disciplina disciplina = new Disciplina();
-		disciplina.setSiglaDisciplina(sigla);
-		disciplina.setDsDisciplina(descricao);
-		disciplina.setAssuntoPrimeiraUnidade(assuntoPrimeiraUnidade);
-		disciplina.setAssuntoSegundaUnidade(assuntoSegundaUnidade);
-		disciplina.setAssuntoTerceiraUnidade(assuntoTerceiraUnidade);
-		disciplina.setAssuntoQuartaUnidade(assuntoQuartaUnidade);
-		disciplina.setCargaHorariaMinima(Integer.valueOf(cargaHoraria));
+		Turma turma = new Turma();
+		turma.setDsTurma(descricao);
+		turma.setTurno(turno);
+		turma.setQtMaxAlunos(Integer.valueOf(qtMaxAlunos));
 
-		//inclui em DISCIPLINA
-		DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
-		disciplinaDAO.incluir(disciplina);
+		//inclui em TURMA
+		TurmaDAO turmaDAO = new TurmaDAO();
+		//turmaDAO.incluir(turma);
 		
-		Integer maiorIdDisciplina = disciplinaDAO.consultarMaiorIdDisciplina();
+		//Integer maiorIdDisciplina = disciplinaDAO.consultarMaiorIdDisciplina();
 		
 		//inclui em DISCIPLINA_TIPO_ENSINO
-		DisciplinaTipoEnsinoDAO disciplinaTipoEnsinoDAO = new DisciplinaTipoEnsinoDAO();
-		disciplinaTipoEnsinoDAO.incluir(maiorIdDisciplina, Integer.valueOf(cdTipoEnsino));
+		//DisciplinaTipoEnsinoDAO disciplinaTipoEnsinoDAO = new DisciplinaTipoEnsinoDAO();
+		//disciplinaTipoEnsinoDAO.incluir(maiorIdDisciplina, Integer.valueOf(cdTipoEnsino));
 		
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
 
@@ -156,10 +145,11 @@ public class ServletTurma extends ServletGenerico {
 		String siglaDisciplina = (String) request.getParameter(NM_PARAMETRO_SIGLA_DISCIPLINA);
 		String dsDisciplina = (String) request.getParameter(NM_PARAMETRO_DS_TURMA);
 
-		DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
-		ArrayList<Disciplina>colecaoDisciplina = disciplinaDAO.consultar(0, siglaDisciplina, dsDisciplina);
-				
-		request.setAttribute(NM_PARAMETRO_COLECAO_DISCIPLINA, colecaoDisciplina);
+		TurmaDAO turmaDAO = new TurmaDAO();
+		//consultar todas as turmas
+		ArrayList<Turma> colecaoTurma = turmaDAO.consultar("", "");
+		
+		request.setAttribute(NM_PARAMETRO_COLECAO_TURMA, colecaoTurma);
 
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
 	}

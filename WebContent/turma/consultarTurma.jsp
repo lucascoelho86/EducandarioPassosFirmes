@@ -38,7 +38,7 @@ function exibirInclusao(){
 
 ArrayList<Disciplina>colecaoDisciplina;
 Iterator<Disciplina>itDisciplina;
-colecaoDisciplina = (ArrayList<Disciplina>) request.getAttribute(ServletTurma.NM_PARAMETRO_COLECAO_DISCIPLINA);
+colecaoDisciplina = (ArrayList<Disciplina>) request.getAttribute(ServletTurma.NM_PARAMETRO_COLECAO_TURMA);
 
 if(colecaoDisciplina == null){
 	colecaoDisciplina = new ArrayList<Disciplina>();
@@ -60,7 +60,7 @@ if(colecaoDisciplina == null){
 		<tbody>
 			<tr>
 			
-				<th width="12%"> Descrição Turma: </th>
+				<th width="10%"> Descrição Turma: </th>
 				<td>
 					<input type="text" id="<%=ServletTurma.NM_PARAMETRO_DS_TURMA%>" name="<%=ServletTurma.NM_PARAMETRO_DS_TURMA%>" value="" size="50">
 				
