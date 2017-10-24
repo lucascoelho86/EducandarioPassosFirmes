@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import br.com.educandariopassosfirmes.entidades.Disciplina;
 import br.com.educandariopassosfirmes.entidades.Turma;
 
 public class TurmaDAO extends Conexao{
@@ -66,16 +65,53 @@ public class TurmaDAO extends Conexao{
 			
 	}
 	 
-	 public void incluir(Disciplina pDisciplina){
+	 public void incluir(Turma pTurma){
 			
 		String sql = "INSERT INTO TURMA (DS_TURMA, TURNO, QUANTIDADE_MAX_ALUNOS) values (?,?,?)";
 				
 		try {
 			PreparedStatement preparador = getPreparedStatement(sql);
 					
-			preparador.setString(1, pDisciplina.getDsDisciplina());
-			preparador.setString(2, pDisciplina.getSiglaDisciplina());
-			preparador.setInt(3, pDisciplina.getCargaHorariaMinima());
+			preparador.setString(1, pTurma.getDsTurma());
+			preparador.setString(2, pTurma.getTurno());
+			preparador.setInt(3, pTurma.getQtMaxAlunos());
+					
+			preparador.execute();
+			preparador.close();
+					
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	 
+	 public void alterar(Turma pTurma){
+			
+		String sql = "UPDATE TURMA SET DS_TURMA=?, TURNO=?, QUANTIDADE_MAX_ALUNOS=? WHERE ID_TURMA=?";
+				
+		try {
+			PreparedStatement preparador = getPreparedStatement(sql);
+					
+			preparador.setString(1, pTurma.getDsTurma());
+			preparador.setString(2, pTurma.getTurno());
+			preparador.setInt(3, pTurma.getQtMaxAlunos());
+			preparador.setInt(4, pTurma.getIdTurma());
+					
+			preparador.execute();
+			preparador.close();
+					
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	 
+	 public void excluir(Integer pIdTurma){
+			
+		String sql = "DELETE FROM TURMA WHERE ID_TURMA=?";
+				
+		try {
+			PreparedStatement preparador = getPreparedStatement(sql);
+					
+			preparador.setInt(1, pIdTurma);
 					
 			preparador.execute();
 			preparador.close();

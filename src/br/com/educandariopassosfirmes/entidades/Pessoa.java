@@ -1,11 +1,12 @@
 package br.com.educandariopassosfirmes.entidades;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 public class Pessoa {
 
 	private String id;
-	private LocalDate dtNascimento;
+	private String nome;
+	private Date dtNascimento;
 	private String naturalidade;
 	private String endereco;
 	private int numero;
@@ -13,17 +14,24 @@ public class Pessoa {
 	private String cidade;
 	private String estado;
 	private String telefone;
-	private String nome;
+	private String identidade;
+	
 	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
 		this.id = id;
 	}
-	public LocalDate getDtNascimento() {
+	public String getNome() {
+		return nome;
+	}
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+	public Date getDtNascimento() {
 		return dtNascimento;
 	}
-	public void setDtNascimento(LocalDate dtNascimento) {
+	public void setDtNascimento(Date dtNascimento) {
 		this.dtNascimento = dtNascimento;
 	}
 	public String getNaturalidade() {
@@ -68,11 +76,11 @@ public class Pessoa {
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
-	public String getNome() {
-		return nome;
+	public String getIdentidade() {
+		return identidade;
 	}
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setIdentidade(String identidade) {
+		this.identidade = identidade;
 	}
 	
 }

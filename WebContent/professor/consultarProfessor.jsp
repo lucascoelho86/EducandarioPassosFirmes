@@ -1,35 +1,37 @@
 <%@page import="java.util.Iterator"%>
 <%@page import="br.com.educandariopassosfirmes.entidades.Turma"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.Disciplina"%>
+<%@page import="br.com.educandariopassosfirmes.dao.DisciplinaDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@page import="br.com.educandariopassosfirmes.servlet.ServletTurma"%>
+<%@page import="br.com.educandariopassosfirmes.servlet.ServletProfessor"%>
 <%@page import="br.com.educandariopassosfirmes.util.Select"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet" type="text/css" href="cssProjeto.css">
-<title>Consultar Turma</title>
+<title>Consultar Professor</title>
 
 </head>
 
 <script type="text/javascript">
 
 function consultar(){
-	document.getElementById("<%=ServletTurma.NM_EVENTO%>").value = "<%=ServletTurma.NM_EVENTO_CONSULTAR_TODOS%>";
+	document.getElementById("<%=ServletProfessor.NM_EVENTO%>").value = "<%=ServletProfessor.NM_EVENTO_CONSULTAR_TODOS%>";
 }
 
 function excluir(){
-	document.getElementById("<%=ServletTurma.NM_EVENTO%>").value = "<%=ServletTurma.NM_EVENTO_EXCLUIR%>";
+	document.getElementById("<%=ServletProfessor.NM_EVENTO%>").value = "<%=ServletProfessor.NM_EVENTO_EXCLUIR%>";
 }
 
 function exibirAlteracao(){
-	document.getElementById("<%=ServletTurma.NM_EVENTO%>").value = "<%=ServletTurma.NM_EVENTO_EXIBIR_ALTERACAO%>";
+	document.getElementById("<%=ServletProfessor.NM_EVENTO%>").value = "<%=ServletProfessor.NM_EVENTO_EXIBIR_ALTERACAO%>";
 }
 
 function exibirInclusao(){
-	document.getElementById("<%=ServletTurma.NM_EVENTO%>").value = "<%=ServletTurma.NM_EVENTO_EXIBIR_INCLUSAO%>";
+	document.getElementById("<%=ServletProfessor.NM_EVENTO%>").value = "<%=ServletProfessor.NM_EVENTO_EXIBIR_INCLUSAO%>";
 }
 
 </script>
@@ -38,7 +40,7 @@ function exibirInclusao(){
 
 ArrayList<Turma>colecaoTurma;
 Iterator<Turma>itTurma;
-colecaoTurma = (ArrayList<Turma>) request.getAttribute(ServletTurma.NM_PARAMETRO_COLECAO_TURMA);
+colecaoTurma = (ArrayList<Turma>) request.getAttribute(ServletProfessor.NM_PARAMETRO_COLECAO_TURMA);
 
 if(colecaoTurma == null){
 	colecaoTurma = new ArrayList<Turma>();
@@ -53,33 +55,32 @@ if(colecaoTurma == null){
 
 <jsp:include page="cabecalho.jsp"/>
 
-<form action="ServletTurma" method="post">
-<input type="hidden" id="<%=ServletTurma.NM_EVENTO%>" name="<%=ServletTurma.NM_EVENTO%>" value="">
-	<h2 align="center">CONSULTAR TURMA</h2>
+<form action="ServletProfessor" method="post">
+<input type="hidden" id="<%=ServletProfessor.NM_EVENTO%>" name="<%=ServletProfessor.NM_EVENTO%>" value="">
+	<h2 align="center">CONSULTAR PROFESSOR</h2>
 	<table>
 		<tbody>
 			<tr>
 			
-				<th width="10%"> Descrição Turma: </th>
+				<th width="10%"> Nome Professor: </th>
 				<td>
-					<input type="text" id="<%=ServletTurma.NM_PARAMETRO_DS_TURMA%>" name="<%=ServletTurma.NM_PARAMETRO_DS_TURMA%>" value="" size="50">
+					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_DS_TURMA%>" name="<%=ServletProfessor.NM_PARAMETRO_DS_TURMA%>" value="" size="50">
 				
-				</td>			
+				</td>
 			
-				<th align="right"> Turno: </th>
+				<th align="right"> Disciplina: </th>
 				<td>
-					<%
-						int contador = 0;
-						for(int x = 0; x < 2; x++){
+					<%	DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
+						ArrayList<Disciplina>colecaoDisciplina = disciplinaDAO.consultar(0, "", "");
+						boolean ultimaDisciplina = false;
+						for(int x = 0; x < colecaoDisciplina.size(); x++){
+							Disciplina disciplina = colecaoDisciplina.get(x);
 							
-							
-							if(x == 0){%>						
-								<%=Select.getInstancia().getHTML(ServletTurma.NM_PARAMETRO_SELECT_TURNO, ServletTurma.NM_PARAMETRO_SELECT_TURNO, x + 1, ServletTurma.NM_TURNO_MANHA, false, contador, false)%>
-							<%}else{%>
-								<%=Select.getInstancia().getHTML(ServletTurma.NM_PARAMETRO_SELECT_TURNO, ServletTurma.NM_PARAMETRO_SELECT_TURNO, x + 1, ServletTurma.NM_TURNO_TARDE, false, contador, true)%>
-							<%}
-							contador++;
-							%>
+							if(x + 1 == colecaoDisciplina.size()){
+								ultimaDisciplina = true;
+							}%>	
+												
+							<%=Select.getInstancia().getHTML(ServletProfessor.NM_PARAMETRO_SELECT_TURNO, ServletProfessor.NM_PARAMETRO_SELECT_TURNO, x + 1, disciplina.getDsDisciplina(), false, x, ultimaDisciplina)%>
 						<%}%>				
 				</td>
 				<td>
@@ -109,9 +110,9 @@ if(colecaoTurma == null){
 				<th style="color: white"> SSS </th>
 				<td>
 				<%if(colecaoTurma.size() == 1){ %>
-					<input type="radio" id="rdb_consulta" name="<%=ServletTurma.NM_PARAMETRO_CHAVE%>" value="<%=chave%>" checked>
+					<input type="radio" id="rdb_consulta" name="<%=ServletProfessor.NM_PARAMETRO_CHAVE%>" value="<%=chave%>" checked>
 				<%}else{%>
-					<input type="radio" id="rdb_consulta" name="<%=ServletTurma.NM_PARAMETRO_CHAVE%>" value="<%=chave%>">
+					<input type="radio" id="rdb_consulta" name="<%=ServletProfessor.NM_PARAMETRO_CHAVE%>" value="<%=chave%>">
 				<%}%>
 				</td>
 				<th style="color: white"> SSSS </th>

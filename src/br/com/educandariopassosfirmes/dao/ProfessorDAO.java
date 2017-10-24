@@ -7,14 +7,20 @@ import br.com.educandariopassosfirmes.entidades.Professor;
 
 public class ProfessorDAO extends Conexao{
 
-	public void cadastrar(Professor pProfessor){
+	public void incluir(Professor pProfessor){
 		
-		String sql = "INSERT INTO PROFESSOR (id_funcionario) values (?)";
+		String sql = "INSERT INTO PROFESSOR (ID_PESSOA, FORMACAO, ESTADO_CIVIL, DEPENDENTE, DATA_ADMISSAO, CARGA_HORARIO, SALARIO) values (?,?,?,?,?,?,?)";
 		
 		try {
 			PreparedStatement preparador = getPreparedStatement(sql);
 			
 			preparador.setString(1, pProfessor.getId());
+			preparador.setString(2, pProfessor.getFormacao());
+			preparador.setString(3, pProfessor.getEstadoCivil());
+			preparador.setInt(4, pProfessor.getQtDependente());
+			preparador.setDate(5, pProfessor.getDtAdmissao());
+			preparador.setInt(6, pProfessor.getCargaHoraria());
+			preparador.setDouble(7, pProfessor.getSalario());
 			
 			preparador.execute();
 			preparador.close();

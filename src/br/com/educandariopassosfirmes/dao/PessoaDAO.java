@@ -12,23 +12,24 @@ import br.com.educandariopassosfirmes.entidades.Pessoa;
 
 public class PessoaDAO extends Conexao{
 
-	public void cadastrar(Pessoa pessoa){
+	public void incluir(Pessoa pessoa){
 		
-		String sql = "INSERT INTO PESSOA (id_pessoa, dt_nascimento, naturalidade, endereco, numero, bairro, cidade, estado, telefone, nome) values (?,?,?,?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO PESSOA (ID_PESSOA, NOME, DT_NASCIMENTO, NATURALIDADE, ENDERECO, NUMERO, BAIRRO, CIDADE, ESTADO, TELEFONE, IDENTIDADE) values (?,?,?,?,?,?,?,?,?,?,?)";
 		
 		try {
 			PreparedStatement preparador = getPreparedStatement(sql);
 			
 			preparador.setString(1, pessoa.getId());
-			preparador.setDate(2, Date.valueOf(pessoa.getDtNascimento()));
-			preparador.setString(3, pessoa.getNaturalidade());
-			preparador.setString(4, pessoa.getEndereco());
-			preparador.setInt(5, pessoa.getNumero());
-			preparador.setString(6, pessoa.getBairro());
-			preparador.setString(7, pessoa.getCidade());
-			preparador.setString(8, pessoa.getEstado());
-			preparador.setString(9, pessoa.getTelefone());
-			preparador.setString(10, pessoa.getNome());
+			preparador.setString(2, pessoa.getNome());
+			preparador.setDate(3, pessoa.getDtNascimento());
+			preparador.setString(4, pessoa.getNaturalidade());
+			preparador.setString(5, pessoa.getEndereco());
+			preparador.setInt(6, pessoa.getNumero());
+			preparador.setString(7, pessoa.getBairro());
+			preparador.setString(8, pessoa.getCidade());
+			preparador.setString(9, pessoa.getEstado());
+			preparador.setString(10, pessoa.getTelefone());
+			preparador.setString(11, pessoa.getIdentidade());
 			
 			preparador.execute();
 			preparador.close();
