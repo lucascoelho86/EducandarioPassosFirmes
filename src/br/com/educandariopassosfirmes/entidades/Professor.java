@@ -2,6 +2,7 @@ package br.com.educandariopassosfirmes.entidades;
 
 import java.sql.Date;
 
+
 public class Professor extends Membros{
 
 	private String formacao;

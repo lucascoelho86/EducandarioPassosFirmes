@@ -1,10 +1,10 @@
 package br.com.educandariopassosfirmes.servlet;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -39,7 +39,7 @@ public class ServletProfessor extends ServletGenerico {
 	public static final String NM_PARAMETRO_DS_TURMA = "descricaoTurma";
 	public static final String NM_PARAMETRO_TURNO = "turno";
 	public static final String NM_PARAMETRO_QT_MAX_ALUNOS = "qtMaxAlunos";
-	public static final String NM_PARAMETRO_SELECT_TURNO = "selectTurno";
+	public static final String NM_PARAMETRO_SELECT_DISCIPLINA = "selectTurno";
 	public static final String NM_PARAMETRO_COLECAO_TURMA = "colecaoTurma";
 
 	public static final String NM_PARAMETRO_NOME = "nome";
@@ -171,18 +171,20 @@ public class ServletProfessor extends ServletGenerico {
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 		
 		try {
-			dtNasc = (Date) formato.parse(dtNascimento);
-			dtAdm = (Date) formato.parse(dtAdmissao);
+			dtNasc = formato.parse(dtNascimento);
+			dtAdm = formato.parse(dtAdmissao);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+//		dtNasc = Date.valueOf("1986-05-19");
+//		dtAdm = Date.valueOf("2013-01-14");
 		
 		//monta a entidade pessoa para incluir
 		Pessoa pessoa = new Pessoa();
 		pessoa.setId(cpf);
 		pessoa.setNome(nome);
-		pessoa.setDtNascimento(dtNasc);
+		pessoa.setDtNascimento(new java.sql.Date(dtNasc.getTime()));
 		pessoa.setNaturalidade(naturalidade);
 		pessoa.setEndereco(endereco);
 		pessoa.setNumero(Integer.valueOf(numero));
@@ -202,7 +204,7 @@ public class ServletProfessor extends ServletGenerico {
 		professor.setFormacao(formacao);
 		professor.setEstadoCivil(estadoCivil);
 		professor.setQtDependente(Integer.valueOf(qtDependente));
-		professor.setDtAdmissao(dtAdm);
+		professor.setDtAdmissao(new java.sql.Date(dtAdm.getTime()));
 		professor.setCargaHoraria(Integer.valueOf(cargaHoraria));
 		professor.setSalario(Double.valueOf(salario));
 		
@@ -218,22 +220,16 @@ public class ServletProfessor extends ServletGenerico {
 	public void consultarTodos(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		String dsTurno = "";
 		// recupera os parametros do request
-		String dsDisciplina = (String) request.getParameter(NM_PARAMETRO_DS_TURMA);
-		String turno = (String) request.getParameter(NM_PARAMETRO_SELECT_TURNO);
+		String cpf = (String) request.getParameter(NM_PARAMETRO_CPF);
+		String nome = (String) request.getParameter(NM_PARAMETRO_NOME);
+		String disciplina = (String) request.getParameter(NM_PARAMETRO_SELECT_DISCIPLINA);
 
-		if(turno.equals("1")) {
-			dsTurno = NM_TURNO_MANHA;
-		}else if(turno.equals("2")) {
-			dsTurno = NM_TURNO_TARDE;
-		}
-		
 		TurmaDAO turmaDAO = new TurmaDAO();
 		//consultar todas as turmas
-		ArrayList<Turma> colecaoTurma = turmaDAO.consultar(dsDisciplina, dsTurno);
+		//ArrayList<Turma> colecaoTurma = turmaDAO.consultar(dsDisciplina, dsTurno);
 		
-		request.setAttribute(NM_PARAMETRO_COLECAO_TURMA, colecaoTurma);
+		//request.setAttribute(NM_PARAMETRO_COLECAO_TURMA, colecaoTurma);
 
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
 	}
@@ -301,7 +297,7 @@ public class ServletProfessor extends ServletGenerico {
 		// recupera os parametros do request
 		idTurma = request.getParameter(NM_PARAMETRO_ID_TURMA);
 		descricao = request.getParameter(NM_PARAMETRO_DS_TURMA);
-		turno = request.getParameter(NM_PARAMETRO_SELECT_TURNO);
+		turno = request.getParameter(NM_PARAMETRO_SELECT_DISCIPLINA);
 		qtMaxAlunos = request.getParameter(NM_PARAMETRO_QT_MAX_ALUNOS);
 
 		if(turno.equals("1")) {

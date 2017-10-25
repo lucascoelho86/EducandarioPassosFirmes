@@ -20,6 +20,13 @@
 
 function consultar(){
 	document.getElementById("<%=ServletProfessor.NM_EVENTO%>").value = "<%=ServletProfessor.NM_EVENTO_CONSULTAR_TODOS%>";
+	
+	var valorCampo = document.getElementById("<%=ServletProfessor.NM_PARAMETRO_NOME%>").value;
+	
+	if(valorCampo != ""){
+		document.frm_principal.submit();		
+	}
+	
 }
 
 function excluir(){
@@ -55,20 +62,26 @@ if(colecaoTurma == null){
 
 <jsp:include page="cabecalho.jsp"/>
 
-<form action="ServletProfessor" method="post">
+<form name="frm_principal" action="ServletProfessor" method="post">
 <input type="hidden" id="<%=ServletProfessor.NM_EVENTO%>" name="<%=ServletProfessor.NM_EVENTO%>" value="">
 	<h2 align="center">CONSULTAR PROFESSOR</h2>
 	<table>
 		<tbody>
 			<tr>
 			
-				<th width="10%"> Nome Professor: </th>
+				<th width="10%" align="right"> CPF: </th>
 				<td>
-					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_DS_TURMA%>" name="<%=ServletProfessor.NM_PARAMETRO_DS_TURMA%>" value="" size="50">
+					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_CPF%>" name="<%=ServletProfessor.NM_PARAMETRO_CPF%>" value="" size="14">
 				
 				</td>
 			
-				<th align="right"> Disciplina: </th>
+				<th width="10%" align="right"> Nome: </th>
+				<td>
+					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_NOME%>" name="<%=ServletProfessor.NM_PARAMETRO_NOME%>" value="" size="50">
+				
+				</td>
+			
+				<th width="10%" align="right"> Disciplina: </th>
 				<td>
 					<%	DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
 						ArrayList<Disciplina>colecaoDisciplina = disciplinaDAO.consultar(0, "", "");
@@ -80,11 +93,11 @@ if(colecaoTurma == null){
 								ultimaDisciplina = true;
 							}%>	
 												
-							<%=Select.getInstancia().getHTML(ServletProfessor.NM_PARAMETRO_SELECT_TURNO, ServletProfessor.NM_PARAMETRO_SELECT_TURNO, x + 1, disciplina.getDsDisciplina(), false, x, ultimaDisciplina)%>
+							<%=Select.getInstancia().getHTML(ServletProfessor.NM_PARAMETRO_SELECT_DISCIPLINA, ServletProfessor.NM_PARAMETRO_SELECT_DISCIPLINA, x + 1, disciplina.getDsDisciplina(), false, x, ultimaDisciplina)%>
 						<%}%>				
 				</td>
 				<td>
-					<button type="submit" id="botaoLocalizar" name="botaoLocalizar" onclick="consultar();">Localizar</button>
+					<input type="button" id="botaoLocalizar" name="botaoLocalizar" onclick="consultar();" value="Localizar">
 				
 				</td>
 			
