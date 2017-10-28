@@ -140,7 +140,7 @@ public class PessoaDAO extends Conexao{
 		
 	}
 	
-	public List<Pessoa> consultar(String pMatricula, String pNome){
+	public ArrayList<Pessoa> consultar(String pMatricula, String pNome){
 		String sql = "SELECT * FROM PESSOA ";
 		String where = "WHERE ";
 		String sql2 = "ID_PESSOA = ?";
@@ -148,7 +148,7 @@ public class PessoaDAO extends Conexao{
 		String conector = "";
 		String sqlComplementar = "";
 		Pessoa pessoa = null;
-		List<Pessoa> listPessoa = new ArrayList<Pessoa>();
+		ArrayList<Pessoa> listPessoa = new ArrayList<Pessoa>();
 		int contador=0;
 		try{
 			
@@ -182,16 +182,18 @@ public class PessoaDAO extends Conexao{
 			while(resultado.next()){
 				pessoa = new Pessoa();
 				
-				pessoa.setId(resultado.getString("id_pessoa"));
-				pessoa.setDtNascimento(LocalDate.parse(resultado.getString("dt_nascimento")));
-				pessoa.setNaturalidade(resultado.getString("naturalidade"));
-				pessoa.setEndereco(resultado.getString("endereco"));
-				pessoa.setNumero(resultado.getInt("numero"));
-				pessoa.setBairro(resultado.getString("bairro"));
-				pessoa.setCidade(resultado.getString("cidade"));
-				pessoa.setEstado(resultado.getString("estado"));
-				pessoa.setTelefone(resultado.getString("telefone"));
-				pessoa.setNome(resultado.getString("nome"));
+				pessoa.setId(resultado.getString("ID_PESSOA"));
+				pessoa.setNome(resultado.getString("NOME"));
+				pessoa.setDtNascimento(resultado.getDate("DT_NASCIMENTO"));
+				pessoa.setNaturalidade(resultado.getString("NATURALIDADE"));
+				pessoa.setEndereco(resultado.getString("ENDERECO"));
+				pessoa.setNumero(resultado.getInt("NUMERO"));
+				pessoa.setBairro(resultado.getString("BAIRRO"));
+				pessoa.setCidade(resultado.getString("CIDADE"));
+				pessoa.setEstado(resultado.getString("ESTADO"));
+				pessoa.setTelefone(resultado.getString("TELEFONE"));
+				pessoa.setIdentidade(resultado.getString("IDENTIDADE"));
+				
 				
 				listPessoa.add(pessoa);
 				

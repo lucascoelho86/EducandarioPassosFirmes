@@ -1,5 +1,5 @@
 <%@page import="java.util.Iterator"%>
-<%@page import="br.com.educandariopassosfirmes.entidades.Turma"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.Pessoa"%>
 <%@page import="br.com.educandariopassosfirmes.entidades.Disciplina"%>
 <%@page import="br.com.educandariopassosfirmes.dao.DisciplinaDAO"%>
 <%@page import="java.util.ArrayList"%>
@@ -20,13 +20,7 @@
 
 function consultar(){
 	document.getElementById("<%=ServletProfessor.NM_EVENTO%>").value = "<%=ServletProfessor.NM_EVENTO_CONSULTAR_TODOS%>";
-	
-	var valorCampo = document.getElementById("<%=ServletProfessor.NM_PARAMETRO_NOME%>").value;
-	
-	if(valorCampo != ""){
-		document.frm_principal.submit();		
-	}
-	
+	document.frm_principal.submit();		
 }
 
 function excluir(){
@@ -45,15 +39,15 @@ function exibirInclusao(){
 
 <%
 
-ArrayList<Turma>colecaoTurma;
-Iterator<Turma>itTurma;
-colecaoTurma = (ArrayList<Turma>) request.getAttribute(ServletProfessor.NM_PARAMETRO_COLECAO_TURMA);
+ArrayList<Pessoa>colecaoPessoa;
+Iterator<Pessoa>itPessoa;
+colecaoPessoa = (ArrayList<Pessoa>) request.getAttribute(ServletProfessor.NM_PARAMETRO_COLECAO_PESSOA);
 
-if(colecaoTurma == null){
-	colecaoTurma = new ArrayList<Turma>();
-	itTurma = colecaoTurma.iterator();
+if(colecaoPessoa == null){
+	colecaoPessoa = new ArrayList<Pessoa>();
+	itPessoa = colecaoPessoa.iterator();
 }else{
-	itTurma = colecaoTurma.iterator();
+	itPessoa = colecaoPessoa.iterator();
 }
 
 %>
@@ -108,29 +102,29 @@ if(colecaoTurma == null){
 	<table class="tituloRetornoDados">
 	<tr>
 		<TH align="center" width="1%">X</TH>
-		<TH align="left" width="3%" >Descrição Turma</TH>
-		<TH align="left" width="10%" >Turno</TH>
+		<TH align="left" width="3%" >CPF</TH>
+		<TH align="left" width="10%" >Nome</TH>
 	</tr>
 	</table>
-	<table class="tabeladados">
+	<table>
 		<%
 		String chave = "";
-		while(itTurma.hasNext()){
-			Turma turma = itTurma.next();
-			chave = turma.getIdTurma() + ";" + turma.getDsTurma() + ";" + turma.getTurno() + ";" + turma.getQtMaxAlunos();
+		while(itPessoa.hasNext()){
+			Pessoa pessoa = itPessoa.next();
+			chave = pessoa.getId();
 			%>
 			<tr>
 				<th style="color: white"> SSS </th>
 				<td>
-				<%if(colecaoTurma.size() == 1){ %>
+				<%if(colecaoPessoa.size() == 1){ %>
 					<input type="radio" id="rdb_consulta" name="<%=ServletProfessor.NM_PARAMETRO_CHAVE%>" value="<%=chave%>" checked>
 				<%}else{%>
 					<input type="radio" id="rdb_consulta" name="<%=ServletProfessor.NM_PARAMETRO_CHAVE%>" value="<%=chave%>">
 				<%}%>
 				</td>
-				<th style="color: white"> SSSS </th>
-				<td style="width:310px; display:block; text-align: left"><%=turma.getDsTurma().toUpperCase() %></td>
-				<td><%=turma.getTurno().toUpperCase() %></td>
+				<th style="color: white"> SS </th>
+				<td style="width:300px; display:block; text-align: left"><%=pessoa.getId()%></td>
+				<td><%=pessoa.getNome().toUpperCase() %></td>
 			</tr>
 			
 			

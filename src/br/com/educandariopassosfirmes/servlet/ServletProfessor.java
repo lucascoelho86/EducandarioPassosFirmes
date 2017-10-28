@@ -40,7 +40,7 @@ public class ServletProfessor extends ServletGenerico {
 	public static final String NM_PARAMETRO_TURNO = "turno";
 	public static final String NM_PARAMETRO_QT_MAX_ALUNOS = "qtMaxAlunos";
 	public static final String NM_PARAMETRO_SELECT_DISCIPLINA = "selectTurno";
-	public static final String NM_PARAMETRO_COLECAO_TURMA = "colecaoTurma";
+	public static final String NM_PARAMETRO_COLECAO_PESSOA = "colecaoPessoa";
 
 	public static final String NM_PARAMETRO_NOME = "nome";
 	public static final String NM_PARAMETRO_DT_NASCIMENTO = "dtNascimento";
@@ -177,8 +177,6 @@ public class ServletProfessor extends ServletGenerico {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		dtNasc = Date.valueOf("1986-05-19");
-//		dtAdm = Date.valueOf("2013-01-14");
 		
 		//monta a entidade pessoa para incluir
 		Pessoa pessoa = new Pessoa();
@@ -225,11 +223,11 @@ public class ServletProfessor extends ServletGenerico {
 		String nome = (String) request.getParameter(NM_PARAMETRO_NOME);
 		String disciplina = (String) request.getParameter(NM_PARAMETRO_SELECT_DISCIPLINA);
 
-		TurmaDAO turmaDAO = new TurmaDAO();
-		//consultar todas as turmas
-		//ArrayList<Turma> colecaoTurma = turmaDAO.consultar(dsDisciplina, dsTurno);
+		//consultar professor
+		PessoaDAO pessoaDAO = new PessoaDAO();
+		ArrayList<Pessoa> colecaoPessoa = pessoaDAO.consultar(cpf, nome);
 		
-		//request.setAttribute(NM_PARAMETRO_COLECAO_TURMA, colecaoTurma);
+		request.setAttribute(NM_PARAMETRO_COLECAO_PESSOA, colecaoPessoa);
 
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
 	}

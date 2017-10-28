@@ -25,24 +25,6 @@ function cadastrar(){
 
 </script>
 
-<%
-
-String descricao;
-String qtMaxAlunos;
-
-descricao = (String) request.getAttribute(ServletProfessor.NM_PARAMETRO_DS_TURMA);
-qtMaxAlunos = (String) request.getAttribute(ServletProfessor.NM_PARAMETRO_QT_MAX_ALUNOS);
-
-if(descricao == null){
-	descricao = "";
-}
-
-if(qtMaxAlunos == null){
-	qtMaxAlunos = "";
-}
-
-%>
-
 <body>
 
 <jsp:include page="cabecalho.jsp"/>
@@ -55,98 +37,98 @@ if(qtMaxAlunos == null){
 			<tr>			
 				<th width="10%" align="right"> Nome: </th>
 				<td>
-					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_NOME%>" name="<%=ServletProfessor.NM_PARAMETRO_NOME%>" value="<%=descricao%>" size="50">
+					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_NOME%>" name="<%=ServletProfessor.NM_PARAMETRO_NOME%>" value="" size="50">
 				
 				</td>			
 			
 				<th align="right"> Data de Nascimento: </th>
 				<td>
-					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_DT_NASCIMENTO%>" name="<%=ServletProfessor.NM_PARAMETRO_DT_NASCIMENTO%>" value="<%=qtMaxAlunos%>">		
+					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_DT_NASCIMENTO%>" name="<%=ServletProfessor.NM_PARAMETRO_DT_NASCIMENTO%>" value="">		
 				</td>
 				
 				<th align="right"> Naturalidade: </th>
 				<td>
-					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_NATURALIDADE%>" name="<%=ServletProfessor.NM_PARAMETRO_NATURALIDADE%>" value="<%=qtMaxAlunos%>">
+					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_NATURALIDADE%>" name="<%=ServletProfessor.NM_PARAMETRO_NATURALIDADE%>" value="">
 				</td>
 			</tr>
 			<tr>			
 				<th width="10%" align="right"> Endereço: </th>
 				<td>
-					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_ENDERECO%>" name="<%=ServletProfessor.NM_PARAMETRO_ENDERECO%>" value="<%=descricao%>" size="50">
+					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_ENDERECO%>" name="<%=ServletProfessor.NM_PARAMETRO_ENDERECO%>" value="" size="50">
 				
 				</td>			
 			
 				<th align="right"> Número: </th>
 				<td>
-					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_NUMERO%>" name="<%=ServletProfessor.NM_PARAMETRO_NUMERO%>" value="<%=qtMaxAlunos%>">		
+					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_NUMERO%>" name="<%=ServletProfessor.NM_PARAMETRO_NUMERO%>" value="">		
 				</td>
 				
 				<th align="right"> Bairro: </th>
 				<td>
-					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_BAIRRO%>" name="<%=ServletProfessor.NM_PARAMETRO_BAIRRO%>" value="<%=qtMaxAlunos%>">
+					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_BAIRRO%>" name="<%=ServletProfessor.NM_PARAMETRO_BAIRRO%>" value="">
 				</td>
 			</tr>
 			<tr>			
 				<th width="10%" align="right"> Cidade: </th>
 				<td>
-					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_CIDADE%>" name="<%=ServletProfessor.NM_PARAMETRO_CIDADE%>" value="<%=descricao%>" size="20">
+					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_CIDADE%>" name="<%=ServletProfessor.NM_PARAMETRO_CIDADE%>" value="" size="20">
 				
 				</td>			
 			
 				<th align="right"> Estado: </th>
 				<td>
-					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_ESTADO%>" name="<%=ServletProfessor.NM_PARAMETRO_ESTADO%>" value="<%=qtMaxAlunos%>">		
+					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_ESTADO%>" name="<%=ServletProfessor.NM_PARAMETRO_ESTADO%>" value="">		
 				</td>
 				
 				<th align="right"> Telefone: </th>
 				<td>
-					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_TELEFONE%>" name="<%=ServletProfessor.NM_PARAMETRO_TELEFONE%>" value="<%=qtMaxAlunos%>">
+					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_TELEFONE%>" name="<%=ServletProfessor.NM_PARAMETRO_TELEFONE%>" value="">
 				</td>
 			</tr>
 			<tr>			
 				<th width="10%" align="right"> Identidade: </th>
 				<td>
-					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_IDENTIDADE%>" name="<%=ServletProfessor.NM_PARAMETRO_IDENTIDADE%>" value="<%=descricao%>" size="20">
+					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_IDENTIDADE%>" name="<%=ServletProfessor.NM_PARAMETRO_IDENTIDADE%>" value="" size="20">
 				
 				</td>			
 			
 				<th align="right"> CPF: </th>
 				<td>
-					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_CPF%>" name="<%=ServletProfessor.NM_PARAMETRO_CPF%>" value="<%=qtMaxAlunos%>">		
+					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_CPF%>" name="<%=ServletProfessor.NM_PARAMETRO_CPF%>" value="">		
 				</td>
 				
 				<th align="right"> Formação: </th>
 				<td>
-					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_FORMACAO%>" name="<%=ServletProfessor.NM_PARAMETRO_FORMACAO%>" value="<%=qtMaxAlunos%>">
+					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_FORMACAO%>" name="<%=ServletProfessor.NM_PARAMETRO_FORMACAO%>" value="">
 				</td>
 			</tr>
 			<tr>			
 				<th width="10%" align="right"> Estado Civil: </th>
 				<td>
-					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_ESTADO_CIVIL%>" name="<%=ServletProfessor.NM_PARAMETRO_ESTADO_CIVIL%>" value="<%=descricao%>" size="20">
+					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_ESTADO_CIVIL%>" name="<%=ServletProfessor.NM_PARAMETRO_ESTADO_CIVIL%>" value="" size="20">
 				
 				</td>			
 			
 				<th align="right"> Quantidade Dependentes: </th>
 				<td>
-					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_QT_DEPENDENTE%>" name="<%=ServletProfessor.NM_PARAMETRO_QT_DEPENDENTE%>" value="<%=qtMaxAlunos%>">		
+					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_QT_DEPENDENTE%>" name="<%=ServletProfessor.NM_PARAMETRO_QT_DEPENDENTE%>" value="">		
 				</td>
 				
 				<th align="right"> Data Admissão: </th>
 				<td>
-					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_DT_ADMISSAO%>" name="<%=ServletProfessor.NM_PARAMETRO_DT_ADMISSAO%>" value="<%=qtMaxAlunos%>">
+					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_DT_ADMISSAO%>" name="<%=ServletProfessor.NM_PARAMETRO_DT_ADMISSAO%>" value="">
 				</td>
 			</tr>
 			<tr>			
 				<th width="10%" align="right"> Carga Horária: </th>
 				<td>
-					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_CARGA_HORARIA%>" name="<%=ServletProfessor.NM_PARAMETRO_CARGA_HORARIA%>" value="<%=descricao%>" size="10">
+					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_CARGA_HORARIA%>" name="<%=ServletProfessor.NM_PARAMETRO_CARGA_HORARIA%>" value="" size="10">
 				
 				</td>			
 			
 				<th align="right"> Salário: </th>
 				<td>
-					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_SALARIO%>" name="<%=ServletProfessor.NM_PARAMETRO_SALARIO%>" value="<%=qtMaxAlunos%>">		
+					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_SALARIO%>" name="<%=ServletProfessor.NM_PARAMETRO_SALARIO%>" value="">		
 				</td>
 			</tr>
 		</tbody>
