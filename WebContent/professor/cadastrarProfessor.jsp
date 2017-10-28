@@ -7,7 +7,7 @@
 <%@page import="br.com.educandariopassosfirmes.util.Select"%>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel="stylesheet" type="text/css" href="cssProjeto.css">
 <title>Cadastrar Professor</title>
 
@@ -23,6 +23,20 @@ function cadastrar(){
 	document.getElementById("<%=ServletProfessor.NM_EVENTO%>").value = "<%=ServletProfessor.NM_EVENTO_PROCESSAR_INCLUSAO%>";		
 }
 
+function formatarCPF(event){
+	var valor = document.getElementById("<%=ServletProfessor.NM_PARAMETRO_CPF%>").value;
+	var tamanhoValor = valor.length;
+	var tecla = event.keyCode;
+	
+	if(tecla != 8 && tecla != 46){
+		if(tamanhoValor == 3 || tamanhoValor == 7){
+			valor = valor.concat(".");
+		}else if(tamanhoValor == 11){
+			valor = valor.concat("-");
+		}
+	}
+	document.getElementById("<%=ServletProfessor.NM_PARAMETRO_CPF%>").value = valor;
+}
 </script>
 
 <body>
@@ -94,7 +108,7 @@ function cadastrar(){
 			
 				<th align="right"> CPF: </th>
 				<td>
-					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_CPF%>" name="<%=ServletProfessor.NM_PARAMETRO_CPF%>" value="">		
+					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_CPF%>" name="<%=ServletProfessor.NM_PARAMETRO_CPF%>" value="" onkeyup="formatarCPF(event);" maxlength="14">		
 				</td>
 				
 				<th align="right"> Formação: </th>

@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,7 +31,7 @@ public class ServletProfessor extends ServletGenerico {
 
 	private static final String NM_JSP_INCLUIR_SERVICO = "/professor/cadastrarProfessor.jsp";
 
-	private static final String NM_JSP_ALTERAR_TURMA = "/professor/alterarProfessor.jsp";
+	private static final String NM_JSP_ALTERAR_PROFESSOR = "/professor/alterarProfessor.jsp";
 
 	public static final String NM_PARAMETRO_CHAVE = "chave";
 	
@@ -261,24 +262,49 @@ public class ServletProfessor extends ServletGenerico {
 		// recupera os parametros do request
 		chave = request.getParameter(NM_PARAMETRO_CHAVE);
 		
-		String[] chaveTurma = chave.split(";");
-		String idTurma = chaveTurma[0];
-		String dsTurma = chaveTurma[1];
-		String turno = chaveTurma[2];
-		String qtMaxAlunos = chaveTurma[3];
+		String[] chaveProfessor = chave.split(";");
+		String idProfessor = chaveProfessor[0];
 		
-		//seta os atributos no request para recuperar na JSP
-		request.setAttribute(NM_PARAMETRO_ID_TURMA, idTurma);
-		request.setAttribute(NM_PARAMETRO_DS_TURMA, dsTurma);
+		PessoaDAO pessoaDAO = new PessoaDAO();
+		ArrayList<Pessoa>colecaoPessoa = pessoaDAO.consultar(idProfessor, "");
 		
-		if(turno.equals(NM_TURNO_MANHA)) {
-			request.setAttribute(NM_PARAMETRO_TURNO, "1");			
-		}else{
-			request.setAttribute(NM_PARAMETRO_TURNO, "2");
+		Iterator<Pessoa> itPessoa = colecaoPessoa.iterator();
+		while(itPessoa.hasNext()) {
+			Pessoa pessoa = itPessoa.next();
+			
+			//seta os atributos no request para recuperar na JSP
+			request.setAttribute(NM_PARAMETRO_NOME, pessoa.getNome());
+			request.setAttribute(NM_PARAMETRO_DT_NASCIMENTO, String.valueOf(pessoa.getDtNascimento()));
+			request.setAttribute(NM_PARAMETRO_NATURALIDADE, pessoa.getNaturalidade());
+			request.setAttribute(NM_PARAMETRO_ENDERECO, pessoa.getEndereco());
+			request.setAttribute(NM_PARAMETRO_NUMERO, String.valueOf(pessoa.getNumero()));
+			request.setAttribute(NM_PARAMETRO_BAIRRO, pessoa.getBairro());
+			request.setAttribute(NM_PARAMETRO_CIDADE, pessoa.getCidade());
+			request.setAttribute(NM_PARAMETRO_ESTADO, pessoa.getEstado());
+			request.setAttribute(NM_PARAMETRO_TELEFONE, pessoa.getTelefone());
+			request.setAttribute(NM_PARAMETRO_IDENTIDADE, pessoa.getIdentidade());
+			request.setAttribute(NM_PARAMETRO_CPF, pessoa.getId());
+			
 		}
-		request.setAttribute(NM_PARAMETRO_QT_MAX_ALUNOS, qtMaxAlunos);
-
-		this.redirecionarPagina(request, response, NM_JSP_ALTERAR_TURMA);
+		
+		ProfessorDAO professorDAO = new ProfessorDAO();
+		ArrayList<Professor> colecaoProfessor = professorDAO.consultar(idProfessor);
+		
+		Iterator<Professor> itProfessor = colecaoProfessor.iterator();
+		while(itProfessor.hasNext()) {
+			Professor professor = itProfessor.next();
+			
+			//seta os atributos no request para recuperar na JSP
+			request.setAttribute(NM_PARAMETRO_FORMACAO, professor.getFormacao());
+			request.setAttribute(NM_PARAMETRO_ESTADO_CIVIL, professor.getEstadoCivil());
+			request.setAttribute(NM_PARAMETRO_QT_DEPENDENTE, String.valueOf(professor.getQtDependente()));
+			request.setAttribute(NM_PARAMETRO_DT_ADMISSAO, String.valueOf(professor.getDtAdmissao()));
+			request.setAttribute(NM_PARAMETRO_CARGA_HORARIA, String.valueOf(professor.getCargaHoraria()));
+			request.setAttribute(NM_PARAMETRO_SALARIO, String.valueOf(professor.getSalario()));
+			
+		}
+		
+		this.redirecionarPagina(request, response, NM_JSP_ALTERAR_PROFESSOR);
 	}
 
 	@Override

@@ -140,7 +140,7 @@ public class PessoaDAO extends Conexao{
 		
 	}
 	
-	public ArrayList<Pessoa> consultar(String pMatricula, String pNome){
+	public ArrayList<Pessoa> consultar(String pId, String pNome){
 		String sql = "SELECT * FROM PESSOA ";
 		String where = "WHERE ";
 		String sql2 = "ID_PESSOA = ?";
@@ -152,7 +152,7 @@ public class PessoaDAO extends Conexao{
 		int contador=0;
 		try{
 			
-			if(pMatricula != null && !pMatricula.equals("")){
+			if(pId != null && !pId.equals("")){
 				sqlComplementar = sql2;
 				conector = "\n AND ";
 			}
@@ -167,9 +167,9 @@ public class PessoaDAO extends Conexao{
 			
 			PreparedStatement preparador = getPreparedStatement(sql);
 			
-			if(pMatricula != null && !pMatricula.equals("")){
+			if(pId != null && !pId.equals("")){
 				contador++;
-				preparador.setString(contador, pMatricula);
+				preparador.setString(contador, pId);
 			}
 			
 			if(pNome != null && !pNome.equals("")){

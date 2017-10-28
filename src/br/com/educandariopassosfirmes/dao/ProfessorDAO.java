@@ -1,8 +1,11 @@
 package br.com.educandariopassosfirmes.dao;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import br.com.educandariopassosfirmes.entidades.Pessoa;
 import br.com.educandariopassosfirmes.entidades.Professor;
 
 public class ProfessorDAO extends Conexao{
@@ -65,6 +68,55 @@ public class ProfessorDAO extends Conexao{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public ArrayList<Professor> consultar(String pId){
+		String sql = "SELECT * FROM PROFESSOR ";
+		String where = "WHERE ";
+		String sql2 = "ID_PESSOA = ?";
+		String sqlComplementar = "";
+		Professor professor = null;
+		ArrayList<Professor> listProfessor = new ArrayList<Professor>();
+		int contador=0;
+		try{
+			
+			if(pId != null && !pId.equals("")){
+				sqlComplementar = sql2;
+			}
+			
+			if(!sqlComplementar.equals("")){
+				sql = sql + where + sqlComplementar;
+			}
+			
+			PreparedStatement preparador = getPreparedStatement(sql);
+			
+			if(pId != null && !pId.equals("")){
+				contador++;
+				preparador.setString(contador, pId);
+			}
+			
+			ResultSet resultado = preparador.executeQuery();
+			
+			while(resultado.next()){
+				professor = new Professor();
+				
+				professor.setId(resultado.getString("ID_PESSOA"));
+				professor.setFormacao(resultado.getString("FORMACAO"));
+				professor.setEstadoCivil(resultado.getString("ESTADO_CIVIL"));
+				professor.setQtDependente(resultado.getInt("DEPENDENTE"));
+				professor.setDtAdmissao(resultado.getDate("DATA_ADMISSAO"));
+				professor.setCargaHoraria(resultado.getInt("CARGA_HORARIO"));
+				professor.setSalario(resultado.getDouble("SALARIO"));
+				
+				listProfessor.add(professor);
+				
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return listProfessor;
+		
 	}
 	
 	
