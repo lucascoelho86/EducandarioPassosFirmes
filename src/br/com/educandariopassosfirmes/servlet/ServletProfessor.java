@@ -18,7 +18,6 @@ import br.com.educandariopassosfirmes.dao.ProfessorDAO;
 import br.com.educandariopassosfirmes.dao.TurmaDAO;
 import br.com.educandariopassosfirmes.entidades.Pessoa;
 import br.com.educandariopassosfirmes.entidades.Professor;
-import br.com.educandariopassosfirmes.entidades.Turma;
 
 
 /**
@@ -54,6 +53,7 @@ public class ServletProfessor extends ServletGenerico {
 	public static final String NM_PARAMETRO_TELEFONE = "telefone";
 	public static final String NM_PARAMETRO_IDENTIDADE = "identidade";
 	public static final String NM_PARAMETRO_CPF = "cpf";
+	public static final String NM_PARAMETRO_CPF_ANTERIOR = "cpfAnterior";
 	public static final String NM_PARAMETRO_FORMACAO = "formacao";
 	public static final String NM_PARAMETRO_ESTADO_CIVIL = "estadoCivil";
 	public static final String NM_PARAMETRO_QT_DEPENDENTE = "qtDependente";
@@ -312,34 +312,89 @@ public class ServletProfessor extends ServletGenerico {
 			HttpServletResponse response) throws ServletException, IOException {
 
 		// declara as variaveis
-		String idTurma = "";
-		String descricao = "";
-		String turno = "";
-		String dsTurno = "";
-		String qtMaxAlunos = "";
+		String nome = "";
+		String dtNascimento = "";
+		String naturalidade = "";
+		String endereco = "";
+		String numero = "";
+		String bairro = "";
+		String cidade = "";
+		String estado = "";
+		String telefone = "";
+		String identidade = "";
+		String cpf = "";
+		String formacao = "";
+		String estadoCivil = "";
+		String qtDependente = "";
+		String dtAdmissao = "";
+		String cargaHoraria = "";
+		String salario = "";
+		Date dtNasc = null;
+		Date dtAdm = null;
 
 		// recupera os parametros do request
-		idTurma = request.getParameter(NM_PARAMETRO_ID_TURMA);
-		descricao = request.getParameter(NM_PARAMETRO_DS_TURMA);
-		turno = request.getParameter(NM_PARAMETRO_SELECT_DISCIPLINA);
-		qtMaxAlunos = request.getParameter(NM_PARAMETRO_QT_MAX_ALUNOS);
-
-		if(turno.equals("1")) {
-			dsTurno = NM_TURNO_MANHA;
-		}else if(turno.equals("2")) {
-			dsTurno = NM_TURNO_TARDE;
-		}
+		nome = request.getParameter(NM_PARAMETRO_NOME);
+		dtNascimento = request.getParameter(NM_PARAMETRO_DT_NASCIMENTO);
+		naturalidade = request.getParameter(NM_PARAMETRO_NATURALIDADE);
+		endereco = request.getParameter(NM_PARAMETRO_ENDERECO);
+		numero = request.getParameter(NM_PARAMETRO_NUMERO);
+		bairro = request.getParameter(NM_PARAMETRO_BAIRRO);
+		cidade = request.getParameter(NM_PARAMETRO_CIDADE);
+		estado = request.getParameter(NM_PARAMETRO_ESTADO);
+		telefone = request.getParameter(NM_PARAMETRO_TELEFONE);
+		identidade = request.getParameter(NM_PARAMETRO_IDENTIDADE);
+		cpf = request.getParameter(NM_PARAMETRO_CPF);
+		formacao = request.getParameter(NM_PARAMETRO_FORMACAO);
+		estadoCivil = request.getParameter(NM_PARAMETRO_ESTADO_CIVIL);
+		qtDependente = request.getParameter(NM_PARAMETRO_QT_DEPENDENTE);
+		dtAdmissao = request.getParameter(NM_PARAMETRO_DT_ADMISSAO);
+		cargaHoraria = request.getParameter(NM_PARAMETRO_CARGA_HORARIA);
+		salario = request.getParameter(NM_PARAMETRO_SALARIO);
 				
-		//monta a entidade disciplina para alterar
-		Turma turma = new Turma();
-		turma.setIdTurma(Integer.valueOf(idTurma));
-		turma.setDsTurma(descricao);
-		turma.setTurno(dsTurno);
-		turma.setQtMaxAlunos(Integer.valueOf(qtMaxAlunos));
-
-		//altera em TURMA
-		TurmaDAO turmaDAO = new TurmaDAO();
-		turmaDAO.alterar(turma);
+		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+				
+		try {
+			dtNasc = formato.parse(dtNascimento);
+			dtAdm = formato.parse(dtAdmissao);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		cpf = cpf.replace(".", "");
+		cpf = cpf.replace("-", "");
+				
+		//monta a entidade pessoa para alterar
+		Pessoa pessoa = new Pessoa();
+		pessoa.setId(cpf);
+		pessoa.setNome(nome);
+		pessoa.setDtNascimento(new java.sql.Date(dtNasc.getTime()));
+		pessoa.setNaturalidade(naturalidade);
+		pessoa.setEndereco(endereco);
+		pessoa.setNumero(Integer.valueOf(numero));
+		pessoa.setBairro(bairro);
+		pessoa.setCidade(cidade);
+		pessoa.setEstado(estado);
+		pessoa.setTelefone(telefone);
+		pessoa.setIdentidade(identidade);
+				
+		//altera em PESSOA
+		PessoaDAO pessoaDAO = new PessoaDAO();
+		pessoaDAO.alterar(pessoa);
+				
+		//monta a entidade professor para alterar
+		Professor professor = new Professor();
+		professor.setId(cpf);
+		professor.setFormacao(formacao);
+		professor.setEstadoCivil(estadoCivil);
+		professor.setQtDependente(Integer.valueOf(qtDependente));
+		professor.setDtAdmissao(new java.sql.Date(dtAdm.getTime()));
+		professor.setCargaHoraria(Integer.valueOf(cargaHoraria));
+		professor.setSalario(Double.valueOf(salario));
+				
+		//inclui em PESSOA
+		ProfessorDAO professorDAO = new ProfessorDAO();
+		professorDAO.alterar(professor);
 				
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
 	}

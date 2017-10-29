@@ -42,21 +42,22 @@ public class PessoaDAO extends Conexao{
 	
 	public void alterar(Pessoa pessoa){
 		
-		String sql = "UPDATE PESSOA SET dt_nascimento=?, naturalidade=?, endereco=?, numero=?, bairro=?, cidade=?, estado=?, telefone=?, nome=? WHERE id_pessoa=?";
+		String sql = "UPDATE PESSOA SET NOME=?, DT_NASCIMENTO=?, NATURALIDADE=?, ENDERECO=?, NUMERO=?, BAIRRO=?, CIDADE=?, ESTADO=?, TELEFONE=?, IDENTIDADE=? WHERE ID_PESSOA=?";
 		
 		try {
 			PreparedStatement preparador = getPreparedStatement(sql);
 			
-			preparador.setDate(1, Date.valueOf(pessoa.getDtNascimento()));
-			preparador.setString(2, pessoa.getNaturalidade());
-			preparador.setString(3, pessoa.getEndereco());
-			preparador.setInt(4, pessoa.getNumero());
-			preparador.setString(5, pessoa.getBairro());
-			preparador.setString(6, pessoa.getCidade());
-			preparador.setString(7, pessoa.getEstado());
-			preparador.setString(8, pessoa.getTelefone());
-			preparador.setString(9, pessoa.getNome());
-			preparador.setString(10, pessoa.getId());
+			preparador.setString(1, pessoa.getNome());
+			preparador.setDate(2, pessoa.getDtNascimento());
+			preparador.setString(3, pessoa.getNaturalidade());
+			preparador.setString(4, pessoa.getEndereco());
+			preparador.setInt(5, pessoa.getNumero());
+			preparador.setString(6, pessoa.getBairro());
+			preparador.setString(7, pessoa.getCidade());
+			preparador.setString(8, pessoa.getEstado());
+			preparador.setString(9, pessoa.getTelefone());
+			preparador.setString(10, pessoa.getIdentidade());
+			preparador.setString(11, pessoa.getId());
 			
 			preparador.execute();
 			preparador.close();

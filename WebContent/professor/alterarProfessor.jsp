@@ -38,6 +38,24 @@ function formatarCPF(event){
 	document.getElementById("<%=ServletProfessor.NM_PARAMETRO_CPF%>").value = valor;
 }
 
+function formatarCamposData(){
+	var valorDtNasc = document.getElementById("<%=ServletProfessor.NM_PARAMETRO_DT_NASCIMENTO%>").value;
+	var valorDtAdm = document.getElementById("<%=ServletProfessor.NM_PARAMETRO_DT_ADMISSAO%>").value;
+	var resDtNasc = valorDtNasc.split("-");
+	var resDtAdm = valorDtAdm.split("-");
+	var anoDtNasc = resDtNasc[0];
+	var mesDtNasc = resDtNasc[1];
+	var diaDtNasc = resDtNasc[2];
+	var anoDtAdm = resDtAdm[0];
+	var mesDtAdm = resDtAdm[1];
+	var diaDtAdm = resDtAdm[2];
+	
+	valorDtNasc = diaDtNasc.concat("/").concat(mesDtNasc).concat("/").concat(anoDtNasc);
+	valorDtAdm = diaDtAdm.concat("/").concat(mesDtAdm).concat("/").concat(anoDtAdm);
+	document.getElementById("<%=ServletProfessor.NM_PARAMETRO_DT_NASCIMENTO%>").value = valorDtNasc;
+	document.getElementById("<%=ServletProfessor.NM_PARAMETRO_DT_ADMISSAO%>").value = valorDtAdm;
+}
+
 function formatarCPFOnload(){
 	var valor = document.getElementById("<%=ServletProfessor.NM_PARAMETRO_CPF%>").value;
 	var tamanhoValor = valor.length;
@@ -96,7 +114,7 @@ salario = (String) request.getAttribute(ServletProfessor.NM_PARAMETRO_SALARIO);
 
 %>
 
-<body onload="formatarCPFOnload();">
+<body onload="formatarCPFOnload(); formatarCamposData();">
 
 <jsp:include page="cabecalho.jsp"/>
 
@@ -165,7 +183,7 @@ salario = (String) request.getAttribute(ServletProfessor.NM_PARAMETRO_SALARIO);
 			
 				<th align="right"> CPF: </th>
 				<td>
-					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_CPF%>" name="<%=ServletProfessor.NM_PARAMETRO_CPF%>" value="<%=cpf%>" onkeyup="formatarCPF(event);" maxlength="14">		
+					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_CPF%>" name="<%=ServletProfessor.NM_PARAMETRO_CPF%>" value="<%=cpf%>" onkeyup="formatarCPF(event);" maxlength="14" readonly="readonly">		
 				</td>
 				
 				<th align="right"> Formação: </th>

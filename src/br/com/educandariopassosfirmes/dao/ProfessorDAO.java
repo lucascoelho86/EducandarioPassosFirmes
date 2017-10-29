@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import br.com.educandariopassosfirmes.entidades.Pessoa;
 import br.com.educandariopassosfirmes.entidades.Professor;
 
 public class ProfessorDAO extends Conexao{
@@ -35,13 +34,18 @@ public class ProfessorDAO extends Conexao{
 	
 	public void alterar(Professor pProfessor){
 		
-		String sql = "UPDATE PROFESSOR SET id_funcionario=? WHERE id_funcionario=?";
+		String sql = "UPDATE PROFESSOR SET FORMACAO=?, ESTADO_CIVIL=?, DEPENDENTE=?, DATA_ADMISSAO=?, CARGA_HORARIO=?, SALARIO=? WHERE ID_PESSOA=?";
 		
 		try {
 			PreparedStatement preparador = getPreparedStatement(sql);
 			
-			preparador.setString(1, pProfessor.getId());
-			preparador.setString(2, pProfessor.getId());
+			preparador.setString(1, pProfessor.getFormacao());
+			preparador.setString(2, pProfessor.getEstadoCivil());
+			preparador.setInt(3, pProfessor.getQtDependente());
+			preparador.setDate(4, pProfessor.getDtAdmissao());
+			preparador.setInt(5, pProfessor.getCargaHoraria());
+			preparador.setDouble(6, pProfessor.getSalario());
+			preparador.setString(7, pProfessor.getId());
 			
 			preparador.execute();
 			preparador.close();
