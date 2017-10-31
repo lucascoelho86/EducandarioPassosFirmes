@@ -58,7 +58,7 @@ public class ProfessorDAO extends Conexao{
 	
 	public void excluir(String pId){
 		
-		String sql = "DELETE FROM PROFESSOR WHERE id_funcionario=?";
+		String sql = "DELETE FROM PROFESSOR WHERE ID_PESSOA=?";
 		
 		try {
 			PreparedStatement preparador = getPreparedStatement(sql);

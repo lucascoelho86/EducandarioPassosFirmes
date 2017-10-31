@@ -179,6 +179,13 @@ public class ServletProfessor extends ServletGenerico {
 			e.printStackTrace();
 		}
 		
+		cpf = cpf.replace(".", "");
+		cpf = cpf.replace("-", "");
+		
+		telefone = telefone.replace("(", "");
+		telefone = telefone.replace(")", "");
+		telefone = telefone.replace("-", "");
+		
 		//monta a entidade pessoa para incluir
 		Pessoa pessoa = new Pessoa();
 		pessoa.setId(cpf);
@@ -243,11 +250,13 @@ public class ServletProfessor extends ServletGenerico {
 		// recupera os parametros do request
 		chave = request.getParameter(NM_PARAMETRO_CHAVE);
 				
-		String[] chaveTurma = chave.split(";");
-		String idTurma = chaveTurma[0];
+		String idProfessor = chave;
 
-		TurmaDAO turmaDAO = new TurmaDAO();		
-		turmaDAO.excluir(Integer.valueOf(idTurma));
+		ProfessorDAO professorDAO = new ProfessorDAO();		
+		professorDAO.excluir(idProfessor);
+		
+		PessoaDAO pessoaDAO = new PessoaDAO();
+		pessoaDAO.excluir(idProfessor);
 		
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
 	}
@@ -262,8 +271,7 @@ public class ServletProfessor extends ServletGenerico {
 		// recupera os parametros do request
 		chave = request.getParameter(NM_PARAMETRO_CHAVE);
 		
-		String[] chaveProfessor = chave.split(";");
-		String idProfessor = chaveProfessor[0];
+		String idProfessor = chave;
 		
 		PessoaDAO pessoaDAO = new PessoaDAO();
 		ArrayList<Pessoa>colecaoPessoa = pessoaDAO.consultar(idProfessor, "");
@@ -363,6 +371,10 @@ public class ServletProfessor extends ServletGenerico {
 		
 		cpf = cpf.replace(".", "");
 		cpf = cpf.replace("-", "");
+		
+		telefone = telefone.replace("(", "");
+		telefone = telefone.replace(")", "");
+		telefone = telefone.replace("-", "");
 				
 		//monta a entidade pessoa para alterar
 		Pessoa pessoa = new Pessoa();

@@ -12,7 +12,8 @@
 <title>Cadastrar Professor</title>
 
 </head>
-
+<SCRIPT language="JavaScript" type="text/javascript"
+	src="js/biblioteca.js"></SCRIPT>
 <script type="text/javascript">
 
 function desistir(){
@@ -142,7 +143,7 @@ function formatarCPF(event){
 			
 				<th align="right"> Salário: </th>
 				<td>
-					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_SALARIO%>" name="<%=ServletProfessor.NM_PARAMETRO_SALARIO%>" value="">		
+					<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_SALARIO%>" name="<%=ServletProfessor.NM_PARAMETRO_SALARIO%>" value="" onkeypress="mascara(this,moeda)">		
 				</td>
 			</tr>
 		</tbody>
