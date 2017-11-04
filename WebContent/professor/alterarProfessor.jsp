@@ -1,3 +1,4 @@
+<%@page import="java.text.NumberFormat"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -14,7 +15,7 @@
 </head>
 <SCRIPT language="JavaScript" type="text/javascript"
 	src="js/biblioteca.js"></SCRIPT>
-	
+
 <script type="text/javascript">
 
 function desistir(){
@@ -44,45 +45,32 @@ function alterar(){
 	String qtDependente = "";
 	String dtAdmissao = "";
 	String cargaHoraria = "";
-	String salario = "";
+	Double salario;
 
-	nome = (String) request
-			.getAttribute(ServletProfessor.NM_PARAMETRO_NOME);
-	dtNascimento = (String) request
-			.getAttribute(ServletProfessor.NM_PARAMETRO_DT_NASCIMENTO);
-	naturalidade = (String) request
-			.getAttribute(ServletProfessor.NM_PARAMETRO_NATURALIDADE);
-	endereco = (String) request
-			.getAttribute(ServletProfessor.NM_PARAMETRO_ENDERECO);
-	numero = (String) request
-			.getAttribute(ServletProfessor.NM_PARAMETRO_NUMERO);
-	bairro = (String) request
-			.getAttribute(ServletProfessor.NM_PARAMETRO_BAIRRO);
-	cidade = (String) request
-			.getAttribute(ServletProfessor.NM_PARAMETRO_CIDADE);
-	estado = (String) request
-			.getAttribute(ServletProfessor.NM_PARAMETRO_ESTADO);
-	telefone = (String) request
-			.getAttribute(ServletProfessor.NM_PARAMETRO_TELEFONE);
-	identidade = (String) request
-			.getAttribute(ServletProfessor.NM_PARAMETRO_IDENTIDADE);
-	cpf = (String) request
-			.getAttribute(ServletProfessor.NM_PARAMETRO_CPF);
-	formacao = (String) request
-			.getAttribute(ServletProfessor.NM_PARAMETRO_FORMACAO);
-	estadoCivil = (String) request
-			.getAttribute(ServletProfessor.NM_PARAMETRO_ESTADO_CIVIL);
-	qtDependente = (String) request
-			.getAttribute(ServletProfessor.NM_PARAMETRO_QT_DEPENDENTE);
-	dtAdmissao = (String) request
-			.getAttribute(ServletProfessor.NM_PARAMETRO_DT_ADMISSAO);
-	cargaHoraria = (String) request
-			.getAttribute(ServletProfessor.NM_PARAMETRO_CARGA_HORARIA);
-	salario = (String) request
-			.getAttribute(ServletProfessor.NM_PARAMETRO_SALARIO);
+	nome = (String) request.getAttribute(ServletProfessor.NM_PARAMETRO_NOME);
+	dtNascimento = (String) request.getAttribute(ServletProfessor.NM_PARAMETRO_DT_NASCIMENTO);
+	naturalidade = (String) request.getAttribute(ServletProfessor.NM_PARAMETRO_NATURALIDADE);
+	endereco = (String) request.getAttribute(ServletProfessor.NM_PARAMETRO_ENDERECO);
+	numero = (String) request.getAttribute(ServletProfessor.NM_PARAMETRO_NUMERO);
+	bairro = (String) request.getAttribute(ServletProfessor.NM_PARAMETRO_BAIRRO);
+	cidade = (String) request.getAttribute(ServletProfessor.NM_PARAMETRO_CIDADE);
+	estado = (String) request.getAttribute(ServletProfessor.NM_PARAMETRO_ESTADO);
+	telefone = (String) request.getAttribute(ServletProfessor.NM_PARAMETRO_TELEFONE);
+	identidade = (String) request.getAttribute(ServletProfessor.NM_PARAMETRO_IDENTIDADE);
+	cpf = (String) request.getAttribute(ServletProfessor.NM_PARAMETRO_CPF);
+	formacao = (String) request.getAttribute(ServletProfessor.NM_PARAMETRO_FORMACAO);
+	estadoCivil = (String) request.getAttribute(ServletProfessor.NM_PARAMETRO_ESTADO_CIVIL);
+	qtDependente = (String) request.getAttribute(ServletProfessor.NM_PARAMETRO_QT_DEPENDENTE);
+	dtAdmissao = (String) request.getAttribute(ServletProfessor.NM_PARAMETRO_DT_ADMISSAO);
+	cargaHoraria = (String) request.getAttribute(ServletProfessor.NM_PARAMETRO_CARGA_HORARIA);
+	salario = (Double) request.getAttribute(ServletProfessor.NM_PARAMETRO_SALARIO);
+	NumberFormat nf = NumberFormat.getCurrencyInstance();
+	String salarioFormatado = nf.format(salario);
+	salarioFormatado = salarioFormatado.replace("R$", "").trim();
 %>
 
-<body onload="formatarCPFOnload(); formatarCamposDataOnload(); formatarCampoTelefoneOnload();">
+<body
+	onload="formatarCPFOnload(); formatarCamposDataOnload(); formatarCampoTelefoneOnload();">
 
 	<jsp:include page="cabecalho.jsp" />
 
@@ -100,20 +88,21 @@ function alterar(){
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_NOME%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_NOME%>"
-									value="<%=nome%>" size="50"></td>
+									value="<%=nome%>" size="50" onkeypress='return letras(event)'></td>
 
 								<th align="right">Data de Nascimento:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_DT_NASCIMENTO%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_DT_NASCIMENTO%>"
 									onkeyup="formatarCamposData(this.name, this, event)"
-									value="<%=dtNascimento%>"></td>
+									value="<%=dtNascimento%>"
+									onkeypress='return SomenteNumero(event)' maxlength="10"></td>
 
 								<th align="right">Naturalidade:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_NATURALIDADE%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_NATURALIDADE%>"
-									value="<%=naturalidade%>"></td>
+									value="<%=naturalidade%>" onkeypress='return letras(event)'></td>
 							</tr>
 							<tr>
 								<th width="10%" align="right">Endereço:</th>
@@ -126,84 +115,95 @@ function alterar(){
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_NUMERO%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_NUMERO%>"
-									value="<%=numero%>"></td>
+									value="<%=numero%>" onkeypress='return SomenteNumero(event)'></td>
 
 								<th align="right">Bairro:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_BAIRRO%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_BAIRRO%>"
-									value="<%=bairro%>"></td>
+									value="<%=bairro%>" onkeypress='return letras(event)'></td>
 							</tr>
 							<tr>
 								<th width="10%" align="right">Cidade:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_CIDADE%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_CIDADE%>"
-									value="<%=cidade%>" size="20"></td>
+									value="<%=cidade%>" size="20" onkeypress='return letras(event)'></td>
 
 								<th align="right">Estado:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_ESTADO%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_ESTADO%>"
-									value="<%=estado%>"></td>
+									value="<%=estado%>" onkeypress='return letras(event)'></td>
 
 								<th align="right">Telefone:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_TELEFONE%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_TELEFONE%>"
-									value="<%=telefone%>" onkeyup="formatarCampoTelefone(this.name, this, event);"></td>
+									value="<%=telefone%>"
+									onkeyup="formatarCampoTelefone(this.name, this, event);"
+									onkeypress='return SomenteNumero(event)'></td>
 							</tr>
 							<tr>
 								<th width="10%" align="right">Identidade:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_IDENTIDADE%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_IDENTIDADE%>"
-									value="<%=identidade%>" size="20"></td>
+									value="<%=identidade%>" size="20"
+									onkeypress='return SomenteNumero(event)'></td>
 
 								<th align="right">CPF:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_CPF%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_CPF%>" value="<%=cpf%>"
-									onkeyup="formatarCPF(event);" maxlength="14"
+									onkeyup="formatarCPF(event);"
+									onkeypress='return SomenteNumero(event)' maxlength="14"
 									readonly="readonly"></td>
 
 								<th align="right">Formação:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_FORMACAO%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_FORMACAO%>"
-									value="<%=formacao%>"></td>
+									value="<%=formacao%>" onkeypress='return letras(event)'></td>
 							</tr>
 							<tr>
 								<th width="10%" align="right">Estado Civil:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_ESTADO_CIVIL%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_ESTADO_CIVIL%>"
-									value="<%=estadoCivil%>" size="20"></td>
+									value="<%=estadoCivil%>" size="20"
+									onkeypress='return letras(event)'></td>
 
 								<th align="right">Quantidade Dependentes:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_QT_DEPENDENTE%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_QT_DEPENDENTE%>"
-									value="<%=qtDependente%>"></td>
+									value="<%=qtDependente%>"
+									onkeypress='return SomenteNumero(event)'></td>
 
 								<th align="right">Data Admissão:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_DT_ADMISSAO%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_DT_ADMISSAO%>"
-									value="<%=dtAdmissao%>"></td>
+									value="<%=dtAdmissao%>"
+									onkeyup="formatarCamposData(this.name, this, event)"
+									onkeypress='return SomenteNumero(event)' maxlength="10"></td>
 							</tr>
 							<tr>
 								<th width="10%" align="right">Carga Horária:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_CARGA_HORARIA%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_CARGA_HORARIA%>"
-									value="<%=cargaHoraria%>" size="10"></td>
+									value="<%=cargaHoraria%>" size="10"
+									onkeypress='return SomenteNumero(event)'></td>
 
 								<th align="right">Salário:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_SALARIO%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_SALARIO%>"
-									value="<%=salario%>" onkeypress="moeda(this.value);" ></td>
+									value="<%=salarioFormatado%>"
+									onKeydown="Formata(this,20,event,2)"
+									onkeypress='return SomenteNumero(event)'></td>
 							</tr>
 						</tbody>
 					</table>

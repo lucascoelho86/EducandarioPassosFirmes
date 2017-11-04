@@ -139,14 +139,25 @@ if(colecaoPessoa == null){
 					<button type="submit" id="botaoCadastrar" name="botaoCadastrar" onclick="exibirInclusao();">Incluir</button>
 					
 			</td>
-			<td style="width:700px; text-align: center">
-					<button type="submit" id="botaoAlterar" name="botaoAlterar" onclick="exibirAlteracao();">Alterar</button>
-					
-			</td>
-			<td style="width:800px; text-align: center">
-					<button type="submit" id="botaoExcluir" name="botaoExcluir" onclick="excluir();">Excluir</button>
-					
-			</td>
+			<%if(!colecaoPessoa.isEmpty()){%>
+				<td style="width:700px; text-align: center">
+						<button type="submit" id="botaoAlterar" name="botaoAlterar" onclick="exibirAlteracao();">Alterar</button>
+						
+				</td>
+				<td style="width:800px; text-align: center">
+						<button type="submit" id="botaoExcluir" name="botaoExcluir" onclick="excluir();">Excluir</button>
+						
+				</td>
+			<%}else{%>
+				<td style="width:700px; text-align: center">
+						<button type="submit" id="botaoAlterar" name="botaoAlterar" onclick="exibirAlteracao();" disabled>Alterar</button>
+						
+				</td>
+				<td style="width:800px; text-align: center">
+						<button type="submit" id="botaoExcluir" name="botaoExcluir" onclick="excluir();" disabled>Excluir</button>
+						
+				</td>
+			<%}%>
 		</tr>
 	</table>
 </form>

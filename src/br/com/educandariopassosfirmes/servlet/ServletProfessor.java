@@ -1,11 +1,14 @@
 package br.com.educandariopassosfirmes.servlet;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -149,6 +152,7 @@ public class ServletProfessor extends ServletGenerico {
 		String salario = "";
 		Date dtNasc = null;
 		Date dtAdm = null;
+		double valorSalario = 0;
 
 		// recupera os parametros do request
 		nome = request.getParameter(NM_PARAMETRO_NOME);
@@ -186,6 +190,15 @@ public class ServletProfessor extends ServletGenerico {
 		telefone = telefone.replace(")", "");
 		telefone = telefone.replace("-", "");
 		
+		DecimalFormatSymbols dfs = new DecimalFormatSymbols (new Locale ("pt", "BR"));
+		DecimalFormat df = new DecimalFormat ("#,##0.00", dfs);
+		try {
+			valorSalario = df.parse (salario).doubleValue();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		//monta a entidade pessoa para incluir
 		Pessoa pessoa = new Pessoa();
 		pessoa.setId(cpf);
@@ -212,7 +225,7 @@ public class ServletProfessor extends ServletGenerico {
 		professor.setQtDependente(Integer.valueOf(qtDependente));
 		professor.setDtAdmissao(new java.sql.Date(dtAdm.getTime()));
 		professor.setCargaHoraria(Integer.valueOf(cargaHoraria));
-		professor.setSalario(Double.valueOf(salario));
+		professor.setSalario(valorSalario);
 		
 		//inclui em PESSOA
 		ProfessorDAO professorDAO = new ProfessorDAO();
@@ -308,7 +321,7 @@ public class ServletProfessor extends ServletGenerico {
 			request.setAttribute(NM_PARAMETRO_QT_DEPENDENTE, String.valueOf(professor.getQtDependente()));
 			request.setAttribute(NM_PARAMETRO_DT_ADMISSAO, String.valueOf(professor.getDtAdmissao()));
 			request.setAttribute(NM_PARAMETRO_CARGA_HORARIA, String.valueOf(professor.getCargaHoraria()));
-			request.setAttribute(NM_PARAMETRO_SALARIO, String.valueOf(professor.getSalario()));
+			request.setAttribute(NM_PARAMETRO_SALARIO, professor.getSalario());
 			
 		}
 		
@@ -339,6 +352,7 @@ public class ServletProfessor extends ServletGenerico {
 		String salario = "";
 		Date dtNasc = null;
 		Date dtAdm = null;
+		double valorSalario = 0;
 
 		// recupera os parametros do request
 		nome = request.getParameter(NM_PARAMETRO_NOME);
@@ -375,6 +389,15 @@ public class ServletProfessor extends ServletGenerico {
 		telefone = telefone.replace("(", "");
 		telefone = telefone.replace(")", "");
 		telefone = telefone.replace("-", "");
+		
+		DecimalFormatSymbols dfs = new DecimalFormatSymbols (new Locale ("pt", "BR"));
+		DecimalFormat df = new DecimalFormat ("#,##0.00", dfs);
+		try {
+			valorSalario = df.parse (salario).doubleValue();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 				
 		//monta a entidade pessoa para alterar
 		Pessoa pessoa = new Pessoa();
@@ -402,7 +425,7 @@ public class ServletProfessor extends ServletGenerico {
 		professor.setQtDependente(Integer.valueOf(qtDependente));
 		professor.setDtAdmissao(new java.sql.Date(dtAdm.getTime()));
 		professor.setCargaHoraria(Integer.valueOf(cargaHoraria));
-		professor.setSalario(Double.valueOf(salario));
+		professor.setSalario(valorSalario);
 				
 		//inclui em PESSOA
 		ProfessorDAO professorDAO = new ProfessorDAO();
