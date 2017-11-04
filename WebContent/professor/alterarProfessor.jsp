@@ -1,6 +1,8 @@
 <%@page import="java.text.NumberFormat"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.Disciplina"%>
+<%@page import="br.com.educandariopassosfirmes.dao.DisciplinaDAO"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
