@@ -81,14 +81,14 @@ function alterar(){
 		<table width="100%">
 			<tr>
 				<td>
-					<table width="50%" align="center" style="background-color: #99CCFF">
+					<table width="90%" align="center" style="background-color: #99CCFF">
 						<tbody>
 							<tr>
 								<th width="10%" align="right">Nome:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_NOME%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_NOME%>"
-									value="<%=nome%>" size="50" onkeypress='return letras(event)'></td>
+									value="<%=nome%>" size="40" onkeypress='return letras(event)'></td>
 
 								<th align="right">Data de Nascimento:</th>
 								<td><input type="text"
@@ -109,7 +109,7 @@ function alterar(){
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_ENDERECO%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_ENDERECO%>"
-									value="<%=endereco%>" size="50"></td>
+									value="<%=endereco%>" size="40"></td>
 
 								<th align="right">Número:</th>
 								<td><input type="text"
@@ -207,7 +207,29 @@ function alterar(){
 							</tr>
 						</tbody>
 					</table>
-
+					<br>
+					<table width="90%" align="center" style="background-color: #99CCFF">
+						<tr>
+							<TH align="center" width="1%">X</TH>
+							<TH align="left" width="10%" >Disciplinas</TH>
+						</tr>
+					</table>
+					<table width="90%" align="center" style="background-color: #99CCFF">
+						<%	DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
+						ArrayList<Disciplina>colecaoDisciplina = disciplinaDAO.consultar(0, "", "");
+						boolean ultimaDisciplina = false;
+						for(int x = 0; x < colecaoDisciplina.size(); x++){
+							Disciplina disciplina = colecaoDisciplina.get(x);%>	
+							<tr>
+								<th align="center" width="1%">
+									<input type="checkbox" id=<%=ServletProfessor.NM_PARAMETRO_ID_DISCIPLINA + x%> name="<%=ServletProfessor.NM_PARAMETRO_ID_DISCIPLINA + x%>" value="<%=disciplina.getIdDisciplina()%>">
+									<input type="hidden" id=<%=ServletProfessor.NM_PARAMETRO_TAMANHO_COLECAO_DISCIPLINA%> name="<%=ServletProfessor.NM_PARAMETRO_TAMANHO_COLECAO_DISCIPLINA%>" value="<%=String.valueOf(colecaoDisciplina.size())%>">
+								</th>
+								<TH align="left" width="11%" ><%=disciplina.getDsDisciplina().toUpperCase()%></TH>
+							</tr>
+						<%}%>
+					</table>
+					<br>
 					<table width="50%" align="center">
 						<tr>
 							<td align="center">

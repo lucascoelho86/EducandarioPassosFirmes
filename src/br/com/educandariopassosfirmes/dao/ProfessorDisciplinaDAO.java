@@ -4,7 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import br.com.educandariopassosfirmes.entidades.ProfessorDisciplina;
 
@@ -12,7 +11,7 @@ public class ProfessorDisciplinaDAO extends Conexao{
 
 	public void cadastrar(ProfessorDisciplina pProfessorDisciplina){
 		
-		String sql = "INSERT INTO PROFESSOR_DISCIPLINA (id_professor, id_disciplina) values (?,?)";
+		String sql = "INSERT INTO PROFESSOR_DISCIPLINA (ID_PESSOA, ID_DISCIPLINA) values (?,?)";
 		
 		try {
 			PreparedStatement preparador = getPreparedStatement(sql);
@@ -28,13 +27,13 @@ public class ProfessorDisciplinaDAO extends Conexao{
 		}
 	}
 	
-	public List<ProfessorDisciplina> consultar(String pIdProfessor){
+	public ArrayList<ProfessorDisciplina> consultar(String pIdProfessor){
 		String sql = "SELECT * FROM PROFESSOR_DISCIPLINA ";
 		String where = "WHERE ";
-		String sql2 = "ID_PROFESSOR = ?";
+		String sql2 = "ID_PESSOA = ?";
 		String sqlComplementar = "";
 		ProfessorDisciplina professorDisciplina = null;
-		List<ProfessorDisciplina> listProfessorDisciplina = new ArrayList<ProfessorDisciplina>();
+		ArrayList<ProfessorDisciplina> listProfessorDisciplina = new ArrayList<ProfessorDisciplina>();
 		int contador=0;
 		try{
 			
@@ -58,8 +57,8 @@ public class ProfessorDisciplinaDAO extends Conexao{
 			while(resultado.next()){
 				professorDisciplina = new ProfessorDisciplina();
 				
-				professorDisciplina.setId_professor(resultado.getString("id_professor"));
-				professorDisciplina.setId_disciplina(resultado.getInt("id_disciplina"));
+				professorDisciplina.setId_professor(resultado.getString("ID_PESSOA"));
+				professorDisciplina.setId_disciplina(resultado.getInt("ID_DISCIPLINA"));
 				
 				listProfessorDisciplina.add(professorDisciplina);
 				

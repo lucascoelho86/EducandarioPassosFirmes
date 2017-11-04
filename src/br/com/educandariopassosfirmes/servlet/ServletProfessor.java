@@ -18,9 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import br.com.educandariopassosfirmes.dao.PessoaDAO;
 import br.com.educandariopassosfirmes.dao.ProfessorDAO;
-import br.com.educandariopassosfirmes.dao.TurmaDAO;
+import br.com.educandariopassosfirmes.dao.ProfessorDisciplinaDAO;
 import br.com.educandariopassosfirmes.entidades.Pessoa;
 import br.com.educandariopassosfirmes.entidades.Professor;
+import br.com.educandariopassosfirmes.entidades.ProfessorDisciplina;
 
 
 /**
@@ -44,6 +45,10 @@ public class ServletProfessor extends ServletGenerico {
 	public static final String NM_PARAMETRO_QT_MAX_ALUNOS = "qtMaxAlunos";
 	public static final String NM_PARAMETRO_SELECT_DISCIPLINA = "selectTurno";
 	public static final String NM_PARAMETRO_COLECAO_PESSOA = "colecaoPessoa";
+	public static final String NM_PARAMETRO_ID_DISCIPLINA = "idDisciplina";
+	public static final String NM_PARAMETRO_DS_DISCIPLINA = "descricaoDisciplina";
+	public static final String NM_PARAMETRO_TAMANHO_COLECAO_DISCIPLINA = "tamanhoColecaoDisciplina";
+	public static final String NM_PARAMETRO_COLECAO_PROFESSOR_DISCIPLINA = "colecaoProfessorDisciplina";
 
 	public static final String NM_PARAMETRO_NOME = "nome";
 	public static final String NM_PARAMETRO_DT_NASCIMENTO = "dtNascimento";
@@ -150,6 +155,8 @@ public class ServletProfessor extends ServletGenerico {
 		String dtAdmissao = "";
 		String cargaHoraria = "";
 		String salario = "";
+		String idDisciplina = "";
+		String tamanhoColecaoDisciplina = "";
 		Date dtNasc = null;
 		Date dtAdm = null;
 		double valorSalario = 0;
@@ -172,6 +179,7 @@ public class ServletProfessor extends ServletGenerico {
 		dtAdmissao = request.getParameter(NM_PARAMETRO_DT_ADMISSAO);
 		cargaHoraria = request.getParameter(NM_PARAMETRO_CARGA_HORARIA);
 		salario = request.getParameter(NM_PARAMETRO_SALARIO);
+		tamanhoColecaoDisciplina = request.getParameter(NM_PARAMETRO_TAMANHO_COLECAO_DISCIPLINA);
 		
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 		
@@ -230,6 +238,18 @@ public class ServletProfessor extends ServletGenerico {
 		//inclui em PESSOA
 		ProfessorDAO professorDAO = new ProfessorDAO();
 		professorDAO.incluir(professor);
+		
+		for(int x = 0; x < Integer.valueOf(tamanhoColecaoDisciplina); x++) {
+			idDisciplina = request.getParameter(NM_PARAMETRO_ID_DISCIPLINA + x);
+			if(idDisciplina != null) {
+				ProfessorDisciplina professorDisciplina = new ProfessorDisciplina();
+				professorDisciplina.setId_professor(cpf);
+				professorDisciplina.setId_disciplina(Integer.valueOf(idDisciplina));
+				
+				ProfessorDisciplinaDAO professorDisciplinaDAO = new ProfessorDisciplinaDAO();
+				professorDisciplinaDAO.cadastrar(professorDisciplina);
+			}
+		}
 		
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
 
@@ -324,6 +344,10 @@ public class ServletProfessor extends ServletGenerico {
 			request.setAttribute(NM_PARAMETRO_SALARIO, professor.getSalario());
 			
 		}
+		
+		ProfessorDisciplinaDAO professorDisciplinaDAO = new ProfessorDisciplinaDAO();
+		ArrayList<ProfessorDisciplina>colecaoProfessorDisciplina = professorDisciplinaDAO.consultar(idProfessor);
+		request.setAttribute(NM_PARAMETRO_COLECAO_PROFESSOR_DISCIPLINA, colecaoProfessorDisciplina);
 		
 		this.redirecionarPagina(request, response, NM_JSP_ALTERAR_PROFESSOR);
 	}
