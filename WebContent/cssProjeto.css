@@ -4,6 +4,10 @@
 	color: white;
 }
 
-.tituloRetornoDados {
-	background-color: #6495ED;
+.cabecalhoRetornoDados {
+	background-color: #99CCFF;
+}
+
+.dadosRetornoDados {
+	background-color: #ffffff;
 }

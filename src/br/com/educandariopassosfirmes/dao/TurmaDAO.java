@@ -49,7 +49,7 @@ public class TurmaDAO extends Conexao{
 			while(resultado.next()){
 				turma = new Turma();
 					
-				turma.setIdTurma(resultado.getInt("ID_TURMA"));
+				turma.setIdTurma(resultado.getString("ID_TURMA"));
 				turma.setDsTurma(resultado.getString("DS_TURMA"));
 				turma.setTurno(resultado.getString("TURNO"));
 				turma.setQtMaxAlunos(resultado.getInt("QUANTIDADE_MAX_ALUNOS"));
@@ -67,14 +67,15 @@ public class TurmaDAO extends Conexao{
 	 
 	 public void incluir(Turma pTurma){
 			
-		String sql = "INSERT INTO TURMA (DS_TURMA, TURNO, QUANTIDADE_MAX_ALUNOS) values (?,?,?)";
+		String sql = "INSERT INTO TURMA (ID_TURMA, DS_TURMA, TURNO, QUANTIDADE_MAX_ALUNOS) values (?,?,?,?)";
 				
 		try {
 			PreparedStatement preparador = getPreparedStatement(sql);
 					
-			preparador.setString(1, pTurma.getDsTurma());
-			preparador.setString(2, pTurma.getTurno());
-			preparador.setInt(3, pTurma.getQtMaxAlunos());
+			preparador.setString(1, pTurma.getIdTurma());
+			preparador.setString(2, pTurma.getDsTurma());
+			preparador.setString(3, pTurma.getTurno());
+			preparador.setInt(4, pTurma.getQtMaxAlunos());
 					
 			preparador.execute();
 			preparador.close();
@@ -94,7 +95,7 @@ public class TurmaDAO extends Conexao{
 			preparador.setString(1, pTurma.getDsTurma());
 			preparador.setString(2, pTurma.getTurno());
 			preparador.setInt(3, pTurma.getQtMaxAlunos());
-			preparador.setInt(4, pTurma.getIdTurma());
+			preparador.setString(4, pTurma.getIdTurma());
 					
 			preparador.execute();
 			preparador.close();
@@ -104,14 +105,14 @@ public class TurmaDAO extends Conexao{
 		}
 	}
 	 
-	 public void excluir(Integer pIdTurma){
+	 public void excluir(String pIdTurma){
 			
 		String sql = "DELETE FROM TURMA WHERE ID_TURMA=?";
 				
 		try {
 			PreparedStatement preparador = getPreparedStatement(sql);
 					
-			preparador.setInt(1, pIdTurma);
+			preparador.setString(1, pIdTurma);
 					
 			preparador.execute();
 			preparador.close();

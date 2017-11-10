@@ -7,7 +7,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@page import="br.com.educandariopassosfirmes.servlet.ServletProfessor"%>
+<%@page import="br.com.educandariopassosfirmes.servlet.ServletAluno"%>
 <%@page import="br.com.educandariopassosfirmes.util.Select"%>
 <html>
 <head>
@@ -20,12 +20,12 @@
 <script type="text/javascript">
 
 function consultar(){
-	document.getElementById("<%=ServletProfessor.NM_EVENTO%>").value = "<%=ServletProfessor.NM_EVENTO_CONSULTAR_TODOS%>";
+	document.getElementById("<%=ServletAluno.NM_EVENTO%>").value = "<%=ServletAluno.NM_EVENTO_CONSULTAR_TODOS%>";
 	document.frm_principal.submit();		
 }
 
 function excluir(){
-	document.getElementById("<%=ServletProfessor.NM_EVENTO%>").value = "<%=ServletProfessor.NM_EVENTO_EXCLUIR%>";
+	document.getElementById("<%=ServletAluno.NM_EVENTO%>").value = "<%=ServletAluno.NM_EVENTO_EXCLUIR%>";
 	
 	if (isRadioButtonConsultaSelecionado("document.frm_principal.rdb_consulta")){
 		document.frm_principal.submit();		
@@ -35,7 +35,7 @@ function excluir(){
 }
 
 function exibirAlteracao(){
-	document.getElementById("<%=ServletProfessor.NM_EVENTO%>").value = "<%=ServletProfessor.NM_EVENTO_EXIBIR_ALTERACAO%>";
+	document.getElementById("<%=ServletAluno.NM_EVENTO%>").value = "<%=ServletAluno.NM_EVENTO_EXIBIR_ALTERACAO%>";
 
 	if (isRadioButtonConsultaSelecionado("document.frm_principal.rdb_consulta")){
 		document.frm_principal.submit();		
@@ -45,7 +45,7 @@ function exibirAlteracao(){
 }
 
 function exibirInclusao(){
-	document.getElementById("<%=ServletProfessor.NM_EVENTO%>").value = "<%=ServletProfessor.NM_EVENTO_EXIBIR_INCLUSAO%>";
+	document.getElementById("<%=ServletAluno.NM_EVENTO%>").value = "<%=ServletAluno.NM_EVENTO_EXIBIR_INCLUSAO%>";
 	document.frm_principal.submit();
 }
 
@@ -55,7 +55,7 @@ function exibirInclusao(){
 
 ArrayList<Pessoa>colecaoPessoa;
 Iterator<Pessoa>itPessoa;
-colecaoPessoa = (ArrayList<Pessoa>) request.getAttribute(ServletProfessor.NM_PARAMETRO_COLECAO_PESSOA);
+colecaoPessoa = (ArrayList<Pessoa>) request.getAttribute(ServletAluno.NM_PARAMETRO_COLECAO_PESSOA);
 
 if(colecaoPessoa == null){
 	colecaoPessoa = new ArrayList<Pessoa>();
@@ -70,29 +70,29 @@ if(colecaoPessoa == null){
 
 <jsp:include page="cabecalho.jsp"/>
 
-<form name="frm_principal" action="ServletProfessor" method="post">
-<input type="hidden" id="<%=ServletProfessor.NM_EVENTO%>" name="<%=ServletProfessor.NM_EVENTO%>" value="">
-	<h2 align="center">CONSULTAR PROFESSOR</h2>
+<form name="frm_principal" action="ServletAluno" method="post">
+<input type="hidden" id="<%=ServletAluno.NM_EVENTO%>" name="<%=ServletAluno.NM_EVENTO%>" value="">
+	<h2 align="center">CONSULTAR ALUNO</h2>
 	<table width="100%">
 		<tr>
 			<td>
 				<table width="50%" align="center">
 					<tbody>
 						<tr>
-							<th width="10%" align="right"> CPF: </th>
+							<th width="10%" align="right"> Matrícula: </th>
 							<td>
-								<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_CPF%>" name="<%=ServletProfessor.NM_PARAMETRO_CPF%>" value="" size="14" onkeyup="formatarCPF(event);" maxlength="14"
+								<input type="text" id="<%=ServletAluno.NM_PARAMETRO_CPF%>" name="<%=ServletAluno.NM_PARAMETRO_CPF%>" value="" size="14" onkeyup="formatarCPF(event);" maxlength="14"
 									onkeypress='return SomenteNumero(event)'>
 							
 							</td>
 						
 							<th width="10%" align="right"> Nome: </th>
 							<td>
-								<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_NOME%>" name="<%=ServletProfessor.NM_PARAMETRO_NOME%>" value="" size="50" onkeypress='return letras(event)'>
+								<input type="text" id="<%=ServletAluno.NM_PARAMETRO_NOME%>" name="<%=ServletAluno.NM_PARAMETRO_NOME%>" value="" size="50" onkeypress='return letras(event)'>
 							
 							</td>
 						
-							<th width="10%" align="right"> Disciplina: </th>
+							<th width="10%" align="right"> Turma: </th>
 							<td>
 								<%	DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
 									ArrayList<Disciplina>colecaoDisciplina = disciplinaDAO.consultar(0, "", "");
@@ -104,7 +104,7 @@ if(colecaoPessoa == null){
 											ultimaDisciplina = true;
 										}%>	
 															
-										<%=Select.getInstancia().getHTML(ServletProfessor.NM_PARAMETRO_SELECT_DISCIPLINA, ServletProfessor.NM_PARAMETRO_SELECT_DISCIPLINA, x + 1, disciplina.getDsDisciplina(), false, x, ultimaDisciplina)%>
+										<%=Select.getInstancia().getHTML(ServletAluno.NM_PARAMETRO_SELECT_DISCIPLINA, ServletAluno.NM_PARAMETRO_SELECT_DISCIPLINA, x + 1, disciplina.getDsDisciplina(), false, x, ultimaDisciplina)%>
 									<%}%>				
 							</td>
 							<td>
@@ -119,7 +119,7 @@ if(colecaoPessoa == null){
 				<table width="50%" align="center">
 				<tr class="cabecalhoRetornoDados">
 					<TH align="left" width="1%">X</TH>
-					<TH align="left" width="3%" >CPF</TH>
+					<TH align="left" width="3%" >Matrícula</TH>
 					<TH align="left" width="10%" >Nome</TH>
 				</tr>
 					<%
@@ -140,9 +140,9 @@ if(colecaoPessoa == null){
 						<tr style="background-color: <%=cssCorlinha%>">
 							<td>
 							<%if(colecaoPessoa.size() == 1){ %>
-								<input type="radio" id="rdb_consulta" name="<%=ServletProfessor.NM_PARAMETRO_CHAVE%>" value="<%=chave%>" checked>
+								<input type="radio" id="rdb_consulta" name="<%=ServletAluno.NM_PARAMETRO_CHAVE%>" value="<%=chave%>" checked>
 							<%}else{%>
-								<input type="radio" id="rdb_consulta" name="<%=ServletProfessor.NM_PARAMETRO_CHAVE%>" value="<%=chave%>">
+								<input type="radio" id="rdb_consulta" name="<%=ServletAluno.NM_PARAMETRO_CHAVE%>" value="<%=chave%>">
 							<%}%>
 							</td>
 							<td><%=BibliotecaFormatarDados.formatarCPF(pessoa.getId())%></td>

@@ -13,6 +13,7 @@
 <title>Cadastrar Professor</title>
 
 </head>
+<script type="text/javascript" language="javascript" src="js/jquery-1.3.2-vsdoc2.js"></script>
 <SCRIPT language="JavaScript" type="text/javascript"
 	src="js/biblioteca.js"></SCRIPT>
 <script type="text/javascript">
@@ -24,8 +25,41 @@ function desistir(){
 function cadastrar(){
 	document.getElementById("<%=ServletProfessor.NM_EVENTO%>").value = "<%=ServletProfessor.NM_EVENTO_PROCESSAR_INCLUSAO%>";
 }
-</script>
 
+function mostrarDP(){
+	if(document.getElementById("idTableDisciplinas").style.visibility == "hidden"){
+		document.getElementById("idTableDisciplinas").style.visibility = "visible";
+	}else{
+		document.getElementById("idTableDisciplinas").style.visibility = "hidden";
+	}
+	
+	if(document.getElementById("idTableDisciplinas2").style.visibility == "hidden"){
+		document.getElementById("idTableDisciplinas2").style.visibility = "visible";
+	}else{
+		document.getElementById("idTableDisciplinas2").style.visibility = "hidden";
+	}
+}
+</script>
+<script type="text/javascript">
+		
+	jQuery(document).ready(function(){
+
+		//Muda o CSS da linha de adicionar evento, quando passa o mouse por cima
+	  	jQuery("td.adicionarEvento").mouseover(function(){
+	    	jQuery("td.adicionarEvento").css("background-color","#D8E1ED");
+	    	jQuery("td.adicionarEvento").css("cursor","pointer");
+	  	});
+	  	jQuery("td.adicionarEvento").mouseout(function(){
+	    	jQuery("td.adicionarEvento").css("background-color","#E9E9E4");
+	  	});
+
+		//Função de clicar na linha de adicionar evento	
+		jQuery("td.adicionarEvento").click(function(){		
+			mostrarDP();	
+		});	
+		
+	});
+</script>
 <body>
 
 	<jsp:include page="cabecalho.jsp" />
@@ -95,6 +129,7 @@ function cadastrar(){
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_TELEFONE%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_TELEFONE%>" value=""
+									onkeyup="formatarCampoTelefone(this.name, this, event);"
 									onkeypress='return SomenteNumero(event)'></td>
 							</tr>
 							<tr>
@@ -154,19 +189,39 @@ function cadastrar(){
 						</tbody>
 					</table>
 					<br>
-					<table width="90%" align="center" style="background-color: #99CCFF">
+					<table align="center">
+						<tr>
+							<TD class="adicionarEvento" colspan="9" align="center" style="border-color: #A5B9D7; border-style: dotted;">
+								<p><b>+ ADICIONAR DISCIPLINA AO PROFESSOR(A) +</b></p>
+							</TD>
+						</tr>
+					</table>
+					<br>
+					<table id="idTableDisciplinas" width="90%" align="center" style="background-color: #99CCFF; visibility: hidden;">
 						<tr>
 							<TH align="center" width="1%">X</TH>
 							<TH align="left" width="10%" >Disciplinas</TH>
 						</tr>
 					</table>
-					<table width="90%" align="center" style="background-color: #99CCFF">
+					<table id="idTableDisciplinas2" width="90%" align="center" style="visibility: hidden;">
 						<%	DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
 						ArrayList<Disciplina>colecaoDisciplina = disciplinaDAO.consultar(0, "", "");
 						boolean ultimaDisciplina = false;
+						String cssCorlinha = "";
+						String checked = "";
+						boolean tratamentoCSS = true;
 						for(int x = 0; x < colecaoDisciplina.size(); x++){
-							Disciplina disciplina = colecaoDisciplina.get(x);%>	
-							<tr>
+							Disciplina disciplina = colecaoDisciplina.get(x);
+							
+							if(tratamentoCSS){
+								cssCorlinha = "#c0c0c0";
+								tratamentoCSS = false;
+							}else{
+								cssCorlinha = "#ffffff";
+								tratamentoCSS = true;
+							}%>
+							
+							<tr style="background-color: <%=cssCorlinha%>">
 								<th align="center" width="1%">
 									<input type="checkbox" id=<%=ServletProfessor.NM_PARAMETRO_ID_DISCIPLINA + x%> name="<%=ServletProfessor.NM_PARAMETRO_ID_DISCIPLINA + x%>" value="<%=disciplina.getIdDisciplina()%>">
 									<input type="hidden" id=<%=ServletProfessor.NM_PARAMETRO_TAMANHO_COLECAO_DISCIPLINA%> name="<%=ServletProfessor.NM_PARAMETRO_TAMANHO_COLECAO_DISCIPLINA%>" value="<%=String.valueOf(colecaoDisciplina.size())%>">

@@ -29,6 +29,7 @@ public class ServletTurma extends ServletGenerico {
 	
 	//Parâmetros inclusão disciplina
 	public static final String NM_PARAMETRO_ID_TURMA = "idTurma";
+	public static final String NM_PARAMETRO_SIGLA_TURMA = "siglaTurma";
 	public static final String NM_PARAMETRO_DS_TURMA = "descricaoTurma";
 	public static final String NM_PARAMETRO_TURNO = "turno";
 	public static final String NM_PARAMETRO_QT_MAX_ALUNOS = "qtMaxAlunos";
@@ -105,11 +106,13 @@ public class ServletTurma extends ServletGenerico {
 
 		// declara as variaveis
 		String descricao = "";
+		String siglaTurma = "";
 		String turno = "";
 		String dsTurno = "";
 		String qtMaxAlunos = "";
 
 		// recupera os parametros do request
+		siglaTurma = request.getParameter(NM_PARAMETRO_SIGLA_TURMA);
 		descricao = request.getParameter(NM_PARAMETRO_DS_TURMA);
 		turno = request.getParameter(NM_PARAMETRO_SELECT_TURNO);
 		qtMaxAlunos = request.getParameter(NM_PARAMETRO_QT_MAX_ALUNOS);
@@ -122,6 +125,7 @@ public class ServletTurma extends ServletGenerico {
 		
 		//monta a entidade disciplina para incluir
 		Turma turma = new Turma();
+		turma.setIdTurma(siglaTurma);
 		turma.setDsTurma(descricao);
 		turma.setTurno(dsTurno);
 		turma.setQtMaxAlunos(Integer.valueOf(qtMaxAlunos));
@@ -172,7 +176,7 @@ public class ServletTurma extends ServletGenerico {
 		String idTurma = chaveTurma[0];
 
 		TurmaDAO turmaDAO = new TurmaDAO();		
-		turmaDAO.excluir(Integer.valueOf(idTurma));
+		turmaDAO.excluir(idTurma);
 		
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
 	}
@@ -232,7 +236,7 @@ public class ServletTurma extends ServletGenerico {
 				
 		//monta a entidade disciplina para alterar
 		Turma turma = new Turma();
-		turma.setIdTurma(Integer.valueOf(idTurma));
+		turma.setIdTurma(idTurma);
 		turma.setDsTurma(descricao);
 		turma.setTurno(dsTurno);
 		turma.setQtMaxAlunos(Integer.valueOf(qtMaxAlunos));

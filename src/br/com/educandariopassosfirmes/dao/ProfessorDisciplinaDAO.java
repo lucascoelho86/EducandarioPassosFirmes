@@ -27,10 +27,12 @@ public class ProfessorDisciplinaDAO extends Conexao{
 		}
 	}
 	
-	public ArrayList<ProfessorDisciplina> consultar(String pIdProfessor){
+	public ArrayList<ProfessorDisciplina> consultar(String pIdProfessor, Integer pIdDisciplina){
 		String sql = "SELECT * FROM PROFESSOR_DISCIPLINA ";
 		String where = "WHERE ";
 		String sql2 = "ID_PESSOA = ?";
+		String sql3 = "ID_DISCIPLINA = ?";
+		String conector = "";
 		String sqlComplementar = "";
 		ProfessorDisciplina professorDisciplina = null;
 		ArrayList<ProfessorDisciplina> listProfessorDisciplina = new ArrayList<ProfessorDisciplina>();
@@ -39,6 +41,11 @@ public class ProfessorDisciplinaDAO extends Conexao{
 			
 			if(pIdProfessor != null && !pIdProfessor.equals("")){
 				sqlComplementar = sql2;
+				conector = "\n AND ";
+			}
+
+			if(pIdDisciplina != null && pIdDisciplina != 0){
+				sqlComplementar = sqlComplementar + conector + sql3;
 			}
 			
 			if(!sqlComplementar.equals("")){
@@ -50,6 +57,11 @@ public class ProfessorDisciplinaDAO extends Conexao{
 			if(pIdProfessor != null && !pIdProfessor.equals("")){
 				contador++;
 				preparador.setString(contador, pIdProfessor);
+			}
+
+			if(pIdDisciplina != null && pIdDisciplina != 0){
+				contador++;
+				preparador.setInt(contador, pIdDisciplina);
 			}
 			
 			ResultSet resultado = preparador.executeQuery();
@@ -91,14 +103,14 @@ public class ProfessorDisciplinaDAO extends Conexao{
 		}
 	}
 	
-	public void excluir(ProfessorDisciplina pProfessorDisciplina){
+	public void excluir(String pIdProfessor){
 		
-		String sql = "DELETE FROM PROFESSOR_DISCIPLINA WHERE id_professor=?";
+		String sql = "DELETE FROM PROFESSOR_DISCIPLINA WHERE ID_PESSOA=?";
 		
 		try {
 			PreparedStatement preparador = getPreparedStatement(sql);
 			
-			preparador.setString(1, pProfessorDisciplina.getId_professor());
+			preparador.setString(1, pIdProfessor);
 			
 			preparador.execute();
 			preparador.close();

@@ -2,15 +2,15 @@ package br.com.educandariopassosfirmes.entidades;
 
 public class Turma {
 
-	private int idTurma;
+	private String idTurma;
 	private String dsTurma;
 	private String turno;
 	private int qtMaxAlunos;
 	
-	public int getIdTurma() {
+	public String getIdTurma() {
 		return idTurma;
 	}
-	public void setIdTurma(int idTurma) {
+	public void setIdTurma(String idTurma) {
 		this.idTurma = idTurma;
 	}
 	public String getDsTurma() {
@@ -30,6 +30,7 @@ public class Turma {
 	}
 	public void setQtMaxAlunos(int qtMaxAlunos) {
 		this.qtMaxAlunos = qtMaxAlunos;
-	}	
+	}
+	
 	
 }

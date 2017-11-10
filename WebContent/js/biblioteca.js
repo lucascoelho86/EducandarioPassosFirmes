@@ -196,3 +196,29 @@ function letras(){
 	   return true;
 	}
 }
+
+//Verifica se algum "radiobutton" esta selecionado na colecao com nome "pNmRadioButton" passado como parametro.
+//Se  pSemMensagem igual a true, não exibe mensagem
+//Utilizado em telas de consulta.
+function isRadioButtonConsultaSelecionado(pNmRadioButton) {
+	var i = 0;
+
+	radioButton = eval(pNmRadioButton);
+	
+	if (radioButton == null) {
+		return false;
+	}
+	
+	if (radioButton.checked) {
+		// Quando existe apenas um radio button no formulario
+		return true;
+	}
+	
+	for (i = 0; i < radioButton.length; i++) {
+		if (radioButton.item(i).checked == true) {
+			return true;
+		}
+	}
+	
+	return false;
+}
