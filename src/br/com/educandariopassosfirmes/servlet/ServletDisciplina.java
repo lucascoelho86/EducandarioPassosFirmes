@@ -11,9 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.com.educandariopassosfirmes.dao.DisciplinaDAO;
-import br.com.educandariopassosfirmes.dao.DisciplinaTipoEnsinoDAO;
 import br.com.educandariopassosfirmes.entidades.Disciplina;
-import br.com.educandariopassosfirmes.entidades.DisciplinaTipoEnsino;
 
 
 /**
@@ -46,7 +44,6 @@ public class ServletDisciplina extends ServletGenerico {
 	public static final String NM_PARAMETRO_CAMPO_CARGA_HORARIA = "cargaHoraria";
 	public static final String NM_PARAMETRO_SELECT_TIPO_ENSINO = "selectTipoEnsino";
 	public static final String NM_PARAMETRO_COLECAO_DISCIPLINA = "colecaoDisciplina";
-	public static final String NM_PARAMETRO_CD_TIPO_ENSINO = "cdTipoEnsino";
 	
 	//Constantes utilizadas na inclusão de disciplinas
 	public static final String NM_TIPO_ENSINO_BASICO = "Educação Infantil";
@@ -117,7 +114,6 @@ public class ServletDisciplina extends ServletGenerico {
 		String assuntoTerceiraUnidade = "";
 		String assuntoQuartaUnidade = "";
 		String cargaHoraria = "";
-		String cdTipoEnsino = "";
 
 		// recupera os parametros do request
 		sigla = request.getParameter(NM_PARAMETRO_SIGLA_DISCIPLINA);
@@ -127,7 +123,6 @@ public class ServletDisciplina extends ServletGenerico {
 		assuntoTerceiraUnidade = request.getParameter(NM_PARAMETRO_TX_TERCEIRA_UNIDADE);
 		assuntoQuartaUnidade = request.getParameter(NM_PARAMETRO_TX_QUARTA_UNIDADE);
 		cargaHoraria = request.getParameter(NM_PARAMETRO_CAMPO_CARGA_HORARIA);
-		cdTipoEnsino = request.getParameter(NM_PARAMETRO_SELECT_TIPO_ENSINO);
 
 		//monta a entidade disciplina para incluir
 		Disciplina disciplina = new Disciplina();
@@ -142,12 +137,6 @@ public class ServletDisciplina extends ServletGenerico {
 		//inclui em DISCIPLINA
 		DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
 		disciplinaDAO.incluir(disciplina);
-		
-		Integer maiorIdDisciplina = disciplinaDAO.consultarMaiorIdDisciplina();
-		
-		//inclui em DISCIPLINA_TIPO_ENSINO
-		DisciplinaTipoEnsinoDAO disciplinaTipoEnsinoDAO = new DisciplinaTipoEnsinoDAO();
-		disciplinaTipoEnsinoDAO.incluir(maiorIdDisciplina, Integer.valueOf(cdTipoEnsino));
 		
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
 
@@ -182,9 +171,6 @@ public class ServletDisciplina extends ServletGenerico {
 		String[] chaveDisciplina = chave.split(";");
 		String idDisciplina = chaveDisciplina[0];
 
-		DisciplinaTipoEnsinoDAO disciplinaTipoEnsinoDAO = new DisciplinaTipoEnsinoDAO();		
-		disciplinaTipoEnsinoDAO.excluir(Integer.valueOf(idDisciplina));
-		
 		DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
 		disciplinaDAO.excluir(Integer.valueOf(idDisciplina));
 
@@ -210,13 +196,10 @@ public class ServletDisciplina extends ServletGenerico {
 		String assuntoTerceiraUnidade = "";
 		String assuntoQuartaUnidade = "";
 		Integer cargaHoraria = 0;
-		Integer cdTipoEnsino = 0;
 		DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
-		DisciplinaTipoEnsinoDAO disciplinaTipoEnsinoDAO = new DisciplinaTipoEnsinoDAO();
 				
 		//consulta pelo id da disciplina recuperar os valores e setar no request				
 		ArrayList<Disciplina> colecaoDisciplina = disciplinaDAO.consultar(Integer.valueOf(idDisciplina),"", "");
-		ArrayList<DisciplinaTipoEnsino> colecaoDisciplinaTpoEnsino = disciplinaTipoEnsinoDAO.consultarDisciplinaTipoEnsino(Integer.valueOf(idDisciplina));
 		
 		Iterator<Disciplina>itDisciplina = colecaoDisciplina.iterator();
 		while(itDisciplina.hasNext()) {
@@ -231,13 +214,6 @@ public class ServletDisciplina extends ServletGenerico {
 			cargaHoraria = disciplina.getCargaHorariaMinima();
 		}
 		
-		Iterator<DisciplinaTipoEnsino>itDisciplinaTipoEnsino = colecaoDisciplinaTpoEnsino.iterator();
-		while(itDisciplinaTipoEnsino.hasNext()) {
-			DisciplinaTipoEnsino disciplinaTipoEnsino = itDisciplinaTipoEnsino.next();
-			
-			cdTipoEnsino = disciplinaTipoEnsino.getCdTipoEnsino();
-		}
-		
 		//seta os atributos no request para recuperar na JSP
 		request.setAttribute(NM_PARAMETRO_ID_DISCIPLINA, idDisciplina);
 		request.setAttribute(NM_PARAMETRO_SIGLA_DISCIPLINA, siglaDisciplina);
@@ -247,7 +223,6 @@ public class ServletDisciplina extends ServletGenerico {
 		request.setAttribute(NM_PARAMETRO_TX_TERCEIRA_UNIDADE, assuntoTerceiraUnidade);
 		request.setAttribute(NM_PARAMETRO_TX_QUARTA_UNIDADE, assuntoQuartaUnidade);
 		request.setAttribute(NM_PARAMETRO_CAMPO_CARGA_HORARIA, cargaHoraria);
-		request.setAttribute(NM_PARAMETRO_CD_TIPO_ENSINO, cdTipoEnsino);
 
 		this.redirecionarPagina(request, response, NM_JSP_ALTERAR_DISCIPLINA);
 	}
@@ -293,15 +268,6 @@ public class ServletDisciplina extends ServletGenerico {
 		DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
 		disciplinaDAO.alterar(disciplina);
 		
-		//monta a entidade disciplinaTpoEnsino para alterar
-		DisciplinaTipoEnsino disciplinaTipoEnsino = new DisciplinaTipoEnsino();
-		disciplinaTipoEnsino.setIdDisciplina(Integer.valueOf(idDisciplina));
-		disciplinaTipoEnsino.setCdTipoEnsino(Integer.valueOf(cdTipoEnsino));
-		
-		//alterar em DISCIPLINA_TIPO_ENSINO
-		DisciplinaTipoEnsinoDAO disciplinaTipoEnsinoDAO = new DisciplinaTipoEnsinoDAO();
-		disciplinaTipoEnsinoDAO.alterar(disciplinaTipoEnsino);
-				
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
 	}
 

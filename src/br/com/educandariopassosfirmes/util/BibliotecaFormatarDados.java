@@ -16,5 +16,15 @@ public final class BibliotecaFormatarDados {
 		return cpf;
 		
 	}
+	
+	public static String completarNumeroComZerosEsquerda(String pString, int pTmFormato) {
+		int contador = pString.length();
+
+		for (int i = contador; i < pTmFormato; i++) {
+			pString = "0" + pString;
+		}
+
+		return pString;
+	}
 
 }

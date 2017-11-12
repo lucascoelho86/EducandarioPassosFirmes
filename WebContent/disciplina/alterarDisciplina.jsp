@@ -1,6 +1,4 @@
 <%@page import="java.util.Iterator"%>
-<%@page import="br.com.educandariopassosfirmes.dao.TipoEnsinoDAO"%>
-<%@page import="br.com.educandariopassosfirmes.entidades.TipoEnsino"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -37,7 +35,6 @@ String assuntoSegundaUnidade = "";
 String assuntoTerceiraUnidade = "";
 String assuntoQuartaUnidade = "";
 Integer cargaHoraria;
-Integer cdTipoEnsino;
 
 idDisciplina = (String)request.getAttribute(ServletDisciplina.NM_PARAMETRO_ID_DISCIPLINA);
 siglaDisciplina = (String)request.getAttribute(ServletDisciplina.NM_PARAMETRO_SIGLA_DISCIPLINA);
@@ -47,7 +44,6 @@ assuntoSegundaUnidade = (String)request.getAttribute(ServletDisciplina.NM_PARAME
 assuntoTerceiraUnidade = (String)request.getAttribute(ServletDisciplina.NM_PARAMETRO_TX_TERCEIRA_UNIDADE);
 assuntoQuartaUnidade = (String)request.getAttribute(ServletDisciplina.NM_PARAMETRO_TX_QUARTA_UNIDADE);
 cargaHoraria = (Integer)request.getAttribute(ServletDisciplina.NM_PARAMETRO_CAMPO_CARGA_HORARIA);
-cdTipoEnsino = (Integer)request.getAttribute(ServletDisciplina.NM_PARAMETRO_CD_TIPO_ENSINO);
 
 %>
 
@@ -106,33 +102,6 @@ cdTipoEnsino = (Integer)request.getAttribute(ServletDisciplina.NM_PARAMETRO_CD_T
 				<th width="12%"  align="right"> Carga Horária: </th>
 				<td>
 					<input type="text" id="<%=ServletDisciplina.NM_PARAMETRO_CAMPO_CARGA_HORARIA%>" name="<%=ServletDisciplina.NM_PARAMETRO_CAMPO_CARGA_HORARIA%>" value="<%=String.valueOf(cargaHoraria)%>">				
-				</td>
-				
-				<th align="right"> Tipo de Ensino: </th>
-				<td>
-					<%
-						TipoEnsinoDAO tipoEnsinoDAO = new TipoEnsinoDAO();
-						ArrayList<TipoEnsino>consultaTipoEnsino = tipoEnsinoDAO.consultarTodosTipoEnsino();
-						Iterator<TipoEnsino> itTipoEnsino = consultaTipoEnsino.iterator();
-						int contador = 0;
-						boolean valorCdTipoEnsino = false;
-						while(itTipoEnsino.hasNext()){
-							TipoEnsino tipoEnsino = itTipoEnsino.next();
-							Integer cdTipoEnsinoConsulta = tipoEnsino.getCdTipoEnsino();
-							
-							if(cdTipoEnsinoConsulta == cdTipoEnsino){
-								valorCdTipoEnsino = true;
-							}
-							
-							if(itTipoEnsino.hasNext()){%>						
-								<%=Select.getInstancia().getHTML(ServletDisciplina.NM_PARAMETRO_SELECT_TIPO_ENSINO, ServletDisciplina.NM_PARAMETRO_SELECT_TIPO_ENSINO, tipoEnsino.getCdTipoEnsino(), tipoEnsino.getDsTipoEnsino(), valorCdTipoEnsino, contador, false)%>
-							<%}else{%>
-								<%=Select.getInstancia().getHTML(ServletDisciplina.NM_PARAMETRO_SELECT_TIPO_ENSINO, ServletDisciplina.NM_PARAMETRO_SELECT_TIPO_ENSINO, tipoEnsino.getCdTipoEnsino(), tipoEnsino.getDsTipoEnsino(), valorCdTipoEnsino, contador, true)%>
-							<%}
-							contador++;
-							valorCdTipoEnsino = false;
-							%>
-						<%}%>				
 				</td>
 			</tr>
 		</tbody>

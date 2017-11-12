@@ -4,10 +4,25 @@
 	color: white;
 }
 
+.rodape {
+	margin: auto;
+	width: 100%;
+	bottom: 0;
+	position: fixed;
+	width: 100%;
+	background-color: #99CCFF;
+}
+
 .cabecalhoRetornoDados {
 	background-color: #99CCFF;
 }
 
 .dadosRetornoDados {
 	background-color: #ffffff;
+}
+
+.css img{
+ float: right;
+ width: 22%;
+ padding: 5px;
 }

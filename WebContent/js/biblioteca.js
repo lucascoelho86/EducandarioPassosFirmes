@@ -65,6 +65,19 @@ function formatarCamposDataOnload(){
 	document.getElementById("dtAdmissao").value = valorDtAdm;
 }
 
+function formatarCampoCarteiraEstudante(event){
+	var valor = document.getElementById("nrCarteiraEstudante").value;
+	var tamanhoValor = valor.length;
+	var tecla = event.keyCode;
+	
+	if(tecla != 8 && tecla != 46){
+		if(tamanhoValor == 4){
+			valor = valor.concat("-");
+		}
+	}
+	document.getElementById("nrCarteiraEstudante").value = valor;
+}
+
 function formatarCampoTelefone(pCampo, pValue, pEvento){
 	var valor = pValue.value;
 	var tamanhoValor = valor.length;

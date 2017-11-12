@@ -1,3 +1,11 @@
+<%@page import="br.com.educandariopassosfirmes.util.BibliotecaFormatarDados"%>
+<%@page import="java.text.DateFormat"%>
+<%@page import="java.util.Date"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.Aluno"%>
+<%@page import="br.com.educandariopassosfirmes.dao.AlunoDAO"%>
+<%@page import="br.com.educandariopassosfirmes.util.Select"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.Turma"%>
+<%@page import="br.com.educandariopassosfirmes.dao.TurmaDAO"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="br.com.educandariopassosfirmes.entidades.Disciplina"%>
@@ -117,30 +125,51 @@ function cadastrar(){
 
 								<th align="right">Código Certidão Nas:</th>
 								<td><input type="text"
-									id="<%=ServletAluno.NM_PARAMETRO_IDENTIDADE%>"
-									name="<%=ServletAluno.NM_PARAMETRO_IDENTIDADE%>" value=""
+									id="<%=ServletAluno.NM_PARAMETRO_CERTIDAO_NASC%>"
+									name="<%=ServletAluno.NM_PARAMETRO_CERTIDAO_NASC%>" value=""
 									size="20"></td>
 							</tr>
 							<tr>
 								<th width="10%" align="right">Matrícula:</th>
+								
+								<%	String matricula = "";
+									AlunoDAO alunoDAO = new AlunoDAO();
+									java.util.Date d = new Date();
+									String dStr = java.text.DateFormat.getDateInstance(DateFormat.MEDIUM).format(d);
+									String ano = dStr.substring(6, 10);
+									String mes = dStr.substring(3, 5);
+									String maiorMatricula = alunoDAO.consultarMaiorMatriculaNoAno(ano);
+									
+									if(maiorMatricula == null || maiorMatricula.equals("")){
+										matricula = ano + "." + mes + ".00001";
+									}else{
+										String primeiraParteMatricula = maiorMatricula.substring(0, 6);
+										String segundaParte = maiorMatricula.substring(6, 11);
+										Integer valorAtual = Integer.valueOf(segundaParte);
+										Integer valorAtualMaisUm = valorAtual + 1;
+										
+										matricula = primeiraParteMatricula.substring(0, 4) + "." + primeiraParteMatricula.substring(4, 6) + "."
+										+ BibliotecaFormatarDados.completarNumeroComZerosEsquerda(String.valueOf(valorAtualMaisUm), 5);
+									}
+									%>	
+																			
+								
 								<td><input type="text"
-									id="<%=ServletAluno.NM_PARAMETRO_CPF%>"
-									name="<%=ServletAluno.NM_PARAMETRO_CPF%>" value=""
-									onkeyup="formatarCPF(event);" maxlength="14"
-									onkeypress='return SomenteNumero(event)'></td>
+									id="<%=ServletAluno.NM_PARAMETRO_MATRICULA%>"
+									name="<%=ServletAluno.NM_PARAMETRO_MATRICULA%>" value="<%=matricula%>" readonly></td>
 
 								<th align="right">Data Matrícula:</th>
 								<td><input type="text"
-									id="<%=ServletAluno.NM_PARAMETRO_DT_ADMISSAO%>"
-									name="<%=ServletAluno.NM_PARAMETRO_DT_ADMISSAO%>" value=""
-									onkeyup="formatarCamposData(this.name, this, event)"
-									onkeypress='return SomenteNumero(event)' maxlength="10"></td>
+									id="<%=ServletAluno.NM_PARAMETRO_DT_MATRICULA%>"
+									name="<%=ServletAluno.NM_PARAMETRO_DT_MATRICULA%>" value="<%=dStr%>"
+									readonly></td>
 									
 								<th width="20%" align="right">N° Carteira Estudante:</th>
 								<td><input type="text"
-									id="<%=ServletAluno.NM_PARAMETRO_QT_DEPENDENTE%>"
-									name="<%=ServletAluno.NM_PARAMETRO_QT_DEPENDENTE%>" value=""
-									onkeypress='return SomenteNumero(event)'></td>
+									id="<%=ServletAluno.NM_PARAMETRO_CARTEIRA_ESTUDANTE%>"
+									name="<%=ServletAluno.NM_PARAMETRO_CARTEIRA_ESTUDANTE%>" value=""
+									onkeyup="formatarCampoCarteiraEstudante(event)" onkeypress='return SomenteNumero(event)'
+									maxlength="14"></td>
 							</tr>
 							<tr>
 								<th align="right">Necessidade Especial:</th>
@@ -151,6 +180,22 @@ function cadastrar(){
 									name="<%=ServletAluno.NM_PARAMETRO_NECESSIDADE_ESPECIAL%>" value="S">Sim
 									<textarea style="visibility: hidden;" id="teste" name="teste"
 										rows="1" cols="36"></textarea></td>
+										
+								<th align="right">Turma:</th>
+								<td>
+									<%	TurmaDAO turmaDAO = new TurmaDAO();
+										ArrayList<Turma>colecaoTurma = turmaDAO.consultar("", "");
+										boolean ultimaTurma = false;
+										for(int x = 0; x < colecaoTurma.size(); x++){
+											Turma turma = colecaoTurma.get(x);
+														
+											if(x + 1 == colecaoTurma.size()){
+												ultimaTurma = true;
+											}%>	
+																			
+											<%=Select.getInstancia().getHTML(ServletAluno.NM_PARAMETRO_TURMA, ServletAluno.NM_PARAMETRO_TURMA, turma.getIdTurma(), turma.getDsTurma(), false, x, ultimaTurma)%>
+									<%}%>				
+								</td>
 							</tr>
 						</tbody>
 					</table> <br>
@@ -163,53 +208,53 @@ function cadastrar(){
 										<tr>
 											<th width="10%" align="right">Nome:</th>
 											<td><input type="text"
-												id="<%=ServletAluno.NM_PARAMETRO_NOME%>"
-												name="<%=ServletAluno.NM_PARAMETRO_NOME%>" value="" size="50"
+												id="<%=ServletAluno.NM_PARAMETRO_NOME_RESP%>"
+												name="<%=ServletAluno.NM_PARAMETRO_NOME_RESP%>" value="" size="50"
 												onkeypress='return letras(event)'></td>
 			
 											<th align="right">Data de Nascimento:</th>
 											<td><input type="text"
-												id="<%=ServletAluno.NM_PARAMETRO_DT_NASCIMENTO%>"
-												name="<%=ServletAluno.NM_PARAMETRO_DT_NASCIMENTO%>" value=""
+												id="<%=ServletAluno.NM_PARAMETRO_DT_NASCIMENTO_RESP%>"
+												name="<%=ServletAluno.NM_PARAMETRO_DT_NASCIMENTO_RESP%>" value=""
 												onkeyup="formatarCamposData(this.name, this, event)"
 												onkeypress='return SomenteNumero(event)' maxlength="10"></td>
 			
 											<th width="10%" align="right">Naturalidade:</th>
 											<td><input type="text"
-												id="<%=ServletAluno.NM_PARAMETRO_NATURALIDADE%>"
-												name="<%=ServletAluno.NM_PARAMETRO_NATURALIDADE%>" value=""
+												id="<%=ServletAluno.NM_PARAMETRO_NATURALIDADE_RESP%>"
+												name="<%=ServletAluno.NM_PARAMETRO_NATURALIDADE_RESP%>" value=""
 												onkeypress='return letras(event)'></td>
 										</tr>
 										<tr>
 											<th width="10%" align="right">Endereço:</th>
 											<td><input type="text"
-												id="<%=ServletAluno.NM_PARAMETRO_ENDERECO%>"
-												name="<%=ServletAluno.NM_PARAMETRO_ENDERECO%>" value=""
+												id="<%=ServletAluno.NM_PARAMETRO_ENDERECO_RESP%>"
+												name="<%=ServletAluno.NM_PARAMETRO_ENDERECO_RESP%>" value=""
 												size="50"></td>
 			
 											<th align="right">Número:</th>
 											<td><input type="text"
-												id="<%=ServletAluno.NM_PARAMETRO_NUMERO%>"
-												name="<%=ServletAluno.NM_PARAMETRO_NUMERO%>" value=""
+												id="<%=ServletAluno.NM_PARAMETRO_NUMERO_RESP%>"
+												name="<%=ServletAluno.NM_PARAMETRO_NUMERO_RESP%>" value=""
 												onkeypress='return SomenteNumero(event)'></td>
 			
 											<th align="right">Bairro:</th>
 											<td><input type="text"
-												id="<%=ServletAluno.NM_PARAMETRO_BAIRRO%>"
-												name="<%=ServletAluno.NM_PARAMETRO_BAIRRO%>" value=""
+												id="<%=ServletAluno.NM_PARAMETRO_BAIRRO_RESP%>"
+												name="<%=ServletAluno.NM_PARAMETRO_BAIRRO_RESP%>" value=""
 												onkeypress='return letras(event)'></td>
 										</tr>
 										<tr>
 											<th width="10%" align="right">Cidade:</th>
 											<td><input type="text"
-												id="<%=ServletAluno.NM_PARAMETRO_CIDADE%>"
-												name="<%=ServletAluno.NM_PARAMETRO_CIDADE%>" value="" size="20"
+												id="<%=ServletAluno.NM_PARAMETRO_CIDADE_RESP%>"
+												name="<%=ServletAluno.NM_PARAMETRO_CIDADE_RESP%>" value="" size="20"
 												onkeypress='return letras(event)'></td>
 			
 											<th align="right">Estado:</th>
 											<td><input type="text"
-												id="<%=ServletAluno.NM_PARAMETRO_ESTADO%>"
-												name="<%=ServletAluno.NM_PARAMETRO_ESTADO%>" value=""
+												id="<%=ServletAluno.NM_PARAMETRO_ESTADO_RESP%>"
+												name="<%=ServletAluno.NM_PARAMETRO_ESTADO_RESP%>" value=""
 												onkeypress='return letras(event)'></td>
 			
 											<th align="right">Telefone:</th>
@@ -237,33 +282,33 @@ function cadastrar(){
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_PARENTESCO%>"
 												name="<%=ServletAluno.NM_PARAMETRO_PARENTESCO%>" value=""
-												onkeyup="formatarCamposData(this.name, this, event)"
-												onkeypress='return SomenteNumero(event)' maxlength="10"></td>
+												onkeypress='return letras(event)' maxlength="10"></td>
 										</tr>
 										<tr>
 											<th align="right">Estado Civil:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_ESTADO_CIVIL%>"
 												name="<%=ServletAluno.NM_PARAMETRO_ESTADO_CIVIL%>" value=""
-												onkeypress='return SomenteNumero(event)'></td>
+												onkeypress='return letras(event)'></td>
 												
 											<th align="right">Escolaridade:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_ESCOLARIDADE%>"
 												name="<%=ServletAluno.NM_PARAMETRO_ESCOLARIDADE%>" value=""
-												onkeypress='return SomenteNumero(event)'></td>
+												onkeypress='return letras(event)'></td>
 												
 											<th align="right">Profissão:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_PROFISSAO%>"
 												name="<%=ServletAluno.NM_PARAMETRO_PROFISSAO%>" value=""
-												onkeypress='return SomenteNumero(event)'></td>
+												onkeypress='return letras(event)'></td>
 										</tr>
 										<tr>
 											<th align="right">Renda:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_RENDA%>"
 												name="<%=ServletAluno.NM_PARAMETRO_RENDA%>" value=""
+												onKeydown="Formata(this,20,event,2)"
 												onkeypress='return SomenteNumero(event)'></td>
 										</tr>
 									</tbody>

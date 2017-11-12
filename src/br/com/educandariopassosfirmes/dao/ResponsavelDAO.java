@@ -9,12 +9,17 @@ public class ResponsavelDAO extends Conexao{
 
 	 public void cadastrar(Responsavel pResponsavel){
 		
-		String sql = "INSERT INTO RESPONSAVEL (id_pessoa) values (?)";
+		String sql = "INSERT INTO RESPONSAVEL (ID_PESSOA, PARENTESCO, ESTADO_CIVIL, ESCOLARIDADE, PROFISSAO, RENDA) values (?,?,?,?,?,?)";
 		
 		try {
 			PreparedStatement preparador = getPreparedStatement(sql);
 			
 			preparador.setString(1, pResponsavel.getId());
+			preparador.setString(2, pResponsavel.getParentesco());
+			preparador.setString(3, pResponsavel.getEstadoCivil());
+			preparador.setString(4, pResponsavel.getEscolaridade());
+			preparador.setString(5, pResponsavel.getProfissao());
+			preparador.setDouble(6, pResponsavel.getRenda());
 			
 			preparador.execute();
 			preparador.close();

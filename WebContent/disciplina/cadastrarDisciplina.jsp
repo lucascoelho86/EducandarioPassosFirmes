@@ -1,6 +1,4 @@
 <%@page import="java.util.Iterator"%>
-<%@page import="br.com.educandariopassosfirmes.dao.TipoEnsinoDAO"%>
-<%@page import="br.com.educandariopassosfirmes.entidades.TipoEnsino"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -81,26 +79,6 @@ function cadastrar(){
 				<th width="12%"  align="right"> Carga Horária: </th>
 				<td>
 					<input type="text" id="<%=ServletDisciplina.NM_PARAMETRO_CAMPO_CARGA_HORARIA%>" name="<%=ServletDisciplina.NM_PARAMETRO_CAMPO_CARGA_HORARIA%>" value="">				
-				</td>
-				
-				<th align="right"> Tipo de Ensino: </th>
-				<td>
-					<%
-						TipoEnsinoDAO tipoEnsinoDAO = new TipoEnsinoDAO();
-						ArrayList<TipoEnsino>consultaTipoEnsino = tipoEnsinoDAO.consultarTodosTipoEnsino();
-						Iterator<TipoEnsino> itTipoEnsino = consultaTipoEnsino.iterator();
-						int contador = 0;
-						while(itTipoEnsino.hasNext()){
-							TipoEnsino tipoEnsino = itTipoEnsino.next();
-							
-							if(itTipoEnsino.hasNext()){%>						
-								<%=Select.getInstancia().getHTML(ServletDisciplina.NM_PARAMETRO_SELECT_TIPO_ENSINO, ServletDisciplina.NM_PARAMETRO_SELECT_TIPO_ENSINO, tipoEnsino.getCdTipoEnsino(), tipoEnsino.getDsTipoEnsino(), false, contador, false)%>
-							<%}else{%>
-								<%=Select.getInstancia().getHTML(ServletDisciplina.NM_PARAMETRO_SELECT_TIPO_ENSINO, ServletDisciplina.NM_PARAMETRO_SELECT_TIPO_ENSINO, tipoEnsino.getCdTipoEnsino(), tipoEnsino.getDsTipoEnsino(), false, contador, true)%>
-							<%}
-							contador++;
-							%>
-						<%}%>				
 				</td>
 			</tr>
 		</tbody>

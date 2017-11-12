@@ -3,8 +3,6 @@ package br.com.educandariopassosfirmes.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import br.com.educandariopassosfirmes.entidades.Aluno;
 
@@ -12,12 +10,17 @@ public class AlunoDAO extends Conexao{
 
 	 public void cadastrar(Aluno pAluno){
 		
-		String sql = "INSERT INTO ALUNO (id_pessoa) values (?)";
+		String sql = "INSERT INTO ALUNO (ID_PESSOA, ID_TURMA, ID_RESPONSAVEL, DT_MATRICULA, NEC_ESPECIAL, CD_CARTEIRA_ESTUDANTE) values (?,?,?,?,?,?)";
 		
 		try {
 			PreparedStatement preparador = getPreparedStatement(sql);
 			
 			preparador.setString(1, pAluno.getId());
+			preparador.setString(2, pAluno.getIdTurma());
+			preparador.setString(3, pAluno.getIdResponsavel());
+			preparador.setDate(4, pAluno.getDtMatricula());
+			preparador.setString(5, pAluno.getNecessidadeEspecial());
+			preparador.setString(6, pAluno.getCdCarteiraEstudante());
 			
 			preparador.execute();
 			preparador.close();
@@ -28,11 +31,11 @@ public class AlunoDAO extends Conexao{
 		}
 	}
 	 
-	public List<Aluno> buscarAlunosAnoMatricula(String pAno){
+	public String consultarMaiorMatriculaNoAno(String pAno){
 		
-		String sql = "SELECT * FROM Aluno WHERE SUBSTRING(id_pessoa, 1, 4) = ?";
+		String sql = "SELECT MAX(ID_PESSOA) FROM ALUNO WHERE SUBSTRING(ID_PESSOA, 1, 4) = ?";
 		
-		List<Aluno> listAluno = new ArrayList<Aluno>();
+		String maiorMatricula = "";
 		
 		try {
 			PreparedStatement preparador = getPreparedStatement(sql);
@@ -43,11 +46,9 @@ public class AlunoDAO extends Conexao{
 
 			while(resultado.next()){
 				
-				Aluno pessoa = new Aluno();
-				
-				pessoa.setId(resultado.getString("id_pessoa"));
-				
-				listAluno.add(pessoa);
+				if(resultado.getString("MAX(ID_PESSOA)") != null) {
+					maiorMatricula = resultado.getString("MAX(ID_PESSOA)");	
+				}
 			}
 			
 			preparador.close();
@@ -56,7 +57,7 @@ public class AlunoDAO extends Conexao{
 			e.printStackTrace();
 		}
 		
-		return listAluno;
+		return maiorMatricula;
 	}
 	
 	public Aluno consultar(String pMatricula){

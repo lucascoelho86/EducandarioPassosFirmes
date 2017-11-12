@@ -69,7 +69,7 @@ if(colecaoPessoa == null){
 <body>
 
 <jsp:include page="cabecalho.jsp"/>
-
+<a href = "ServletMenu"> Menu</a>
 <form name="frm_principal" action="ServletAluno" method="post">
 <input type="hidden" id="<%=ServletAluno.NM_EVENTO%>" name="<%=ServletAluno.NM_EVENTO%>" value="">
 	<h2 align="center">CONSULTAR ALUNO</h2>
@@ -104,7 +104,7 @@ if(colecaoPessoa == null){
 											ultimaDisciplina = true;
 										}%>	
 															
-										<%=Select.getInstancia().getHTML(ServletAluno.NM_PARAMETRO_SELECT_DISCIPLINA, ServletAluno.NM_PARAMETRO_SELECT_DISCIPLINA, x + 1, disciplina.getDsDisciplina(), false, x, ultimaDisciplina)%>
+										<%=Select.getInstancia().getHTML(ServletAluno.NM_PARAMETRO_SELECT_DISCIPLINA, ServletAluno.NM_PARAMETRO_SELECT_DISCIPLINA, String.valueOf(disciplina.getIdDisciplina()), disciplina.getDsDisciplina(), false, x, ultimaDisciplina)%>
 									<%}%>				
 							</td>
 							<td>

@@ -16,12 +16,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.com.educandariopassosfirmes.dao.AlunoDAO;
 import br.com.educandariopassosfirmes.dao.PessoaDAO;
 import br.com.educandariopassosfirmes.dao.ProfessorDAO;
 import br.com.educandariopassosfirmes.dao.ProfessorDisciplinaDAO;
+import br.com.educandariopassosfirmes.dao.ResponsavelDAO;
+import br.com.educandariopassosfirmes.entidades.Aluno;
 import br.com.educandariopassosfirmes.entidades.Pessoa;
 import br.com.educandariopassosfirmes.entidades.Professor;
 import br.com.educandariopassosfirmes.entidades.ProfessorDisciplina;
+import br.com.educandariopassosfirmes.entidades.Responsavel;
 
 
 /**
@@ -66,6 +70,7 @@ public class ServletAluno extends ServletGenerico {
 	public static final String NM_PARAMETRO_CIDADE_RESP = "cidadeResp";
 	public static final String NM_PARAMETRO_ESTADO = "estado";
 	public static final String NM_PARAMETRO_ESTADO_RESP = "estadoResp";
+	public static final String NM_PARAMETRO_CERTIDAO_NASC = "certidaoNasc";
 	public static final String NM_PARAMETRO_TELEFONE = "telefone";
 	public static final String NM_PARAMETRO_IDENTIDADE = "identidade";
 	public static final String NM_PARAMETRO_CPF = "cpf";
@@ -85,6 +90,7 @@ public class ServletAluno extends ServletGenerico {
 	public static final String NM_PARAMETRO_MATRICULA = "matricula";
 	public static final String NM_PARAMETRO_DT_MATRICULA = "dtMatricula";
 	public static final String NM_PARAMETRO_CARTEIRA_ESTUDANTE = "nrCarteiraEstudante";
+	public static final String NM_PARAMETRO_TURMA = "turma";
 	
 	//Constantes utilizadas na inclusão de turmas
 	public static final String NM_TURNO_MANHA = "Matutino";
@@ -163,10 +169,12 @@ public class ServletAluno extends ServletGenerico {
 		String bairro = "";
 		String cidade = "";
 		String estado = "";
+		String certidaoNasc = "";
 		String matricula = "";
 		String dtMatricula = "";
 		String carteiraEstudante = "";
 		String necEspecial = "";
+		String turma = "";
 		
 		// declara as variaveis responsável
 		String nomeResp = "";
@@ -189,7 +197,7 @@ public class ServletAluno extends ServletGenerico {
 		String tamanhoColecaoDisciplina = "";
 		Date dtNasc = null;
 		Date dtNascResp = null;
-		Date dtNascMatr = null;
+		Date dtMatr = null;
 		double valorSalario = 0;
 
 		// recupera os parametros do request Aluno
@@ -201,10 +209,12 @@ public class ServletAluno extends ServletGenerico {
 		bairro = request.getParameter(NM_PARAMETRO_BAIRRO);
 		cidade = request.getParameter(NM_PARAMETRO_CIDADE);
 		estado = request.getParameter(NM_PARAMETRO_ESTADO);
+		certidaoNasc = request.getParameter(NM_PARAMETRO_CERTIDAO_NASC);
 		matricula = request.getParameter(NM_PARAMETRO_MATRICULA);
 		dtMatricula = request.getParameter(NM_PARAMETRO_DT_MATRICULA);
 		carteiraEstudante = request.getParameter(NM_PARAMETRO_CARTEIRA_ESTUDANTE);
 		necEspecial = request.getParameter(NM_PARAMETRO_NECESSIDADE_ESPECIAL);
+		turma = request.getParameter(NM_PARAMETRO_TURMA);
 
 		// recupera os parametros do request responsável
 		nomeResp = request.getParameter(NM_PARAMETRO_NOME_RESP);
@@ -230,12 +240,16 @@ public class ServletAluno extends ServletGenerico {
 		
 		try {
 			dtNasc = formato.parse(dtNascimento);
-			dtNascMatr = formato.parse(dtMatricula);
+			dtMatr = formato.parse(dtMatricula);
 			dtNascResp = formato.parse(dtNascimentoResp);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		matricula = matricula.replace(".", "");
+		
+		carteiraEstudante = carteiraEstudante.replace("-", "");
 		
 		cpf = cpf.replace(".", "");
 		cpf = cpf.replace("-", "");
@@ -253,20 +267,8 @@ public class ServletAluno extends ServletGenerico {
 			e.printStackTrace();
 		}
 		
-		//monta a entidade pessoa para incluir aluno
+		//monta a entidade pessoa para incluir o responsável
 		Pessoa pessoa = new Pessoa();
-		pessoa.setId(matricula);
-		pessoa.setNome(nome);
-		pessoa.setDtNascimento(new java.sql.Date(dtNasc.getTime()));
-		pessoa.setNaturalidade(naturalidade);
-		pessoa.setEndereco(endereco);
-		pessoa.setNumero(Integer.valueOf(numero));
-		pessoa.setBairro(bairro);
-		pessoa.setCidade(cidade);
-		pessoa.setEstado(estado);
-		
-		//monta a entidade pessoa para incluir aluno
-		pessoa = new Pessoa();
 		pessoa.setId(cpf);
 		pessoa.setNome(nome);
 		pessoa.setDtNascimento(new java.sql.Date(dtNasc.getTime()));
@@ -278,18 +280,47 @@ public class ServletAluno extends ServletGenerico {
 		pessoa.setEstado(estado);
 		pessoa.setTelefone(telefone);
 		pessoa.setIdentidade(identidade);
-		
+
 		//inclui em PESSOA 2x
 		PessoaDAO pessoaDAO = new PessoaDAO();
 		pessoaDAO.incluir(pessoa);
 		
-		//monta a entidade responsavel para incluir
+		Responsavel responsavel = new Responsavel();
+		responsavel.setId(cpf);
+		responsavel.setParentesco(parentesco);
+		responsavel.setEstadoCivil(estadoCivil);
+		responsavel.setEscolaridade(escolaridade);
+		responsavel.setProfissao(profissao);
+		responsavel.setRenda(valorSalario);
 		
-		//inclui em responsavel
+		ResponsavelDAO responsavelDAO = new ResponsavelDAO();
+		responsavelDAO.cadastrar(responsavel);
+
+		//monta a entidade pessoa para incluir aluno
+		pessoa = new Pessoa();
+		pessoa.setId(matricula);
+		pessoa.setNome(nome);
+		pessoa.setDtNascimento(new java.sql.Date(dtNasc.getTime()));
+		pessoa.setNaturalidade(naturalidade);
+		pessoa.setEndereco(endereco);
+		pessoa.setNumero(Integer.valueOf(numero));
+		pessoa.setBairro(bairro);
+		pessoa.setCidade(cidade);
+		pessoa.setEstado(estado);
 		
-		//monta a entidade aluno para incluir
+		pessoaDAO = new PessoaDAO();
+		pessoaDAO.incluir(pessoa);
 		
-		//inclui em aluno
+		Aluno aluno = new Aluno();
+		aluno.setId(matricula);
+		aluno.setIdResponsavel(cpf);
+		aluno.setIdTurma(turma);
+		aluno.setDtMatricula(new java.sql.Date(dtMatr.getTime()));
+		aluno.setNecessidadeEspecial(necEspecial);
+		aluno.setCdCarteiraEstudante(carteiraEstudante);
+		
+		AlunoDAO alunoDAO = new AlunoDAO();
+		alunoDAO.cadastrar(aluno);
 		
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
 
