@@ -61,7 +61,7 @@ function cadastrar(){
 <body>
 
 	<jsp:include page="cabecalho.jsp" />
-
+	<a href = "ServletMenu" style="font-size: 14px; font-family: Cooper Black; text-decoration: none; color: black;"> <img width="60px" height="60px" src="img/pe.png"/><b>MENU</b></a>
 	<form action="ServletAluno" method="post">
 		<input type="hidden" id="<%=ServletAluno.NM_EVENTO%>"
 			name="<%=ServletAluno.NM_EVENTO%>" value="">
@@ -184,7 +184,7 @@ function cadastrar(){
 								<th align="right">Turma:</th>
 								<td>
 									<%	TurmaDAO turmaDAO = new TurmaDAO();
-										ArrayList<Turma>colecaoTurma = turmaDAO.consultar("", "");
+										ArrayList<Turma>colecaoTurma = turmaDAO.consultar("", "", "");
 										boolean ultimaTurma = false;
 										for(int x = 0; x < colecaoTurma.size(); x++){
 											Turma turma = colecaoTurma.get(x);

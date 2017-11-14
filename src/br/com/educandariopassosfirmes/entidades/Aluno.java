@@ -2,21 +2,16 @@ package br.com.educandariopassosfirmes.entidades;
 
 import java.sql.Date;
 
-public class Aluno {
+public class Aluno extends Pessoa{
 
-	private String id;
 	private String idTurma;
 	private String idResponsavel;
 	private Date dtMatricula;
 	private String necessidadeEspecial;
+	private String detalheNecessidadeEspecial;
 	private String cdCarteiraEstudante;
+	private String cdCertidaoNascimento;
 	
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
 	public String getIdTurma() {
 		return idTurma;
 	}
@@ -41,11 +36,23 @@ public class Aluno {
 	public void setNecessidadeEspecial(String necessidadeEspecial) {
 		this.necessidadeEspecial = necessidadeEspecial;
 	}
+	public String getDetalheNecessidadeEspecial() {
+		return detalheNecessidadeEspecial;
+	}
+	public void setDetalheNecessidadeEspecial(String detalheNecessidadeEspecial) {
+		this.detalheNecessidadeEspecial = detalheNecessidadeEspecial;
+	}
 	public String getCdCarteiraEstudante() {
 		return cdCarteiraEstudante;
 	}
 	public void setCdCarteiraEstudante(String cdCarteiraEstudante) {
 		this.cdCarteiraEstudante = cdCarteiraEstudante;
+	}
+	public String getCdCertidaoNascimento() {
+		return cdCertidaoNascimento;
+	}
+	public void setCdCertidaoNascimento(String cdCertidaoNascimento) {
+		this.cdCertidaoNascimento = cdCertidaoNascimento;
 	}
 	
 }

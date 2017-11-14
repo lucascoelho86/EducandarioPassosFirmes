@@ -155,7 +155,7 @@ public class ServletTurma extends ServletGenerico {
 		
 		TurmaDAO turmaDAO = new TurmaDAO();
 		//consultar todas as turmas
-		ArrayList<Turma> colecaoTurma = turmaDAO.consultar(dsDisciplina, dsTurno);
+		ArrayList<Turma> colecaoTurma = turmaDAO.consultar("", dsDisciplina, dsTurno);
 		
 		request.setAttribute(NM_PARAMETRO_COLECAO_TURMA, colecaoTurma);
 

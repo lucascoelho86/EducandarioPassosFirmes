@@ -32,7 +32,7 @@ public class ResponsavelDAO extends Conexao{
 	 
 	 public void excluir(String pId){
 			
-		String sql = "DELETE FROM RESPONSAVEL WHERE id_pessoa=?";
+		String sql = "DELETE FROM RESPONSAVEL WHERE ID_PESSOA=?";
 			
 		try {
 			PreparedStatement preparador = getPreparedStatement(sql);

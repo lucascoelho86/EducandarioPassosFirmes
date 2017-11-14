@@ -17,6 +17,20 @@ public final class BibliotecaFormatarDados {
 		
 	}
 	
+	public static String formatarMatricula(String pCampo){
+		String matricula = "";
+		if(pCampo != null && !pCampo.equals("")){
+			String cpfPrimeiraParte = pCampo.substring(0, 4);
+			String cpfSegundaParte = pCampo.substring(4, 6);
+			String cpfTerceiraParte = pCampo.substring(6);
+			
+			matricula = cpfPrimeiraParte + "." + cpfSegundaParte + "." + cpfTerceiraParte;
+		}
+		
+		return matricula;
+		
+	}
+	
 	public static String completarNumeroComZerosEsquerda(String pString, int pTmFormato) {
 		int contador = pString.length();
 

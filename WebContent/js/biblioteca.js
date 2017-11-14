@@ -33,6 +33,19 @@ function formatarCPFOnload(){
 	document.getElementById("cpf").value = valor;
 }
 
+function formatarMatricula(event){
+	var valor = document.getElementById("matricula").value;
+	var tamanhoValor = valor.length;
+	var tecla = event.keyCode;
+	
+	if(tecla != 8 && tecla != 46){
+		if(tamanhoValor == 4 || tamanhoValor == 7){
+			valor = valor.concat(".");
+		}
+	}
+	document.getElementById("matricula").value = valor;
+}
+
 function formatarCamposData(pCampo, pValue, pEvento){
 	var valor = pValue.value;
 	var tamanhoValor = valor.length;

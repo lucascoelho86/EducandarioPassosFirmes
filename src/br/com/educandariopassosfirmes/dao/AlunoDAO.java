@@ -3,6 +3,7 @@ package br.com.educandariopassosfirmes.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import br.com.educandariopassosfirmes.entidades.Aluno;
 
@@ -60,17 +61,31 @@ public class AlunoDAO extends Conexao{
 		return maiorMatricula;
 	}
 	
-	public Aluno consultar(String pMatricula){
+	public ArrayList<Aluno> consultar(String pMatricula, String pTurma, String pResponsavel){
 		
 		String sql = "SELECT * FROM ALUNO ";
 		String where = "WHERE ";
 		String sql2 = "ID_PESSOA = ?";
+		String sql3 = "ID_TURMA = ?";
+		String sql4 = "ID_RESPONSAVEL = ?";
+		String conector = "";
 		String sqlComplementar = "";
 		Aluno aluno = null;
+		ArrayList<Aluno>colecaoAluno = new ArrayList<Aluno>();
 		int contador=0;
 		try{
 			if(pMatricula != null && !pMatricula.equals("")){
 				sqlComplementar = sql2;
+				conector = "\n AND ";
+			}
+			
+			if(pTurma != null && !pTurma.equals("")){
+				sqlComplementar = sqlComplementar + conector + sql3;
+				conector = "\n AND ";
+			}
+			
+			if(pResponsavel != null && !pResponsavel.equals("")){
+				sqlComplementar = sqlComplementar + conector + sql4;
 			}
 			
 			if(!sqlComplementar.equals("")){
@@ -84,24 +99,42 @@ public class AlunoDAO extends Conexao{
 				preparador.setString(contador, pMatricula);
 			}
 			
+			if(pTurma != null && !pTurma.equals("")){
+				contador++;
+				preparador.setString(contador, pTurma);
+			}
+			
+			if(pResponsavel != null && !pResponsavel.equals("")){
+				contador++;
+				preparador.setString(contador, pResponsavel);
+			}
+			
 			ResultSet resultado = preparador.executeQuery();
 			
-			if(resultado.next()){
+			while(resultado.next()){
 				aluno = new Aluno();
 				
-				aluno.setId(resultado.getString("id_pessoa"));
+				aluno.setId(resultado.getString("ID_PESSOA"));
+				aluno.setIdTurma(resultado.getString("ID_TURMA"));
+				aluno.setIdResponsavel(resultado.getString("ID_RESPONSAVEL"));
+				aluno.setDtMatricula(resultado.getDate("DT_MATRICULA"));
+				aluno.setNecessidadeEspecial(resultado.getString("NEC_ESPECIAL"));
+				aluno.setDetalheNecessidadeEspecial(resultado.getString("DETALHE_NEC_ESPECIAL"));
+				aluno.setCdCarteiraEstudante(resultado.getString("CD_CARTEIRA_ESTUDANTE"));
+				aluno.setCdCertidaoNascimento(resultado.getString("CD_CERTIDAO_NASCIMENTO"));
 				
+				colecaoAluno.add(aluno);
 			}
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
 		
-		return aluno;
+		return colecaoAluno;
 	}
 	
 	public void excluir(String pId){
 		
-		String sql = "DELETE FROM Aluno WHERE id_pessoa=?";
+		String sql = "DELETE FROM ALUNO WHERE ID_PESSOA=?";
 		
 		try {
 			PreparedStatement preparador = getPreparedStatement(sql);

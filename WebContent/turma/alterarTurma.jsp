@@ -43,7 +43,7 @@ function alterar(){
 <body>
 
 	<jsp:include page="cabecalho.jsp" />
-
+	<a href = "ServletMenu" style="font-size: 14px; font-family: Cooper Black; text-decoration: none; color: black;"> <img width="60px" height="60px" src="img/pe.png"/><b>MENU</b></a>
 	<form action="ServletTurma" method="post">
 		<h2 align="center">ALTERAR TURMA</h2>
 		<table width="100%">

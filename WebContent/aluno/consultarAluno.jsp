@@ -1,8 +1,10 @@
+<%@page import="java.util.LinkedHashMap"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.Aluno"%>
+<%@page import="br.com.educandariopassosfirmes.entidades.Turma"%>
+<%@page import="br.com.educandariopassosfirmes.dao.TurmaDAO"%>
 <%@page import="br.com.educandariopassosfirmes.util.BibliotecaFormatarDados"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="br.com.educandariopassosfirmes.entidades.Pessoa"%>
-<%@page import="br.com.educandariopassosfirmes.entidades.Disciplina"%>
-<%@page import="br.com.educandariopassosfirmes.dao.DisciplinaDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -53,12 +55,12 @@ function exibirInclusao(){
 
 <%
 
-ArrayList<Pessoa>colecaoPessoa;
-Iterator<Pessoa>itPessoa;
-colecaoPessoa = (ArrayList<Pessoa>) request.getAttribute(ServletAluno.NM_PARAMETRO_COLECAO_PESSOA);
+ArrayList<LinkedHashMap<String, String>>colecaoPessoa;
+Iterator<LinkedHashMap<String, String>>itPessoa;
+colecaoPessoa = (ArrayList<LinkedHashMap<String, String>>) request.getAttribute(ServletAluno.NM_PARAMETRO_COLECAO_PESSOA);
 
 if(colecaoPessoa == null){
-	colecaoPessoa = new ArrayList<Pessoa>();
+	colecaoPessoa = new ArrayList<LinkedHashMap<String, String>>();
 	itPessoa = colecaoPessoa.iterator();
 }else{
 	itPessoa = colecaoPessoa.iterator();
@@ -69,7 +71,7 @@ if(colecaoPessoa == null){
 <body>
 
 <jsp:include page="cabecalho.jsp"/>
-<a href = "ServletMenu"> Menu</a>
+<a href = "ServletMenu" style="font-size: 14px; font-family: Cooper Black; text-decoration: none; color: black;"> <img width="60px" height="60px" src="img/pe.png"/><b>MENU</b></a>
 <form name="frm_principal" action="ServletAluno" method="post">
 <input type="hidden" id="<%=ServletAluno.NM_EVENTO%>" name="<%=ServletAluno.NM_EVENTO%>" value="">
 	<h2 align="center">CONSULTAR ALUNO</h2>
@@ -81,9 +83,7 @@ if(colecaoPessoa == null){
 						<tr>
 							<th width="10%" align="right"> Matrícula: </th>
 							<td>
-								<input type="text" id="<%=ServletAluno.NM_PARAMETRO_CPF%>" name="<%=ServletAluno.NM_PARAMETRO_CPF%>" value="" size="14" onkeyup="formatarCPF(event);" maxlength="14"
-									onkeypress='return SomenteNumero(event)'>
-							
+								<input type="text" id="<%=ServletAluno.NM_PARAMETRO_MATRICULA%>" name="<%=ServletAluno.NM_PARAMETRO_MATRICULA%>" value="" size="14" onkeyup="formatarMatricula(event);" maxlength="13">
 							</td>
 						
 							<th width="10%" align="right"> Nome: </th>
@@ -94,17 +94,17 @@ if(colecaoPessoa == null){
 						
 							<th width="10%" align="right"> Turma: </th>
 							<td>
-								<%	DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
-									ArrayList<Disciplina>colecaoDisciplina = disciplinaDAO.consultar(0, "", "");
-									boolean ultimaDisciplina = false;
-									for(int x = 0; x < colecaoDisciplina.size(); x++){
-										Disciplina disciplina = colecaoDisciplina.get(x);
+								<%	TurmaDAO turmaDAO = new TurmaDAO();
+									ArrayList<Turma>colecaoTurma = turmaDAO.consultar("", "", "");
+									boolean ultimaTurma = false;
+									for(int x = 0; x < colecaoTurma.size(); x++){
+										Turma turma = colecaoTurma.get(x);
 										
-										if(x + 1 == colecaoDisciplina.size()){
-											ultimaDisciplina = true;
+										if(x + 1 == colecaoTurma.size()){
+											ultimaTurma = true;
 										}%>	
 															
-										<%=Select.getInstancia().getHTML(ServletAluno.NM_PARAMETRO_SELECT_DISCIPLINA, ServletAluno.NM_PARAMETRO_SELECT_DISCIPLINA, String.valueOf(disciplina.getIdDisciplina()), disciplina.getDsDisciplina(), false, x, ultimaDisciplina)%>
+										<%=Select.getInstancia().getHTML(ServletAluno.NM_PARAMETRO_SELECT_TURMA, ServletAluno.NM_PARAMETRO_SELECT_TURMA, String.valueOf(turma.getIdTurma()), turma.getDsTurma(), false, x, ultimaTurma)%>
 									<%}%>				
 							</td>
 							<td>
@@ -119,16 +119,17 @@ if(colecaoPessoa == null){
 				<table width="50%" align="center">
 				<tr class="cabecalhoRetornoDados">
 					<TH align="left" width="1%">X</TH>
-					<TH align="left" width="3%" >Matrícula</TH>
+					<TH align="left" width="2%" >Matrícula</TH>
 					<TH align="left" width="10%" >Nome</TH>
+					<TH align="left" width="2%" >Turma</TH>
 				</tr>
 					<%
 					String chave = "";
 					String cssCorlinha;
 					boolean tratamentoCSS = true;
 					while(itPessoa.hasNext()){
-						Pessoa pessoa = itPessoa.next();
-						chave = pessoa.getId();
+						LinkedHashMap<String, String> pessoa = itPessoa.next();
+						chave = pessoa.get("ID_PESSOA");
 						if(tratamentoCSS){
 							cssCorlinha = "#c0c0c0";
 							tratamentoCSS = false;
@@ -145,8 +146,9 @@ if(colecaoPessoa == null){
 								<input type="radio" id="rdb_consulta" name="<%=ServletAluno.NM_PARAMETRO_CHAVE%>" value="<%=chave%>">
 							<%}%>
 							</td>
-							<td><%=BibliotecaFormatarDados.formatarCPF(pessoa.getId())%></td>
-							<td><%=pessoa.getNome().toUpperCase() %></td>
+							<td><%=BibliotecaFormatarDados.formatarMatricula(pessoa.get("ID_PESSOA"))%></td>
+							<td><%=pessoa.get("NOME").toUpperCase() %></td>
+							<td><%=pessoa.get("DS_TURMA").toUpperCase() %></td>
 						</tr>
 						
 						

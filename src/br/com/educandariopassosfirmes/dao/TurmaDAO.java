@@ -9,23 +9,31 @@ import br.com.educandariopassosfirmes.entidades.Turma;
 
 public class TurmaDAO extends Conexao{
 
-	 public ArrayList<Turma> consultar(String pDescricao, String pTurno){
+	 public ArrayList<Turma> consultar(String pIdTurma, String pDescricao, String pTurno){
 		String sql = "SELECT * FROM TURMA ";
 		String where = "WHERE ";
-		String sql1 = "DS_TURMA LIKE ?";
-		String sql2 = "TURNO = ?";
+		String sql1 = "ID_TURMA = ?";
+		String sql2 = "DS_TURMA LIKE ?";
+		String sql3 = "TURNO = ?";
+		String conector = "";
 		String sqlComplementar = "";
 		ArrayList<Turma>colecaoTurma = new ArrayList<Turma>();
 		Turma turma = null;
 		int contador=0;
 		try{
 				
-			if(pDescricao != null && !pDescricao.equals("")){
+			if(pIdTurma != null && !pIdTurma.equals("")){
 				sqlComplementar = sql1;
+				conector = "\n AND ";
+			}
+			
+			if(pDescricao != null && !pDescricao.equals("")){
+				sqlComplementar = sqlComplementar + conector + sql2;
+				conector = "\n AND ";
 			}
 
 			if(pTurno != null && !pTurno.equals("")){
-				sqlComplementar = sql2;
+				sqlComplementar = sqlComplementar + conector + sql3;
 			}
 				
 			if(!sqlComplementar.equals("")){
@@ -34,6 +42,11 @@ public class TurmaDAO extends Conexao{
 				
 			PreparedStatement preparador = getPreparedStatement(sql);
 				
+			if(pIdTurma != null && !pIdTurma.equals("")){
+				contador++;
+				preparador.setString(contador, pIdTurma);
+			}
+			
 			if(pDescricao != null && !pDescricao.equals("")){
 				contador++;
 				preparador.setString(contador, pDescricao);

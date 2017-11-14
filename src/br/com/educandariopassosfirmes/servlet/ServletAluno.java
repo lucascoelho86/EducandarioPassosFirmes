@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 
 import javax.servlet.ServletException;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.com.educandariopassosfirmes.dao.AlunoDAO;
+import br.com.educandariopassosfirmes.dao.ConsultaPrincipalAluno;
 import br.com.educandariopassosfirmes.dao.PessoaDAO;
 import br.com.educandariopassosfirmes.dao.ProfessorDAO;
 import br.com.educandariopassosfirmes.dao.ProfessorDisciplinaDAO;
@@ -47,7 +49,7 @@ public class ServletAluno extends ServletGenerico {
 	public static final String NM_PARAMETRO_DS_TURMA = "descricaoTurma";
 	public static final String NM_PARAMETRO_TURNO = "turno";
 	public static final String NM_PARAMETRO_QT_MAX_ALUNOS = "qtMaxAlunos";
-	public static final String NM_PARAMETRO_SELECT_DISCIPLINA = "selectTurno";
+	public static final String NM_PARAMETRO_SELECT_TURMA = "selectTurma";
 	public static final String NM_PARAMETRO_COLECAO_PESSOA = "colecaoPessoa";
 	public static final String NM_PARAMETRO_ID_DISCIPLINA = "idDisciplina";
 	public static final String NM_PARAMETRO_DS_DISCIPLINA = "descricaoDisciplina";
@@ -143,14 +145,6 @@ public class ServletAluno extends ServletGenerico {
 	@Override
 	public void exibirInclusao(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		String descricao = "";
-		String qtMaxAlunos = "";
-		
-		descricao = request.getParameter(NM_PARAMETRO_DS_TURMA);
-		qtMaxAlunos = request.getParameter(NM_PARAMETRO_QT_MAX_ALUNOS);
-		
-		request.setAttribute(NM_PARAMETRO_DS_TURMA, descricao);
-		request.setAttribute(NM_PARAMETRO_QT_MAX_ALUNOS, qtMaxAlunos);
 		
 		// redireciona para a pagina de inclusao
 		this.redirecionarPagina(request, response,	NM_JSP_INCLUIR_ALUNO);
@@ -194,7 +188,6 @@ public class ServletAluno extends ServletGenerico {
 		String profissao = "";
 		String renda = "";
 		
-		String tamanhoColecaoDisciplina = "";
 		Date dtNasc = null;
 		Date dtNascResp = null;
 		Date dtMatr = null;
@@ -234,8 +227,6 @@ public class ServletAluno extends ServletGenerico {
 		profissao = request.getParameter(NM_PARAMETRO_PROFISSAO);
 		renda = request.getParameter(NM_PARAMETRO_RENDA);
 
-		tamanhoColecaoDisciplina = request.getParameter(NM_PARAMETRO_TAMANHO_COLECAO_DISCIPLINA);
-		
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 		
 		try {
@@ -270,14 +261,14 @@ public class ServletAluno extends ServletGenerico {
 		//monta a entidade pessoa para incluir o responsável
 		Pessoa pessoa = new Pessoa();
 		pessoa.setId(cpf);
-		pessoa.setNome(nome);
-		pessoa.setDtNascimento(new java.sql.Date(dtNasc.getTime()));
-		pessoa.setNaturalidade(naturalidade);
-		pessoa.setEndereco(endereco);
-		pessoa.setNumero(Integer.valueOf(numero));
-		pessoa.setBairro(bairro);
-		pessoa.setCidade(cidade);
-		pessoa.setEstado(estado);
+		pessoa.setNome(nomeResp);
+		pessoa.setDtNascimento(new java.sql.Date(dtNascResp.getTime()));
+		pessoa.setNaturalidade(naturalidadeResp);
+		pessoa.setEndereco(enderecoResp);
+		pessoa.setNumero(Integer.valueOf(numeroResp));
+		pessoa.setBairro(bairroResp);
+		pessoa.setCidade(cidadeResp);
+		pessoa.setEstado(estadoResp);
 		pessoa.setTelefone(telefone);
 		pessoa.setIdentidade(identidade);
 
@@ -318,6 +309,7 @@ public class ServletAluno extends ServletGenerico {
 		aluno.setDtMatricula(new java.sql.Date(dtMatr.getTime()));
 		aluno.setNecessidadeEspecial(necEspecial);
 		aluno.setCdCarteiraEstudante(carteiraEstudante);
+		aluno.setCdCertidaoNascimento(certidaoNasc);
 		
 		AlunoDAO alunoDAO = new AlunoDAO();
 		alunoDAO.cadastrar(aluno);
@@ -330,40 +322,20 @@ public class ServletAluno extends ServletGenerico {
 	public void consultarTodos(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		ArrayList<ProfessorDisciplina>colecaoProfessorDisciplina = new ArrayList<ProfessorDisciplina>();
+		ArrayList<LinkedHashMap<String, String>>colecaoAluno = new ArrayList<LinkedHashMap<String, String>>();
 		
 		// recupera os parametros do request
-		String cpf = (String) request.getParameter(NM_PARAMETRO_CPF);
+		String matricula = (String) request.getParameter(NM_PARAMETRO_MATRICULA);
 		String nome = (String) request.getParameter(NM_PARAMETRO_NOME);
-		String disciplina = (String) request.getParameter(NM_PARAMETRO_SELECT_DISCIPLINA);
+		String turma = (String) request.getParameter(NM_PARAMETRO_SELECT_TURMA);
 
-		cpf = cpf.replace(".", "");
-		cpf = cpf.replace("-", "");
+		matricula = matricula.replace(".", "");
 		
-		if((cpf != null && !cpf.equals("")) || (disciplina != null && !disciplina.equals("0"))){
-			ProfessorDisciplinaDAO professorDisciplinaDAO = new ProfessorDisciplinaDAO();
-			colecaoProfessorDisciplina = professorDisciplinaDAO.consultar(cpf, Integer.valueOf(disciplina));
-		}
+		ConsultaPrincipalAluno consulta = new ConsultaPrincipalAluno();
 		
-		ArrayList<Pessoa> colecaoPessoa = new ArrayList<Pessoa>();
-		PessoaDAO pessoaDAO = new PessoaDAO();
+		colecaoAluno = consulta.consultar(matricula, nome, turma);
 		
-		if(!colecaoProfessorDisciplina.isEmpty()){
-			for(int x = 0; x < colecaoProfessorDisciplina.size(); x++){
-				ProfessorDisciplina professorDisciplina = colecaoProfessorDisciplina.get(x);
-				pessoaDAO = new PessoaDAO();
-				ArrayList<Pessoa> colecaoPessoaAux = pessoaDAO.consultar(professorDisciplina.getId_professor(), "");
-				colecaoPessoa.add(colecaoPessoaAux.get(0));
-			}
-		}
-		
-		//consultar professor se ele não tiver cadastrado em nenhuma disciplina para ministrar e se o campo disciplina tiver selecionado alguma disciplina
-		if(colecaoPessoa.isEmpty() && (disciplina != null && disciplina.equals("0"))){
-			pessoaDAO = new PessoaDAO();
-			colecaoPessoa = pessoaDAO.consultar(cpf, nome);			
-		}		
-		
-		request.setAttribute(NM_PARAMETRO_COLECAO_PESSOA, colecaoPessoa);
+		request.setAttribute(NM_PARAMETRO_COLECAO_PESSOA, colecaoAluno);
 
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
 	}
@@ -377,15 +349,29 @@ public class ServletAluno extends ServletGenerico {
 				
 		// recupera os parametros do request
 		chave = request.getParameter(NM_PARAMETRO_CHAVE);
-				
-		String idProfessor = chave;
-
-		ProfessorDAO professorDAO = new ProfessorDAO();		
-		professorDAO.excluir(idProfessor);
+		
+		AlunoDAO alunoDAO = new AlunoDAO();
+		ArrayList<Aluno> consultaAluno = alunoDAO.consultar(chave, "", "");
+		Aluno aluno = consultaAluno.get(0);
+		String idResponsavel = aluno.getIdResponsavel();
+		
+		alunoDAO = new AlunoDAO();
+		alunoDAO.excluir(chave);
 		
 		PessoaDAO pessoaDAO = new PessoaDAO();
-		pessoaDAO.excluir(idProfessor);
+		pessoaDAO.excluir(chave);
 		
+		alunoDAO = new AlunoDAO();
+		ArrayList<Aluno> consultaAlunoComMesmoResponsavel = alunoDAO.consultar("", "", idResponsavel);
+		
+		if(consultaAlunoComMesmoResponsavel.isEmpty()) {
+			ResponsavelDAO responsavelDAO = new ResponsavelDAO();
+			responsavelDAO.excluir(idResponsavel);
+			
+			pessoaDAO = new PessoaDAO();
+			pessoaDAO.excluir(idResponsavel);
+		}
+				
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
 	}
 

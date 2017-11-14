@@ -63,7 +63,7 @@ function mostrarDP(){
 <body>
 
 	<jsp:include page="cabecalho.jsp" />
-
+	<a href = "ServletMenu" style="font-size: 14px; font-family: Cooper Black; text-decoration: none; color: black;"> <img width="60px" height="60px" src="img/pe.png"/><b>MENU</b></a>
 	<form action="ServletProfessor" method="post">
 		<input type="hidden" id="<%=ServletProfessor.NM_EVENTO%>"
 			name="<%=ServletProfessor.NM_EVENTO%>" value="">
