@@ -28,7 +28,6 @@ public class ServletTurma extends ServletGenerico {
 	public static final String NM_PARAMETRO_CHAVE = "chave";
 	
 	//Parâmetros inclusão disciplina
-	public static final String NM_PARAMETRO_ID_TURMA = "idTurma";
 	public static final String NM_PARAMETRO_SIGLA_TURMA = "siglaTurma";
 	public static final String NM_PARAMETRO_DS_TURMA = "descricaoTurma";
 	public static final String NM_PARAMETRO_TURNO = "turno";
@@ -198,7 +197,7 @@ public class ServletTurma extends ServletGenerico {
 		String qtMaxAlunos = chaveTurma[3];
 		
 		//seta os atributos no request para recuperar na JSP
-		request.setAttribute(NM_PARAMETRO_ID_TURMA, idTurma);
+		request.setAttribute(NM_PARAMETRO_SIGLA_TURMA, idTurma);
 		request.setAttribute(NM_PARAMETRO_DS_TURMA, dsTurma);
 		
 		if(turno.equals(NM_TURNO_MANHA)) {
@@ -223,7 +222,7 @@ public class ServletTurma extends ServletGenerico {
 		String qtMaxAlunos = "";
 
 		// recupera os parametros do request
-		idTurma = request.getParameter(NM_PARAMETRO_ID_TURMA);
+		idTurma = request.getParameter(NM_PARAMETRO_SIGLA_TURMA);
 		descricao = request.getParameter(NM_PARAMETRO_DS_TURMA);
 		turno = request.getParameter(NM_PARAMETRO_SELECT_TURNO);
 		qtMaxAlunos = request.getParameter(NM_PARAMETRO_QT_MAX_ALUNOS);

@@ -47,7 +47,7 @@ public class ConsultaPrincipalAluno extends Conexao{
 			
 			if(pNome != null && !pNome.equals("")){
 				contador++;
-				preparador.setString(contador, pNome);
+				preparador.setString(contador, "%" + pNome + "%");
 			}
 			
 			if(pMatricula != null && !pMatricula.equals("")){

@@ -6,12 +6,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.com.educandariopassosfirmes.entidades.Aluno;
+import br.com.educandariopassosfirmes.entidades.Responsavel;
 
 public class AlunoDAO extends Conexao{
 
 	 public void cadastrar(Aluno pAluno){
 		
-		String sql = "INSERT INTO ALUNO (ID_PESSOA, ID_TURMA, ID_RESPONSAVEL, DT_MATRICULA, NEC_ESPECIAL, CD_CARTEIRA_ESTUDANTE) values (?,?,?,?,?,?)";
+		String sql = "INSERT INTO ALUNO (ID_PESSOA, ID_TURMA, ID_RESPONSAVEL, DT_MATRICULA, NEC_ESPECIAL, DETALHE_NEC_ESPECIAL, CD_CARTEIRA_ESTUDANTE, CD_CERTIDAO_NASCIMENTO) values (?,?,?,?,?,?,?,?)";
 		
 		try {
 			PreparedStatement preparador = getPreparedStatement(sql);
@@ -21,7 +22,9 @@ public class AlunoDAO extends Conexao{
 			preparador.setString(3, pAluno.getIdResponsavel());
 			preparador.setDate(4, pAluno.getDtMatricula());
 			preparador.setString(5, pAluno.getNecessidadeEspecial());
-			preparador.setString(6, pAluno.getCdCarteiraEstudante());
+			preparador.setString(6, pAluno.getDetalheNecessidadeEspecial());
+			preparador.setString(7, pAluno.getCdCarteiraEstudante());
+			preparador.setString(8, pAluno.getCdCertidaoNascimento());
 			
 			preparador.execute();
 			preparador.close();
@@ -148,6 +151,31 @@ public class AlunoDAO extends Conexao{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	 public void alterar(Aluno pAluno){
+			
+			String sql = "UPDATE ALUNO SET ID_TURMA=?, ID_RESPONSAVEL=?, DT_MATRICULA=?, NEC_ESPECIAL=?, DETALHE_NEC_ESPECIAL=?, CD_CARTEIRA_ESTUDANTE=?, CD_CERTIDAO_NASCIMENTO=? WHERE ID_PESSOA=?";
+			
+			try {
+				PreparedStatement preparador = getPreparedStatement(sql);
+				
+				preparador.setString(1, pAluno.getIdTurma());
+				preparador.setString(2, pAluno.getIdResponsavel());
+				preparador.setDate(3, pAluno.getDtMatricula());
+				preparador.setString(4, pAluno.getNecessidadeEspecial());
+				preparador.setString(5, pAluno.getDetalheNecessidadeEspecial());
+				preparador.setString(6, pAluno.getCdCarteiraEstudante());
+				preparador.setString(7, pAluno.getCdCertidaoNascimento());
+				preparador.setString(8, pAluno.getId());
+				
+				preparador.execute();
+				preparador.close();
+				
+				System.out.println("Alterado com sucesso!");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 	}
 	
 }

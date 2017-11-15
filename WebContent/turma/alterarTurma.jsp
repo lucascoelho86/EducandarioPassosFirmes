@@ -21,7 +21,7 @@ function desistir(){
 
 function alterar(){
 	document.getElementById("<%=ServletTurma.NM_EVENTO%>").value = "<%=ServletTurma.NM_EVENTO_PROCESSAR_ALTERACAO%>";
-	}
+}
 </script>
 
 <%
@@ -45,6 +45,8 @@ function alterar(){
 	<jsp:include page="cabecalho.jsp" />
 	<a href = "ServletMenu" style="font-size: 14px; font-family: Cooper Black; text-decoration: none; color: black;"> <img width="60px" height="60px" src="img/pe.png"/><b>MENU</b></a>
 	<form action="ServletTurma" method="post">
+	<input type="hidden" id="<%=ServletTurma.NM_EVENTO%>"
+			name="<%=ServletTurma.NM_EVENTO%>" value="">
 		<h2 align="center">ALTERAR TURMA</h2>
 		<table width="100%">
 			<tr>

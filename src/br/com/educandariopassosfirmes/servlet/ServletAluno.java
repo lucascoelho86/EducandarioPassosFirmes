@@ -55,6 +55,11 @@ public class ServletAluno extends ServletGenerico {
 	public static final String NM_PARAMETRO_DS_DISCIPLINA = "descricaoDisciplina";
 	public static final String NM_PARAMETRO_TAMANHO_COLECAO_DISCIPLINA = "tamanhoColecaoDisciplina";
 	public static final String NM_PARAMETRO_COLECAO_PROFESSOR_DISCIPLINA = "colecaoProfessorDisciplina";
+	
+	public static final String NM_PARAMETRO_ALUNO = "aluno";
+	public static final String NM_PARAMETRO_PESSOA_ALUNO = "pessoaAluno";
+	public static final String NM_PARAMETRO_RESPONSAVEL = "responsavel";
+	public static final String NM_PARAMETRO_PESSOA_RESPONSAVEL = "pessoaResponsavel";
 
 	public static final String NM_PARAMETRO_NOME = "nome";
 	public static final String NM_PARAMETRO_NOME_RESP = "nomeResp";
@@ -86,6 +91,7 @@ public class ServletAluno extends ServletGenerico {
 	
 	public static final String NM_PARAMETRO_PARENTESCO = "parentesco";
 	public static final String NM_PARAMETRO_NECESSIDADE_ESPECIAL = "necEspecial";
+	public static final String NM_PARAMETRO_DS_NECESSIDADE_ESPECIAL = "dsNecEspecial";
 	public static final String NM_PARAMETRO_ESCOLARIDADE = "escolaridade";
 	public static final String NM_PARAMETRO_PROFISSAO = "profissao";
 	public static final String NM_PARAMETRO_RENDA = "renda";
@@ -168,6 +174,7 @@ public class ServletAluno extends ServletGenerico {
 		String dtMatricula = "";
 		String carteiraEstudante = "";
 		String necEspecial = "";
+		String dsNecEspecial = "";
 		String turma = "";
 		
 		// declara as variaveis responsável
@@ -207,6 +214,7 @@ public class ServletAluno extends ServletGenerico {
 		dtMatricula = request.getParameter(NM_PARAMETRO_DT_MATRICULA);
 		carteiraEstudante = request.getParameter(NM_PARAMETRO_CARTEIRA_ESTUDANTE);
 		necEspecial = request.getParameter(NM_PARAMETRO_NECESSIDADE_ESPECIAL);
+		dsNecEspecial = request.getParameter(NM_PARAMETRO_DS_NECESSIDADE_ESPECIAL);
 		turma = request.getParameter(NM_PARAMETRO_TURMA);
 
 		// recupera os parametros do request responsável
@@ -308,6 +316,13 @@ public class ServletAluno extends ServletGenerico {
 		aluno.setIdTurma(turma);
 		aluno.setDtMatricula(new java.sql.Date(dtMatr.getTime()));
 		aluno.setNecessidadeEspecial(necEspecial);
+		
+		if(necEspecial.equals("S")) {
+			aluno.setDetalheNecessidadeEspecial(dsNecEspecial);			
+		}else {
+			aluno.setDetalheNecessidadeEspecial("");
+		}
+		
 		aluno.setCdCarteiraEstudante(carteiraEstudante);
 		aluno.setCdCertidaoNascimento(certidaoNasc);
 		
@@ -385,50 +400,26 @@ public class ServletAluno extends ServletGenerico {
 		// recupera os parametros do request
 		chave = request.getParameter(NM_PARAMETRO_CHAVE);
 		
-		String idProfessor = chave;
+		AlunoDAO alunoDAO = new AlunoDAO();
+		ArrayList<Aluno> consultaAluno = alunoDAO.consultar(chave, "", "");
+		Aluno aluno = consultaAluno.get(0);
+		String idResponsavel = aluno.getIdResponsavel();
+		
+		ResponsavelDAO responsavelDAO = new ResponsavelDAO();
+		Responsavel responsavel = responsavelDAO.consultar(idResponsavel);
 		
 		PessoaDAO pessoaDAO = new PessoaDAO();
-		ArrayList<Pessoa>colecaoPessoa = pessoaDAO.consultar(idProfessor, "");
+		ArrayList<Pessoa> consultaPessoaAluno = pessoaDAO.consultar(chave, "");
+		Pessoa pessoaAluno = consultaPessoaAluno.get(0);
 		
-		Iterator<Pessoa> itPessoa = colecaoPessoa.iterator();
-		while(itPessoa.hasNext()) {
-			Pessoa pessoa = itPessoa.next();
-			
-			//seta os atributos no request para recuperar na JSP
-			request.setAttribute(NM_PARAMETRO_NOME, pessoa.getNome());
-			request.setAttribute(NM_PARAMETRO_DT_NASCIMENTO, String.valueOf(pessoa.getDtNascimento()));
-			request.setAttribute(NM_PARAMETRO_NATURALIDADE, pessoa.getNaturalidade());
-			request.setAttribute(NM_PARAMETRO_ENDERECO, pessoa.getEndereco());
-			request.setAttribute(NM_PARAMETRO_NUMERO, String.valueOf(pessoa.getNumero()));
-			request.setAttribute(NM_PARAMETRO_BAIRRO, pessoa.getBairro());
-			request.setAttribute(NM_PARAMETRO_CIDADE, pessoa.getCidade());
-			request.setAttribute(NM_PARAMETRO_ESTADO, pessoa.getEstado());
-			request.setAttribute(NM_PARAMETRO_TELEFONE, pessoa.getTelefone());
-			request.setAttribute(NM_PARAMETRO_IDENTIDADE, pessoa.getIdentidade());
-			request.setAttribute(NM_PARAMETRO_CPF, pessoa.getId());
-			
-		}
+		pessoaDAO = new PessoaDAO();
+		ArrayList<Pessoa> consultaPessoaResp = pessoaDAO.consultar(idResponsavel, "");
+		Pessoa pessoaResp = consultaPessoaResp.get(0);
 		
-		ProfessorDAO professorDAO = new ProfessorDAO();
-		ArrayList<Professor> colecaoProfessor = professorDAO.consultar(idProfessor);
-		
-		Iterator<Professor> itProfessor = colecaoProfessor.iterator();
-		while(itProfessor.hasNext()) {
-			Professor professor = itProfessor.next();
-			
-			//seta os atributos no request para recuperar na JSP
-			request.setAttribute(NM_PARAMETRO_FORMACAO, professor.getFormacao());
-			request.setAttribute(NM_PARAMETRO_ESTADO_CIVIL, professor.getEstadoCivil());
-			request.setAttribute(NM_PARAMETRO_QT_DEPENDENTE, String.valueOf(professor.getQtDependente()));
-			request.setAttribute(NM_PARAMETRO_DT_ADMISSAO, String.valueOf(professor.getDtAdmissao()));
-			request.setAttribute(NM_PARAMETRO_CARGA_HORARIA, String.valueOf(professor.getCargaHoraria()));
-			request.setAttribute(NM_PARAMETRO_SALARIO, professor.getSalario());
-			
-		}
-		
-		ProfessorDisciplinaDAO professorDisciplinaDAO = new ProfessorDisciplinaDAO();
-		ArrayList<ProfessorDisciplina>colecaoProfessorDisciplina = professorDisciplinaDAO.consultar(idProfessor, 0);
-		request.setAttribute(NM_PARAMETRO_COLECAO_PROFESSOR_DISCIPLINA, colecaoProfessorDisciplina);
+		request.setAttribute(NM_PARAMETRO_ALUNO, aluno);
+		request.setAttribute(NM_PARAMETRO_PESSOA_ALUNO, pessoaAluno);
+		request.setAttribute(NM_PARAMETRO_RESPONSAVEL, responsavel);
+		request.setAttribute(NM_PARAMETRO_PESSOA_RESPONSAVEL, pessoaResp);
 		
 		this.redirecionarPagina(request, response, NM_JSP_ALTERAR_ALUNO);
 	}
@@ -437,7 +428,7 @@ public class ServletAluno extends ServletGenerico {
 	public void processarAlteracao(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		// declara as variaveis
+		// declara as variaveis aluno
 		String nome = "";
 		String dtNascimento = "";
 		String naturalidade = "";
@@ -446,22 +437,38 @@ public class ServletAluno extends ServletGenerico {
 		String bairro = "";
 		String cidade = "";
 		String estado = "";
+		String certidaoNasc = "";
+		String matricula = "";
+		String dtMatricula = "";
+		String carteiraEstudante = "";
+		String necEspecial = "";
+		String dsNecEspecial = "";
+		String turma = "";
+				
+		// declara as variaveis responsável
+		String nomeResp = "";
+		String dtNascimentoResp = "";
+		String naturalidadeResp = "";
+		String enderecoResp = "";
+		String numeroResp = "";
+		String bairroResp = "";
+		String cidadeResp = "";
+		String estadoResp = "";
 		String telefone = "";
 		String identidade = "";
 		String cpf = "";
-		String formacao = "";
+		String parentesco = "";
 		String estadoCivil = "";
-		String qtDependente = "";
-		String dtAdmissao = "";
-		String cargaHoraria = "";
-		String salario = "";
-		String idDisciplina = "";
-		String tamanhoColecaoDisciplina = "";
+		String escolaridade = "";
+		String profissao = "";
+		String renda = "";
+				
 		Date dtNasc = null;
-		Date dtAdm = null;
+		Date dtNascResp = null;
+		Date dtMatr = null;
 		double valorSalario = 0;
 
-		// recupera os parametros do request
+		// recupera os parametros do request Aluno
 		nome = request.getParameter(NM_PARAMETRO_NOME);
 		dtNascimento = request.getParameter(NM_PARAMETRO_DT_NASCIMENTO);
 		naturalidade = request.getParameter(NM_PARAMETRO_NATURALIDADE);
@@ -470,46 +477,95 @@ public class ServletAluno extends ServletGenerico {
 		bairro = request.getParameter(NM_PARAMETRO_BAIRRO);
 		cidade = request.getParameter(NM_PARAMETRO_CIDADE);
 		estado = request.getParameter(NM_PARAMETRO_ESTADO);
+		certidaoNasc = request.getParameter(NM_PARAMETRO_CERTIDAO_NASC);
+		matricula = request.getParameter(NM_PARAMETRO_MATRICULA);
+		dtMatricula = request.getParameter(NM_PARAMETRO_DT_MATRICULA);
+		carteiraEstudante = request.getParameter(NM_PARAMETRO_CARTEIRA_ESTUDANTE);
+		necEspecial = request.getParameter(NM_PARAMETRO_NECESSIDADE_ESPECIAL);
+		dsNecEspecial = request.getParameter(NM_PARAMETRO_DS_NECESSIDADE_ESPECIAL);
+		turma = request.getParameter(NM_PARAMETRO_TURMA);
+
+		// recupera os parametros do request responsável
+		nomeResp = request.getParameter(NM_PARAMETRO_NOME_RESP);
+		dtNascimentoResp = request.getParameter(NM_PARAMETRO_DT_NASCIMENTO_RESP);
+		naturalidadeResp = request.getParameter(NM_PARAMETRO_NATURALIDADE_RESP);
+		enderecoResp = request.getParameter(NM_PARAMETRO_ENDERECO_RESP);
+		numeroResp = request.getParameter(NM_PARAMETRO_NUMERO_RESP);
+		bairroResp = request.getParameter(NM_PARAMETRO_BAIRRO_RESP);
+		cidadeResp = request.getParameter(NM_PARAMETRO_CIDADE_RESP);
+		estadoResp = request.getParameter(NM_PARAMETRO_ESTADO_RESP);
 		telefone = request.getParameter(NM_PARAMETRO_TELEFONE);
 		identidade = request.getParameter(NM_PARAMETRO_IDENTIDADE);
 		cpf = request.getParameter(NM_PARAMETRO_CPF);
-		formacao = request.getParameter(NM_PARAMETRO_FORMACAO);
+		parentesco = request.getParameter(NM_PARAMETRO_PARENTESCO);
 		estadoCivil = request.getParameter(NM_PARAMETRO_ESTADO_CIVIL);
-		qtDependente = request.getParameter(NM_PARAMETRO_QT_DEPENDENTE);
-		dtAdmissao = request.getParameter(NM_PARAMETRO_DT_ADMISSAO);
-		cargaHoraria = request.getParameter(NM_PARAMETRO_CARGA_HORARIA);
-		salario = request.getParameter(NM_PARAMETRO_SALARIO);
-		tamanhoColecaoDisciplina = request.getParameter(NM_PARAMETRO_TAMANHO_COLECAO_DISCIPLINA);
-				
+		escolaridade = request.getParameter(NM_PARAMETRO_ESCOLARIDADE);
+		profissao = request.getParameter(NM_PARAMETRO_PROFISSAO);
+		renda = request.getParameter(NM_PARAMETRO_RENDA);
+
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 				
 		try {
 			dtNasc = formato.parse(dtNascimento);
-			dtAdm = formato.parse(dtAdmissao);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		cpf = cpf.replace(".", "");
-		cpf = cpf.replace("-", "");
-		
-		telefone = telefone.replace("(", "");
-		telefone = telefone.replace(")", "");
-		telefone = telefone.replace("-", "");
-		
-		DecimalFormatSymbols dfs = new DecimalFormatSymbols (new Locale ("pt", "BR"));
-		DecimalFormat df = new DecimalFormat ("#,##0.00", dfs);
-		try {
-			valorSalario = df.parse (salario).doubleValue();
+			dtMatr = formato.parse(dtMatricula);
+			dtNascResp = formato.parse(dtNascimentoResp);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 				
-		//monta a entidade pessoa para alterar
+		matricula = matricula.replace(".", "");
+				
+		carteiraEstudante = carteiraEstudante.replace("-", "");
+				
+		cpf = cpf.replace(".", "");
+		cpf = cpf.replace("-", "");
+				
+		telefone = telefone.replace("(", "");
+		telefone = telefone.replace(")", "");
+		telefone = telefone.replace("-", "");
+				
+		DecimalFormatSymbols dfs = new DecimalFormatSymbols (new Locale ("pt", "BR"));
+		DecimalFormat df = new DecimalFormat ("#,##0.00", dfs);
+		try {
+			valorSalario = df.parse (renda).doubleValue();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				
+		//monta a entidade pessoa para incluir o responsável
 		Pessoa pessoa = new Pessoa();
 		pessoa.setId(cpf);
+		pessoa.setNome(nomeResp);
+		pessoa.setDtNascimento(new java.sql.Date(dtNascResp.getTime()));
+		pessoa.setNaturalidade(naturalidadeResp);
+		pessoa.setEndereco(enderecoResp);
+		pessoa.setNumero(Integer.valueOf(numeroResp));
+		pessoa.setBairro(bairroResp);
+		pessoa.setCidade(cidadeResp);
+		pessoa.setEstado(estadoResp);
+		pessoa.setTelefone(telefone);
+		pessoa.setIdentidade(identidade);
+
+		//inclui em PESSOA 2x
+		PessoaDAO pessoaDAO = new PessoaDAO();
+		pessoaDAO.alterar(pessoa);
+				
+		Responsavel responsavel = new Responsavel();
+		responsavel.setId(cpf);
+		responsavel.setParentesco(parentesco);
+		responsavel.setEstadoCivil(estadoCivil);
+		responsavel.setEscolaridade(escolaridade);
+		responsavel.setProfissao(profissao);
+		responsavel.setRenda(valorSalario);
+				
+		ResponsavelDAO responsavelDAO = new ResponsavelDAO();
+		responsavelDAO.alterar(responsavel);
+
+		//monta a entidade pessoa para incluir aluno
+		pessoa = new Pessoa();
+		pessoa.setId(matricula);
 		pessoa.setNome(nome);
 		pessoa.setDtNascimento(new java.sql.Date(dtNasc.getTime()));
 		pessoa.setNaturalidade(naturalidade);
@@ -518,42 +574,28 @@ public class ServletAluno extends ServletGenerico {
 		pessoa.setBairro(bairro);
 		pessoa.setCidade(cidade);
 		pessoa.setEstado(estado);
-		pessoa.setTelefone(telefone);
-		pessoa.setIdentidade(identidade);
 				
-		//altera em PESSOA
-		PessoaDAO pessoaDAO = new PessoaDAO();
+		pessoaDAO = new PessoaDAO();
 		pessoaDAO.alterar(pessoa);
 				
-		//monta a entidade professor para alterar
-		Professor professor = new Professor();
-		professor.setId(cpf);
-		professor.setFormacao(formacao);
-		professor.setEstadoCivil(estadoCivil);
-		professor.setQtDependente(Integer.valueOf(qtDependente));
-		professor.setDtAdmissao(new java.sql.Date(dtAdm.getTime()));
-		professor.setCargaHoraria(Integer.valueOf(cargaHoraria));
-		professor.setSalario(valorSalario);
-				
-		//altera em PESSOA
-		ProfessorDAO professorDAO = new ProfessorDAO();
-		professorDAO.alterar(professor);
+		Aluno aluno = new Aluno();
+		aluno.setId(matricula);
+		aluno.setIdResponsavel(cpf);
+		aluno.setIdTurma(turma);
+		aluno.setDtMatricula(new java.sql.Date(dtMatr.getTime()));
+		aluno.setNecessidadeEspecial(necEspecial);
 		
-		//primeiro exclui depois inclui novamente
-		ProfessorDisciplinaDAO professorDisciplinaDAO = new ProfessorDisciplinaDAO();
-		professorDisciplinaDAO.excluir(cpf);
-		
-		for(int x = 0; x < Integer.valueOf(tamanhoColecaoDisciplina); x++) {
-			idDisciplina = request.getParameter(NM_PARAMETRO_ID_DISCIPLINA + x);
-			if(idDisciplina != null) {
-				ProfessorDisciplina professorDisciplina = new ProfessorDisciplina();
-				professorDisciplina.setId_professor(cpf);
-				professorDisciplina.setId_disciplina(Integer.valueOf(idDisciplina));
-				
-				professorDisciplinaDAO = new ProfessorDisciplinaDAO();
-				professorDisciplinaDAO.cadastrar(professorDisciplina);
-			}
+		if(necEspecial.equals("S")) {
+			aluno.setDetalheNecessidadeEspecial(dsNecEspecial);			
+		}else {
+			aluno.setDetalheNecessidadeEspecial("");
 		}
+		
+		aluno.setCdCarteiraEstudante(carteiraEstudante);
+		aluno.setCdCertidaoNascimento(certidaoNasc);
+				
+		AlunoDAO alunoDAO = new AlunoDAO();
+		alunoDAO.alterar(aluno);
 				
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
 	}

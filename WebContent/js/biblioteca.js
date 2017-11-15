@@ -46,6 +46,17 @@ function formatarMatricula(event){
 	document.getElementById("matricula").value = valor;
 }
 
+function formatarMatriculaOnload(){
+	var valor = document.getElementById("matricula").value;
+	var matriculaPrimeiraParte = valor.substring(0, 4);
+	var matriculaSegundaParte = valor.substring(4, 6);
+	var matriculaTerceiraParte = valor.substring(6);
+	
+	valor = matriculaPrimeiraParte.concat(".").concat(matriculaSegundaParte).concat(".").concat(matriculaTerceiraParte);
+	
+	document.getElementById("matricula").value = valor;
+}
+
 function formatarCamposData(pCampo, pValue, pEvento){
 	var valor = pValue.value;
 	var tamanhoValor = valor.length;
@@ -58,6 +69,31 @@ function formatarCamposData(pCampo, pValue, pEvento){
 	}
 	
 	document.getElementById(pCampo).value = valor;
+}
+
+function formatarCamposDataAlunoOnload(){
+	var valorDtNasc = document.getElementById("dtNascimento").value;
+	var valorDtAdm = document.getElementById("dtMatricula").value;
+	var valorDtNascResp = document.getElementById("dtNascimentoResp").value;
+	var resDtNasc = valorDtNasc.split("-");
+	var resDtAdm = valorDtAdm.split("-");
+	var resDtNascResp = valorDtNascResp.split("-");
+	var anoDtNasc = resDtNasc[0];
+	var mesDtNasc = resDtNasc[1];
+	var diaDtNasc = resDtNasc[2];
+	var anoDtAdm = resDtAdm[0];
+	var mesDtAdm = resDtAdm[1];
+	var diaDtAdm = resDtAdm[2];
+	var anoDtNascResp = resDtNascResp[0];
+	var mesDtNascResp = resDtNascResp[1];
+	var diaDtNascResp = resDtNascResp[2];
+	
+	valorDtNasc = diaDtNasc.concat("/").concat(mesDtNasc).concat("/").concat(anoDtNasc);
+	valorDtAdm = diaDtAdm.concat("/").concat(mesDtAdm).concat("/").concat(anoDtAdm);
+	valorDtNascResp = diaDtNascResp.concat("/").concat(mesDtNascResp).concat("/").concat(anoDtNascResp);
+	document.getElementById("dtNascimento").value = valorDtNasc;
+	document.getElementById("dtMatricula").value = valorDtAdm;
+	document.getElementById("dtNascimentoResp").value = valorDtNascResp;
 }
 
 function formatarCamposDataOnload(){
@@ -88,6 +124,19 @@ function formatarCampoCarteiraEstudante(event){
 			valor = valor.concat("-");
 		}
 	}
+	document.getElementById("nrCarteiraEstudante").value = valor;
+}
+
+function formatarCampoCarteiraEstudanteOnload(){
+	var valor = document.getElementById("nrCarteiraEstudante").value;
+	var carteiraPrimeiraParte;
+	var carteiraSegundaParte;
+	if(valor != null && valor != ""){
+		carteiraPrimeiraParte = valor.substring(0, 4);
+		carteiraSegundaParte = valor.substring(4);
+		valor = carteiraPrimeiraParte.concat("-").concat(carteiraSegundaParte);
+	}
+	
 	document.getElementById("nrCarteiraEstudante").value = valor;
 }
 

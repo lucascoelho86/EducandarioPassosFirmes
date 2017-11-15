@@ -33,14 +33,14 @@ function desistir(){
 
 function cadastrar(){
 	document.getElementById("<%=ServletAluno.NM_EVENTO%>").value = "<%=ServletAluno.NM_EVENTO_PROCESSAR_INCLUSAO%>";
-	}
+}
 
 	function mostrarDP() {
-		document.getElementById("teste").style.visibility = "visible";
+		document.getElementById("dsNecEspecial").style.visibility = "visible";
 	}
 
 	function esconderDP() {
-		document.getElementById("teste").style.visibility = "hidden";
+		document.getElementById("dsNecEspecial").style.visibility = "hidden";
 	}
 </script>
 <script type="text/javascript">
@@ -178,7 +178,7 @@ function cadastrar(){
 									name="<%=ServletAluno.NM_PARAMETRO_NECESSIDADE_ESPECIAL%>" value="N">Não
 									<input class="adicionarEvento" type="radio" id="comNecessidade"
 									name="<%=ServletAluno.NM_PARAMETRO_NECESSIDADE_ESPECIAL%>" value="S">Sim
-									<textarea style="visibility: hidden;" id="teste" name="teste"
+									<textarea style="visibility: hidden;" id="<%=ServletAluno.NM_PARAMETRO_DS_NECESSIDADE_ESPECIAL%>" name="<%=ServletAluno.NM_PARAMETRO_DS_NECESSIDADE_ESPECIAL%>"
 										rows="1" cols="36"></textarea></td>
 										
 								<th align="right">Turma:</th>
