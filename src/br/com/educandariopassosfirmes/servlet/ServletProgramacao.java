@@ -14,19 +14,17 @@ import br.com.educandariopassosfirmes.entidades.Turma;
 
 
 /**
- * Servlet implementation class ServletTurma
+ * Servlet implementation class ServletProgramacao
  */
-@WebServlet("/ServletTurma")
-public class ServletTurma extends ServletGenerico {
+@WebServlet("/ServletProgramacao")
+public class ServletProgramacao extends ServletGenerico {
 
-	public static final String NM_JSP_CONSULTAR = "/turma/consultarTurma.jsp";
+	public static final String NM_JSP_CONSULTAR = "/programacaoTurma/consultarProgramacao.jsp";
 
-	private static final String NM_JSP_INCLUIR_SERVICO = "/turma/cadastrarTurma.jsp";
+	private static final String NM_JSP_INCLUIR_SERVICO = "/programacaoTurma/cadastrarProgramacao.jsp";
 
-	private static final String NM_JSP_ALTERAR_TURMA = "/turma/alterarTurma.jsp";
+	private static final String NM_JSP_ALTERAR_TURMA = "/programacaoTurma/alterarProgramacao.jsp";
 	
-	private static final String NM_JSP_PROGRAMACAO_TURMA = "/turma/programacaoTurma.jsp";
-
 	public static final String NM_PARAMETRO_CHAVE = "chave";
 	
 	//Parâmetros inclusão disciplina

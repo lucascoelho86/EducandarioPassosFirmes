@@ -7,7 +7,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 
@@ -20,13 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 import br.com.educandariopassosfirmes.dao.AlunoDAO;
 import br.com.educandariopassosfirmes.dao.ConsultaPrincipalAluno;
 import br.com.educandariopassosfirmes.dao.PessoaDAO;
-import br.com.educandariopassosfirmes.dao.ProfessorDAO;
-import br.com.educandariopassosfirmes.dao.ProfessorDisciplinaDAO;
 import br.com.educandariopassosfirmes.dao.ResponsavelDAO;
 import br.com.educandariopassosfirmes.entidades.Aluno;
 import br.com.educandariopassosfirmes.entidades.Pessoa;
-import br.com.educandariopassosfirmes.entidades.Professor;
-import br.com.educandariopassosfirmes.entidades.ProfessorDisciplina;
 import br.com.educandariopassosfirmes.entidades.Responsavel;
 
 

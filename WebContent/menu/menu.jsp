@@ -17,10 +17,11 @@
 	<h2 align="center">MENU</h2>
 	<table>
   		<tr>
-    		<td width="15%"><a href = "ServletAluno"> <img width="300px" height="300px" src="img/peAluno.png"/></a></td>
-    		<td width="10%"><a href = "ServletTurma"> <img width="300px" height="300px" src="img/peTurma.png"/></a></td>
-    		<td width="10%"><a href = "ServletProfessor"> <img width="300px" height="300px" src="img/peProfessor.png" align="right"/></a></td>
-    		<td width="10%"><a href = "ServletDisciplina"> <img width="300px" height="300px" src="img/peDisciplina.png" align="right"/></a></td>
+    		<td width="10%"><a href = "ServletAluno"> <img width="250px" height="250px" src="img/peAluno.png"/></a></td>
+    		<td width="10%"><a href = "ServletProfessor"> <img width="250px" height="250px" src="img/peProfessor.png" align="right"/></a></td>
+    		<td width="10%"><a href = "ServletDisciplina"> <img width="250px" height="250px" src="img/peDisciplina.png" align="right"/></a></td>
+    		<td width="10%"><a href = "ServletTurma"> <img width="250px" height="250px" src="img/peTurma.png"/></a></td>
+    		<td width="10%"><a href = "ServletProgramacao"> <img width="250px" height="250px" src="img/peProgramacao.png"/></a></td>
   		</tr>
 	</table>
 </form>

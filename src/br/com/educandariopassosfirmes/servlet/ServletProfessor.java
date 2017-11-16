@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 
 import javax.servlet.ServletException;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.com.educandariopassosfirmes.dao.ConsultaPrincipalProfessor;
 import br.com.educandariopassosfirmes.dao.PessoaDAO;
 import br.com.educandariopassosfirmes.dao.ProfessorDAO;
 import br.com.educandariopassosfirmes.dao.ProfessorDisciplinaDAO;
@@ -259,7 +261,7 @@ public class ServletProfessor extends ServletGenerico {
 	public void consultarTodos(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		ArrayList<ProfessorDisciplina>colecaoProfessorDisciplina = new ArrayList<ProfessorDisciplina>();
+		ArrayList<LinkedHashMap<String, String>>colecaoProfessor = new ArrayList<LinkedHashMap<String, String>>();
 		
 		// recupera os parametros do request
 		String cpf = (String) request.getParameter(NM_PARAMETRO_CPF);
@@ -269,31 +271,12 @@ public class ServletProfessor extends ServletGenerico {
 		cpf = cpf.replace(".", "");
 		cpf = cpf.replace("-", "");
 		
-		if((cpf != null && !cpf.equals("")) || (disciplina != null && !disciplina.equals("0"))){
-			ProfessorDisciplinaDAO professorDisciplinaDAO = new ProfessorDisciplinaDAO();
-			colecaoProfessorDisciplina = professorDisciplinaDAO.consultar(cpf, Integer.valueOf(disciplina));
-		}
+		ConsultaPrincipalProfessor consulta = new ConsultaPrincipalProfessor();
 		
-		ArrayList<Pessoa> colecaoPessoa = new ArrayList<Pessoa>();
-		PessoaDAO pessoaDAO = new PessoaDAO();
+		colecaoProfessor = consulta.consultar(cpf, nome, disciplina);
 		
-		if(!colecaoProfessorDisciplina.isEmpty()){
-			for(int x = 0; x < colecaoProfessorDisciplina.size(); x++){
-				ProfessorDisciplina professorDisciplina = colecaoProfessorDisciplina.get(x);
-				pessoaDAO = new PessoaDAO();
-				ArrayList<Pessoa> colecaoPessoaAux = pessoaDAO.consultar(professorDisciplina.getId_professor(), "");
-				colecaoPessoa.add(colecaoPessoaAux.get(0));
-			}
-		}
+		request.setAttribute(NM_PARAMETRO_COLECAO_PESSOA, colecaoProfessor);
 		
-		//consultar professor se ele não tiver cadastrado em nenhuma disciplina para ministrar e se o campo disciplina tiver selecionado alguma disciplina
-		if(colecaoPessoa.isEmpty() && (disciplina != null && disciplina.equals("0"))){
-			pessoaDAO = new PessoaDAO();
-			colecaoPessoa = pessoaDAO.consultar(cpf, nome);			
-		}		
-		
-		request.setAttribute(NM_PARAMETRO_COLECAO_PESSOA, colecaoPessoa);
-
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
 	}
 

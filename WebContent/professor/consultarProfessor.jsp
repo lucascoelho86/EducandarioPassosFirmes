@@ -1,3 +1,4 @@
+<%@page import="java.util.LinkedHashMap"%>
 <%@page import="br.com.educandariopassosfirmes.util.BibliotecaFormatarDados"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="br.com.educandariopassosfirmes.entidades.Pessoa"%>
@@ -53,12 +54,12 @@ function exibirInclusao(){
 
 <%
 
-ArrayList<Pessoa>colecaoPessoa;
-Iterator<Pessoa>itPessoa;
-colecaoPessoa = (ArrayList<Pessoa>) request.getAttribute(ServletProfessor.NM_PARAMETRO_COLECAO_PESSOA);
+ArrayList<LinkedHashMap<String, String>>colecaoPessoa;
+Iterator<LinkedHashMap<String, String>>itPessoa;
+colecaoPessoa = (ArrayList<LinkedHashMap<String, String>>) request.getAttribute(ServletProfessor.NM_PARAMETRO_COLECAO_PESSOA);
 
 if(colecaoPessoa == null){
-	colecaoPessoa = new ArrayList<Pessoa>();
+	colecaoPessoa = new ArrayList<LinkedHashMap<String, String>>();
 	itPessoa = colecaoPessoa.iterator();
 }else{
 	itPessoa = colecaoPessoa.iterator();
@@ -104,7 +105,7 @@ if(colecaoPessoa == null){
 											ultimaDisciplina = true;
 										}%>	
 															
-										<%=Select.getInstancia().getHTML(ServletProfessor.NM_PARAMETRO_SELECT_DISCIPLINA, ServletProfessor.NM_PARAMETRO_SELECT_DISCIPLINA, String.valueOf(disciplina.getDsDisciplina()), disciplina.getDsDisciplina(), false, x, ultimaDisciplina)%>
+										<%=Select.getInstancia().getHTML(ServletProfessor.NM_PARAMETRO_SELECT_DISCIPLINA, ServletProfessor.NM_PARAMETRO_SELECT_DISCIPLINA, String.valueOf(disciplina.getIdDisciplina()), disciplina.getDsDisciplina(), false, x, ultimaDisciplina)%>
 									<%}%>				
 							</td>
 							<td>
@@ -127,8 +128,8 @@ if(colecaoPessoa == null){
 					String cssCorlinha;
 					boolean tratamentoCSS = true;
 					while(itPessoa.hasNext()){
-						Pessoa pessoa = itPessoa.next();
-						chave = pessoa.getId();
+						LinkedHashMap<String, String> pessoa = itPessoa.next();
+						chave = pessoa.get("ID_PESSOA");
 						if(tratamentoCSS){
 							cssCorlinha = "#c0c0c0";
 							tratamentoCSS = false;
@@ -145,8 +146,8 @@ if(colecaoPessoa == null){
 								<input type="radio" id="rdb_consulta" name="<%=ServletProfessor.NM_PARAMETRO_CHAVE%>" value="<%=chave%>">
 							<%}%>
 							</td>
-							<td><%=BibliotecaFormatarDados.formatarCPF(pessoa.getId())%></td>
-							<td><%=pessoa.getNome().toUpperCase() %></td>
+							<td><%=BibliotecaFormatarDados.formatarCPF(pessoa.get("ID_PESSOA"))%></td>
+							<td><%=pessoa.get("NOME").toUpperCase() %></td>
 						</tr>
 						
 						
