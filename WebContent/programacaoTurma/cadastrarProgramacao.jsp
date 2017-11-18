@@ -36,41 +36,44 @@ function desistir(){
 }
 
 function cadastrar(){
-	var valorSelectTurno = document.getElementById("selectTurno").value;
-	
-	if(valorSelectTurno != 0){
-		document.getElementById("<%=ServletProgramacao.NM_EVENTO%>").value = "<%=ServletProgramacao.NM_EVENTO_PROCESSAR_INCLUSAO%>";		
-	}else{
-		alert("Selecione um turno!");
-		document.getElementById("<%=ServletProgramacao.NM_EVENTO%>").value = "<%=ServletProgramacao.NM_EVENTO_EXIBIR_INCLUSAO%>";
-	}
+	document.getElementById("<%=ServletProgramacao.NM_EVENTO%>").value = "<%=ServletProgramacao.NM_EVENTO_PROCESSAR_INCLUSAO%>";		
 }
 
-function consultaSelectProfessor(pValue){
-	var valorSelectTurno = pValue.value;
-
+function consultaSelectProfessor(){
 	document.getElementById("<%=ServletProgramacao.NM_EVENTO%>").value = "<%=ServletProgramacao.NM_EVENTO_PROCESSAR_CONSULTA_SELECT_PROFESSOR%>";
 	document.frm_principal.submit();
 }
 
-function consultaSelectDisciplina(pValue){
-	var valorSelectTurno = pValue.value;
-
+function consultaSelectDisciplina(){
 	document.getElementById("<%=ServletProgramacao.NM_EVENTO%>").value = "<%=ServletProgramacao.NM_EVENTO_PROCESSAR_CONSULTA_SELECT_DISCIPLINA%>";
-		document.frm_principal.submit();
-	}
+	document.frm_principal.submit();
+}
 </script>
 
 <%
 	String eventoSelectProfessor = "";
 	String eventoSelectDisciplina = "";
+	String idTurma = "";
 	String idProfessor = "";
 	String idDisciplina = "";
 	
+	String txPrimeiraUnidade = "";
+	String txSegundaUnidade = "";
+	String txTerceiraUnidade = "";
+	String txQuartaUnidade = "";
+	String cargaHoraria = "";
+	
 	eventoSelectProfessor = (String)request.getAttribute(ServletProgramacao.NM_EVENTO_PROCESSAR_CONSULTA_SELECT_PROFESSOR);
 	eventoSelectDisciplina = (String)request.getAttribute(ServletProgramacao.NM_EVENTO_PROCESSAR_CONSULTA_SELECT_DISCIPLINA);
+	idTurma = (String)request.getAttribute(ServletProgramacao.NM_PARAMETRO_SELECT_TURMA);
 	idProfessor = (String)request.getAttribute(ServletProgramacao.NM_PARAMETRO_SELECT_PROFESSOR);
 	idDisciplina = (String)request.getAttribute(ServletProgramacao.NM_PARAMETRO_SELECT_DISCIPLINA);
+	
+	txPrimeiraUnidade = (String)request.getAttribute(ServletProgramacao.NM_PARAMETRO_TX_PRIMEIRA_UNIDADE);
+	txSegundaUnidade = (String)request.getAttribute(ServletProgramacao.NM_PARAMETRO_TX_SEGUNDA_UNIDADE);
+	txTerceiraUnidade = (String)request.getAttribute(ServletProgramacao.NM_PARAMETRO_TX_TERCEIRA_UNIDADE);
+	txQuartaUnidade = (String)request.getAttribute(ServletProgramacao.NM_PARAMETRO_TX_QUARTA_UNIDADE);
+	cargaHoraria = (String)request.getAttribute(ServletProgramacao.NM_PARAMETRO_CAMPO_CARGA_HORARIA);
 	
 	if(eventoSelectProfessor == null){
 		eventoSelectProfessor = "";
@@ -78,6 +81,10 @@ function consultaSelectDisciplina(pValue){
 	
 	if(eventoSelectDisciplina == null){
 		eventoSelectDisciplina = "";
+	}
+
+	if(idTurma == null){
+		idTurma = "";
 	}
 
 	if(idProfessor == null){
@@ -94,6 +101,26 @@ function consultaSelectDisciplina(pValue){
 		if(idDisciplina.equals("0")){
 			idDisciplina = "";
 		}
+	}
+	
+	if(txPrimeiraUnidade == null){
+		txPrimeiraUnidade = "";
+	}
+	
+	if(txSegundaUnidade == null){
+		txSegundaUnidade = "";
+	}
+	
+	if(txTerceiraUnidade == null){
+		txTerceiraUnidade = "";
+	}
+	
+	if(txQuartaUnidade == null){
+		txQuartaUnidade = "";
+	}
+	
+	if(cargaHoraria == null){
+		cargaHoraria = "";
 	}
 %>
 
@@ -120,16 +147,22 @@ function consultaSelectDisciplina(pValue){
 										TurmaDAO turmaDAO = new TurmaDAO();
 										ArrayList<Turma> colecao = turmaDAO.consultar("", "", "");
 										boolean ultimaTurma = false;
+										boolean mesmaTurma = false;
 										for (int x = 0; x < colecao.size(); x++) {
 											Turma turma = colecao.get(x);
 
 											if (x + 1 == colecao.size()) {
 												ultimaTurma = true;
 											}
-									%> <%=Select.getInstancia().getHTML(ServletProgramacao.NM_PARAMETRO_SIGLA_TURMA,
-						ServletProgramacao.NM_PARAMETRO_SIGLA_TURMA, String.valueOf(turma.getIdTurma()),
-						turma.getDsTurma(), false, x, ultimaTurma, "")%>
+											
+											if(idTurma.equals(turma.getIdTurma())){
+												mesmaTurma = true;
+											}
+									%> <%=Select.getInstancia().getHTML(ServletProgramacao.NM_PARAMETRO_SELECT_TURMA,
+						ServletProgramacao.NM_PARAMETRO_SELECT_TURMA, turma.getIdTurma(),
+						turma.getDsTurma(), mesmaTurma, x, ultimaTurma, "")%>
 									<%
+										mesmaTurma = false;
 										}
 									%>
 								</td>
@@ -142,7 +175,7 @@ function consultaSelectDisciplina(pValue){
 	
 											String javascript = "";
 											if(idDisciplina.equals("")){
-												javascript = "onchange='consultaSelectProfessor(this)';";
+												javascript = "onchange='consultaSelectProfessor()';";
 											}
 											
 											colecaoProfessor = consulta.consultar("", "", idDisciplina);
@@ -180,7 +213,7 @@ function consultaSelectDisciplina(pValue){
 	
 										%> <%=Select.getInstancia().getHTML(ServletProgramacao.NM_PARAMETRO_SELECT_PROFESSOR,
 								ServletProgramacao.NM_PARAMETRO_SELECT_PROFESSOR, dados.get("ID_PESSOA"), dados.get("NOME"),
-								mesmoProfessor, x, ultimoProfessor, "onchange='consultaSelectProfessor(this)';")%>
+								mesmoProfessor, x, ultimoProfessor, "onchange='consultaSelectProfessor()';")%>
 										<%
 											mesmoProfessor = false;
 											}
@@ -195,7 +228,7 @@ function consultaSelectDisciplina(pValue){
 											ConsultaPrincipalProfessor consulta2 = new ConsultaPrincipalProfessor();
 											String javascript = "";
 											if(idProfessor.equals("")){
-												javascript = "onchange='consultaSelectDisciplina(this)';";
+												javascript = "onchange='consultaSelectDisciplina()';";
 											}
 											
 											colecaoProfessor2 = consulta2.consultar(idProfessor, "", "");
@@ -233,7 +266,7 @@ function consultaSelectDisciplina(pValue){
 									%> <%=Select.getInstancia().getHTML(ServletProgramacao.NM_PARAMETRO_SELECT_DISCIPLINA,
 							ServletProgramacao.NM_PARAMETRO_SELECT_DISCIPLINA,
 							dados.get("ID_DISCIPLINA"), dados.get("DS_DISCIPLINA"), mesmaDisciplina, x,
-							ultimoDisciplina, "onchange='consultaSelectDisciplina(this)';")%>
+							ultimoDisciplina, "onchange='consultaSelectDisciplina()';")%>
 									<%
 											mesmaDisciplina = false;
 											}
@@ -246,31 +279,31 @@ function consultaSelectDisciplina(pValue){
 								<td><textarea
 										id="<%=ServletDisciplina.NM_PARAMETRO_TX_PRIMEIRA_UNIDADE%>"
 										name="<%=ServletDisciplina.NM_PARAMETRO_TX_PRIMEIRA_UNIDADE%>"
-										rows="4" cols="30"></textarea></td>
+										rows="4" cols="30"><%=txPrimeiraUnidade%></textarea></td>
 
 								<th align="right">Assuntos 2ª Unidade:</th>
 								<td><textarea
 										id="<%=ServletDisciplina.NM_PARAMETRO_TX_SEGUNDA_UNIDADE%>"
 										name="<%=ServletDisciplina.NM_PARAMETRO_TX_SEGUNDA_UNIDADE%>"
-										rows="4" cols="30"></textarea></td>
+										rows="4" cols="30"><%=txSegundaUnidade%></textarea></td>
 								<th align="right">Carga Horária:</th>
 								<td><input type="text"
 									id="<%=ServletDisciplina.NM_PARAMETRO_CAMPO_CARGA_HORARIA%>"
 									name="<%=ServletDisciplina.NM_PARAMETRO_CAMPO_CARGA_HORARIA%>"
-									value=""></td>
+									value="<%=cargaHoraria%>"></td>
 							</tr>
 							<tr>
 								<th align="right">Assuntos 3ª Unidade:</th>
 								<td><textarea
 										id="<%=ServletDisciplina.NM_PARAMETRO_TX_TERCEIRA_UNIDADE%>"
 										name="<%=ServletDisciplina.NM_PARAMETRO_TX_TERCEIRA_UNIDADE%>"
-										rows="4" cols="30"></textarea></td>
+										rows="4" cols="30"><%=txTerceiraUnidade%></textarea></td>
 
 								<th align="right">Assuntos 4ª Unidade:</th>
 								<td><textarea
 										id="<%=ServletDisciplina.NM_PARAMETRO_TX_QUARTA_UNIDADE%>"
 										name="<%=ServletDisciplina.NM_PARAMETRO_TX_QUARTA_UNIDADE%>"
-										rows="4" cols="30"></textarea></td>
+										rows="4" cols="30"><%=txQuartaUnidade%></textarea></td>
 
 							</tr>
 						</tbody>
