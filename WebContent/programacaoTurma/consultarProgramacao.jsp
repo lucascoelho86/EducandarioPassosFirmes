@@ -90,7 +90,7 @@ function exibirInclusao(){
 											ultimaTurma = true;
 										}%>
 															
-										<%=Select.getInstancia().getHTML(ServletProgramacao.NM_PARAMETRO_SIGLA_TURMA, ServletProgramacao.NM_PARAMETRO_SIGLA_TURMA, String.valueOf(turma.getIdTurma()), turma.getDsTurma(), false, x, ultimaTurma)%>
+										<%=Select.getInstancia().getHTML(ServletProgramacao.NM_PARAMETRO_SIGLA_TURMA, ServletProgramacao.NM_PARAMETRO_SIGLA_TURMA, String.valueOf(turma.getIdTurma()), turma.getDsTurma(), false, x, ultimaTurma, "")%>
 									<%}%>
 									<button type="submit" id="botaoLocalizar" name="botaoLocalizar"
 										onclick="consultar();">Localizar</button>

@@ -193,7 +193,7 @@ function cadastrar(){
 												ultimaTurma = true;
 											}%>	
 																			
-											<%=Select.getInstancia().getHTML(ServletAluno.NM_PARAMETRO_TURMA, ServletAluno.NM_PARAMETRO_TURMA, turma.getIdTurma(), turma.getDsTurma(), false, x, ultimaTurma)%>
+											<%=Select.getInstancia().getHTML(ServletAluno.NM_PARAMETRO_TURMA, ServletAluno.NM_PARAMETRO_TURMA, turma.getIdTurma(), turma.getDsTurma(), false, x, ultimaTurma, "")%>
 									<%}%>				
 								</td>
 							</tr>

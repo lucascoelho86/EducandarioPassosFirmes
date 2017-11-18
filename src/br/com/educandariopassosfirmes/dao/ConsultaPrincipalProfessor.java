@@ -9,9 +9,10 @@ import java.util.LinkedHashMap;
 public class ConsultaPrincipalProfessor extends Conexao{
 	
 	private static final String SQL = "SELECT \n\t" + "PESSOA.ID_PESSOA" + ",\n\t"
-				+ "PESSOA.NOME" + "\n" + "FROM \n\t"
-				+ "PESSOA \n" + "INNER JOIN \n\t" + "PROFESSOR ON PESSOA.ID_PESSOA = PROFESSOR.ID_PESSOA \n"
-				+ "INNER JOIN \n\t" + "PROFESSOR_DISCIPLINA ON PROFESSOR_DISCIPLINA.ID_PESSOA = PROFESSOR.ID_PESSOA";
+				+ "PESSOA.NOME" + ",\n\t" + "PROFESSOR_DISCIPLINA.ID_DISCIPLINA" + ",\n\t" + "DISCIPLINA.DS_DISCIPLINA"
+				+ "\n" + "FROM \n\t" + "PESSOA \n" + "INNER JOIN \n\t" + "PROFESSOR ON PESSOA.ID_PESSOA = PROFESSOR.ID_PESSOA \n"
+				+ "INNER JOIN \n\t" + "PROFESSOR_DISCIPLINA ON PROFESSOR_DISCIPLINA.ID_PESSOA = PROFESSOR.ID_PESSOA  \n"
+				+ "INNER JOIN \n\t" + "DISCIPLINA ON PROFESSOR_DISCIPLINA.ID_DISCIPLINA = DISCIPLINA.ID_DISCIPLINA";
 	
 	public ArrayList<LinkedHashMap<String, String>> consultar(String pMatricula, String pNome, String pDisciplina){
 		
@@ -67,6 +68,8 @@ public class ConsultaPrincipalProfessor extends Conexao{
 				
 				dados.put("ID_PESSOA", resultado.getString("ID_PESSOA"));
 				dados.put("NOME", resultado.getString("NOME"));
+				dados.put("ID_DISCIPLINA", resultado.getString("ID_DISCIPLINA"));
+				dados.put("DS_DISCIPLINA", resultado.getString("DS_DISCIPLINA"));
 				
 				colecaoDados.add(dados);
 			}

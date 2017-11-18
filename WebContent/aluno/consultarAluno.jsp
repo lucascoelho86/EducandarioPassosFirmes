@@ -104,7 +104,7 @@ if(colecaoPessoa == null){
 											ultimaTurma = true;
 										}%>	
 															
-										<%=Select.getInstancia().getHTML(ServletAluno.NM_PARAMETRO_SELECT_TURMA, ServletAluno.NM_PARAMETRO_SELECT_TURMA, String.valueOf(turma.getIdTurma()), turma.getDsTurma(), false, x, ultimaTurma)%>
+										<%=Select.getInstancia().getHTML(ServletAluno.NM_PARAMETRO_SELECT_TURMA, ServletAluno.NM_PARAMETRO_SELECT_TURMA, String.valueOf(turma.getIdTurma()), turma.getDsTurma(), false, x, ultimaTurma, "")%>
 									<%}%>				
 							</td>
 							<td>

@@ -215,7 +215,7 @@ salarioFormatado = salarioFormatado.trim();
 											}
 											%>	
 																			
-											<%=Select.getInstancia().getHTML(ServletAluno.NM_PARAMETRO_TURMA, ServletAluno.NM_PARAMETRO_TURMA, turma.getIdTurma(), turma.getDsTurma(), mesmaTurma, x, ultimaTurma)%>
+											<%=Select.getInstancia().getHTML(ServletAluno.NM_PARAMETRO_TURMA, ServletAluno.NM_PARAMETRO_TURMA, turma.getIdTurma(), turma.getDsTurma(), mesmaTurma, x, ultimaTurma, "")%>
 									<%
 										mesmaTurma = false;
 										}%>				

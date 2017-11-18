@@ -82,13 +82,13 @@ function alterar(){
 							ServletTurma.NM_PARAMETRO_SELECT_TURNO,
 							ServletTurma.NM_PARAMETRO_SELECT_TURNO, String.valueOf(x + 1),
 							ServletTurma.NM_TURNO_MANHA, turmaSelecionada,
-							contador, false)%> <%
+							contador, false, "")%> <%
  	} else {
  %> <%=Select.getInstancia().getHTML(
 							ServletTurma.NM_PARAMETRO_SELECT_TURNO,
 							ServletTurma.NM_PARAMETRO_SELECT_TURNO, String.valueOf(x + 1),
 							ServletTurma.NM_TURNO_TARDE, turmaSelecionada,
-							contador, true)%> <%
+							contador, true, "")%> <%
  	}
  		contador++;
  		turmaSelecionada = false;

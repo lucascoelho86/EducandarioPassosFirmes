@@ -105,7 +105,7 @@ if(colecaoPessoa == null){
 											ultimaDisciplina = true;
 										}%>	
 															
-										<%=Select.getInstancia().getHTML(ServletProfessor.NM_PARAMETRO_SELECT_DISCIPLINA, ServletProfessor.NM_PARAMETRO_SELECT_DISCIPLINA, String.valueOf(disciplina.getIdDisciplina()), disciplina.getDsDisciplina(), false, x, ultimaDisciplina)%>
+										<%=Select.getInstancia().getHTML(ServletProfessor.NM_PARAMETRO_SELECT_DISCIPLINA, ServletProfessor.NM_PARAMETRO_SELECT_DISCIPLINA, String.valueOf(disciplina.getIdDisciplina()), disciplina.getDsDisciplina(), false, x, ultimaDisciplina, "")%>
 									<%}%>				
 							</td>
 							<td>

@@ -95,12 +95,12 @@ function cadastrar(){
 							.getHTML(ServletTurma.NM_PARAMETRO_SELECT_TURNO,
 									ServletTurma.NM_PARAMETRO_SELECT_TURNO,
 									String.valueOf(x + 1), ServletTurma.NM_TURNO_MANHA, false,
-									contador, false)%> <%
+									contador, false, "")%> <%
  	} else {
  %> <%=Select.getInstancia().getHTML(
 							ServletTurma.NM_PARAMETRO_SELECT_TURNO,
 							ServletTurma.NM_PARAMETRO_SELECT_TURNO, String.valueOf(x + 1),
-							ServletTurma.NM_TURNO_TARDE, false, contador, true)%> <%
+							ServletTurma.NM_TURNO_TARDE, false, contador, true, "")%> <%
  	}
  		contador++;
  %> <%

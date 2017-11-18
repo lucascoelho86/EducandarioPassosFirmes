@@ -25,15 +25,21 @@ public class ServletProgramacao extends ServletGenerico {
 
 	private static final String NM_JSP_ALTERAR_TURMA = "/programacaoTurma/alterarProgramacao.jsp";
 	
+	public static final String NM_EVENTO_PROCESSAR_CONSULTA_SELECT_PROFESSOR = "processarConsultaSelectProfessor";
+	public static final String NM_EVENTO_PROCESSAR_CONSULTA_SELECT_DISCIPLINA = "processarConsultaSelectDisciplina";
+	
 	public static final String NM_PARAMETRO_CHAVE = "chave";
 	
 	//Parâmetros inclusão disciplina
 	public static final String NM_PARAMETRO_SIGLA_TURMA = "siglaTurma";
+	public static final String NM_PARAMETRO_SELECT_PROFESSOR = "selectProfessor";
+	public static final String NM_PARAMETRO_SELECT_DISCIPLINA = "selectDisciplina";
 	public static final String NM_PARAMETRO_DS_TURMA = "descricaoTurma";
 	public static final String NM_PARAMETRO_TURNO = "turno";
 	public static final String NM_PARAMETRO_QT_MAX_ALUNOS = "qtMaxAlunos";
 	public static final String NM_PARAMETRO_SELECT_TURNO = "selectTurno";
 	public static final String NM_PARAMETRO_COLECAO_TURMA = "colecaoTurma";
+	public static final String NM_PARAMETRO_COLECAO_PROFESSOR_DISCIPLINA = "colecaoProfessorDisciplina";
 	
 	//Constantes utilizadas na inclusão de turmas
 	public static final String NM_TURNO_MANHA = "Matutino";
@@ -76,6 +82,12 @@ public class ServletProgramacao extends ServletGenerico {
 		} else if (acao != null
 				&& acao.equalsIgnoreCase(this.NM_EVENTO_PROCESSAR_ALTERACAO)) {
 			this.processarAlteracao(request, response);
+		} else if (acao != null
+				&& acao.equalsIgnoreCase(NM_EVENTO_PROCESSAR_CONSULTA_SELECT_PROFESSOR)) {
+			this.processarConsultaSelectProfessor(request, response);
+		} else if (acao != null
+				&& acao.equalsIgnoreCase(NM_EVENTO_PROCESSAR_CONSULTA_SELECT_DISCIPLINA)) {
+			this.processarConsultaSelectDisciplina(request, response);
 		} else {
 			// caso nao tenha nenhum evento, redireciona para a pagina de consulta
 			this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
@@ -245,6 +257,38 @@ public class ServletProgramacao extends ServletGenerico {
 		turmaDAO.alterar(turma);
 				
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
+	}
+	
+	public void processarConsultaSelectProfessor(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+
+		// declara as variaveis
+		String descricao = "";
+		String eventoSelectProfessor = "";
+
+		// recupera os parametros do request
+		descricao = request.getParameter(NM_PARAMETRO_SELECT_PROFESSOR);
+		eventoSelectProfessor = request.getParameter(NM_EVENTO);
+
+		request.setAttribute(NM_EVENTO_PROCESSAR_CONSULTA_SELECT_PROFESSOR, eventoSelectProfessor);
+		request.setAttribute(NM_PARAMETRO_SELECT_PROFESSOR, descricao);
+		this.redirecionarPagina(request, response, NM_JSP_INCLUIR_SERVICO);
+	}
+
+	public void processarConsultaSelectDisciplina(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		
+		// declara as variaveis
+		String turno = "";
+		String eventoSelectDisciplina = "";
+		
+		// recupera os parametros do request
+		turno = request.getParameter(NM_PARAMETRO_SELECT_DISCIPLINA);
+		eventoSelectDisciplina = request.getParameter(NM_EVENTO);
+		
+		request.setAttribute(NM_EVENTO_PROCESSAR_CONSULTA_SELECT_DISCIPLINA, eventoSelectDisciplina);
+		request.setAttribute(NM_PARAMETRO_SELECT_DISCIPLINA, turno);
+		this.redirecionarPagina(request, response, NM_JSP_INCLUIR_SERVICO);
 	}
 
 }
