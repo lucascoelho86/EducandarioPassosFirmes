@@ -158,7 +158,7 @@ function alterar(){
 											ArrayList<LinkedHashMap<String, String>> colecaoProfessor = new ArrayList<LinkedHashMap<String, String>>();
 											ConsultaPrincipalProfessor consulta = new ConsultaPrincipalProfessor();
 	
-											colecaoProfessor = consulta.consultar("", "", "");
+											colecaoProfessor = consulta.consultar("", "", "", false);
 											boolean ultimoProfessor = false;
 											boolean mesmoProfessor = false;
 											for (int x = 0; x < colecaoProfessor.size(); x++) {
@@ -187,7 +187,7 @@ function alterar(){
 											ArrayList<LinkedHashMap<String, String>> colecaoProfessor2 = new ArrayList<LinkedHashMap<String, String>>();
 											ConsultaPrincipalProfessor consulta2 = new ConsultaPrincipalProfessor();
 
-											colecaoProfessor2 = consulta2.consultar("", "", "");
+											colecaoProfessor2 = consulta2.consultar("", "", "", true);
 											boolean ultimoDisciplina = false;
 											boolean mesmaDisciplina = false;
 											for (int x = 0; x < colecaoProfessor2.size(); x++) {

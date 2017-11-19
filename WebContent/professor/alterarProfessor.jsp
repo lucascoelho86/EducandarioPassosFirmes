@@ -138,7 +138,7 @@ function mostrarDP(){
 									id="<%=ServletProfessor.NM_PARAMETRO_DT_NASCIMENTO%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_DT_NASCIMENTO%>"
 									onkeyup="formatarCamposData(this.name, this, event)"
-									value="<%=dtNascimento%>"
+									value="<%=dtNascimento.equals("null") ? "" : dtNascimento%>"
 									onkeypress='return SomenteNumero(event)' maxlength="10"></td>
 
 								<th align="right">Naturalidade:</th>
@@ -158,7 +158,7 @@ function mostrarDP(){
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_NUMERO%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_NUMERO%>"
-									value="<%=numero%>" onkeypress='return SomenteNumero(event)'></td>
+									value="<%=numero.equals("0") ? "" : numero%>" onkeypress='return SomenteNumero(event)'></td>
 
 								<th align="right">Bairro:</th>
 								<td><input type="text"
@@ -228,7 +228,7 @@ function mostrarDP(){
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_DT_ADMISSAO%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_DT_ADMISSAO%>"
-									value="<%=dtAdmissao%>"
+									value="<%=dtAdmissao.equals("null") ? "" : dtAdmissao%>"
 									onkeyup="formatarCamposData(this.name, this, event)"
 									onkeypress='return SomenteNumero(event)' maxlength="10"></td>
 							</tr>
@@ -237,7 +237,7 @@ function mostrarDP(){
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_CARGA_HORARIA%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_CARGA_HORARIA%>"
-									value="<%=cargaHoraria%>" size="10"
+									value="<%=cargaHoraria.equals("0") ? "" : cargaHoraria%>" size="10"
 									onkeypress='return SomenteNumero(event)'></td>
 
 								<th align="right">Salário:</th>

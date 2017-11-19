@@ -233,9 +233,19 @@ public class ServletAluno extends ServletGenerico {
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 		
 		try {
-			dtNasc = formato.parse(dtNascimento);
-			dtMatr = formato.parse(dtMatricula);
-			dtNascResp = formato.parse(dtNascimentoResp);
+			
+			if(dtNascimento != null && !dtNascimento.equals("")) {
+				dtNasc = formato.parse(dtNascimento);
+			}
+			
+			if(dtMatricula != null && !dtMatricula.equals("")) {
+				dtMatr = formato.parse(dtMatricula);
+			}
+			
+			if(dtNascimentoResp != null && !dtNascimentoResp.equals("")) {
+				dtNascResp = formato.parse(dtNascimentoResp);
+			}
+			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -265,10 +275,18 @@ public class ServletAluno extends ServletGenerico {
 		Pessoa pessoa = new Pessoa();
 		pessoa.setId(cpf);
 		pessoa.setNome(nomeResp);
-		pessoa.setDtNascimento(new java.sql.Date(dtNascResp.getTime()));
+		
+		if(dtNascResp != null) {
+			pessoa.setDtNascimento(new java.sql.Date(dtNascResp.getTime()));
+		}
+		
 		pessoa.setNaturalidade(naturalidadeResp);
 		pessoa.setEndereco(enderecoResp);
-		pessoa.setNumero(Integer.valueOf(numeroResp));
+		
+		if(numeroResp != null && !numeroResp.equals("")) {
+			pessoa.setNumero(Integer.valueOf(numeroResp));
+		}
+		
 		pessoa.setBairro(bairroResp);
 		pessoa.setCidade(cidadeResp);
 		pessoa.setEstado(estadoResp);
@@ -294,10 +312,18 @@ public class ServletAluno extends ServletGenerico {
 		pessoa = new Pessoa();
 		pessoa.setId(matricula);
 		pessoa.setNome(nome);
-		pessoa.setDtNascimento(new java.sql.Date(dtNasc.getTime()));
+		
+		if(dtNasc != null) {
+			pessoa.setDtNascimento(new java.sql.Date(dtNasc.getTime()));
+		}
+		
 		pessoa.setNaturalidade(naturalidade);
 		pessoa.setEndereco(endereco);
-		pessoa.setNumero(Integer.valueOf(numero));
+		
+		if(numero != null && !numero.equals("")) {
+			pessoa.setNumero(Integer.valueOf(numero));
+		}
+		
 		pessoa.setBairro(bairro);
 		pessoa.setCidade(cidade);
 		pessoa.setEstado(estado);
@@ -309,10 +335,14 @@ public class ServletAluno extends ServletGenerico {
 		aluno.setId(matricula);
 		aluno.setIdResponsavel(cpf);
 		aluno.setIdTurma(turma);
-		aluno.setDtMatricula(new java.sql.Date(dtMatr.getTime()));
+		
+		if(dtMatr != null) {
+			aluno.setDtMatricula(new java.sql.Date(dtMatr.getTime()));
+		}
+		
 		aluno.setNecessidadeEspecial(necEspecial);
 		
-		if(necEspecial.equals("S")) {
+		if(necEspecial != null && necEspecial.equals("S")) {
 			aluno.setDetalheNecessidadeEspecial(dsNecEspecial);			
 		}else {
 			aluno.setDetalheNecessidadeEspecial("");
@@ -501,9 +531,19 @@ public class ServletAluno extends ServletGenerico {
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 				
 		try {
-			dtNasc = formato.parse(dtNascimento);
-			dtMatr = formato.parse(dtMatricula);
-			dtNascResp = formato.parse(dtNascimentoResp);
+			
+			if(dtNascimento != null && !dtNascimento.equals("")) {
+				dtNasc = formato.parse(dtNascimento);
+			}
+			
+			if(dtMatricula != null && !dtMatricula.equals("")) {
+				dtMatr = formato.parse(dtMatricula);
+			}
+			
+			if(dtNascimentoResp != null && !dtNascimentoResp.equals("")) {
+				dtNascResp = formato.parse(dtNascimentoResp);
+			}
+			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -533,10 +573,18 @@ public class ServletAluno extends ServletGenerico {
 		Pessoa pessoa = new Pessoa();
 		pessoa.setId(cpf);
 		pessoa.setNome(nomeResp);
-		pessoa.setDtNascimento(new java.sql.Date(dtNascResp.getTime()));
+		
+		if(dtNascResp != null) {
+			pessoa.setDtNascimento(new java.sql.Date(dtNascResp.getTime()));
+		}
+		
 		pessoa.setNaturalidade(naturalidadeResp);
 		pessoa.setEndereco(enderecoResp);
-		pessoa.setNumero(Integer.valueOf(numeroResp));
+		
+		if(numeroResp != null && !numeroResp.equals("")) {
+			pessoa.setNumero(Integer.valueOf(numeroResp));
+		}
+		
 		pessoa.setBairro(bairroResp);
 		pessoa.setCidade(cidadeResp);
 		pessoa.setEstado(estadoResp);
@@ -562,10 +610,18 @@ public class ServletAluno extends ServletGenerico {
 		pessoa = new Pessoa();
 		pessoa.setId(matricula);
 		pessoa.setNome(nome);
-		pessoa.setDtNascimento(new java.sql.Date(dtNasc.getTime()));
+		
+		if(dtNasc != null) {
+			pessoa.setDtNascimento(new java.sql.Date(dtNasc.getTime()));
+		}
+		
 		pessoa.setNaturalidade(naturalidade);
 		pessoa.setEndereco(endereco);
-		pessoa.setNumero(Integer.valueOf(numero));
+		
+		if(numero != null && !numero.equals("")) {
+			pessoa.setNumero(Integer.valueOf(numero));
+		}
+		
 		pessoa.setBairro(bairro);
 		pessoa.setCidade(cidade);
 		pessoa.setEstado(estado);
@@ -577,10 +633,14 @@ public class ServletAluno extends ServletGenerico {
 		aluno.setId(matricula);
 		aluno.setIdResponsavel(cpf);
 		aluno.setIdTurma(turma);
-		aluno.setDtMatricula(new java.sql.Date(dtMatr.getTime()));
+		
+		if(dtMatr != null) {
+			aluno.setDtMatricula(new java.sql.Date(dtMatr.getTime()));
+		}
+		
 		aluno.setNecessidadeEspecial(necEspecial);
 		
-		if(necEspecial.equals("S")) {
+		if(necEspecial != null && necEspecial.equals("S")) {
 			aluno.setDetalheNecessidadeEspecial(dsNecEspecial);			
 		}else {
 			aluno.setDetalheNecessidadeEspecial("");

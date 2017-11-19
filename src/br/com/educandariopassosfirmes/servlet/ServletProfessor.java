@@ -186,8 +186,13 @@ public class ServletProfessor extends ServletGenerico {
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 		
 		try {
-			dtNasc = formato.parse(dtNascimento);
-			dtAdm = formato.parse(dtAdmissao);
+			if(dtNascimento != null && !dtNascimento.equals("")) {
+				dtNasc = formato.parse(dtNascimento);
+			}
+			
+			if(dtAdmissao != null && !dtAdmissao.equals("")) {
+				dtAdm = formato.parse(dtAdmissao);
+			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -213,10 +218,18 @@ public class ServletProfessor extends ServletGenerico {
 		Pessoa pessoa = new Pessoa();
 		pessoa.setId(cpf);
 		pessoa.setNome(nome);
-		pessoa.setDtNascimento(new java.sql.Date(dtNasc.getTime()));
+		
+		if(dtNasc != null) {
+			pessoa.setDtNascimento(new java.sql.Date(dtNasc.getTime()));
+		}
+		
 		pessoa.setNaturalidade(naturalidade);
 		pessoa.setEndereco(endereco);
-		pessoa.setNumero(Integer.valueOf(numero));
+		
+		if(numero != null && !numero.equals("")) {
+			pessoa.setNumero(Integer.valueOf(numero));
+		}
+
 		pessoa.setBairro(bairro);
 		pessoa.setCidade(cidade);
 		pessoa.setEstado(estado);
@@ -232,9 +245,19 @@ public class ServletProfessor extends ServletGenerico {
 		professor.setId(cpf);
 		professor.setFormacao(formacao);
 		professor.setEstadoCivil(estadoCivil);
-		professor.setQtDependente(Integer.valueOf(qtDependente));
-		professor.setDtAdmissao(new java.sql.Date(dtAdm.getTime()));
-		professor.setCargaHoraria(Integer.valueOf(cargaHoraria));
+		
+		if(qtDependente != null && !qtDependente.equals("")) {
+			professor.setQtDependente(Integer.valueOf(qtDependente));
+		}
+
+		if(dtAdm != null) {
+			professor.setDtAdmissao(new java.sql.Date(dtAdm.getTime()));
+		}
+		
+		if(cargaHoraria != null && !cargaHoraria.equals("")) {
+			professor.setCargaHoraria(Integer.valueOf(cargaHoraria));
+		}
+		
 		professor.setSalario(valorSalario);
 		
 		//inclui em PESSOA
@@ -268,13 +291,17 @@ public class ServletProfessor extends ServletGenerico {
 		String nome = (String) request.getParameter(NM_PARAMETRO_NOME);
 		String disciplina = (String) request.getParameter(NM_PARAMETRO_SELECT_DISCIPLINA);
 
+		request.setAttribute(NM_PARAMETRO_CPF, cpf);
+		
 		cpf = cpf.replace(".", "");
 		cpf = cpf.replace("-", "");
 		
 		ConsultaPrincipalProfessor consulta = new ConsultaPrincipalProfessor();
 		
-		colecaoProfessor = consulta.consultar(cpf, nome, disciplina);
+		colecaoProfessor = consulta.consultar(cpf, nome, disciplina, false);
 		
+		request.setAttribute(NM_PARAMETRO_NOME, nome);
+		request.setAttribute(NM_PARAMETRO_SELECT_DISCIPLINA, disciplina);
 		request.setAttribute(NM_PARAMETRO_COLECAO_PESSOA, colecaoProfessor);
 		
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
@@ -410,8 +437,13 @@ public class ServletProfessor extends ServletGenerico {
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 				
 		try {
-			dtNasc = formato.parse(dtNascimento);
-			dtAdm = formato.parse(dtAdmissao);
+			if(dtNascimento != null && !dtNascimento.equals("")) {
+				dtNasc = formato.parse(dtNascimento);
+			}
+			
+			if(dtAdmissao != null && !dtAdmissao.equals("")) {
+				dtAdm = formato.parse(dtAdmissao);
+			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -437,10 +469,18 @@ public class ServletProfessor extends ServletGenerico {
 		Pessoa pessoa = new Pessoa();
 		pessoa.setId(cpf);
 		pessoa.setNome(nome);
-		pessoa.setDtNascimento(new java.sql.Date(dtNasc.getTime()));
+		
+		if(dtNasc != null) {
+			pessoa.setDtNascimento(new java.sql.Date(dtNasc.getTime()));
+		}
+		
 		pessoa.setNaturalidade(naturalidade);
 		pessoa.setEndereco(endereco);
-		pessoa.setNumero(Integer.valueOf(numero));
+		
+		if(numero != null && !numero.equals("")) {
+			pessoa.setNumero(Integer.valueOf(numero));
+		}
+		
 		pessoa.setBairro(bairro);
 		pessoa.setCidade(cidade);
 		pessoa.setEstado(estado);
@@ -456,9 +496,19 @@ public class ServletProfessor extends ServletGenerico {
 		professor.setId(cpf);
 		professor.setFormacao(formacao);
 		professor.setEstadoCivil(estadoCivil);
-		professor.setQtDependente(Integer.valueOf(qtDependente));
-		professor.setDtAdmissao(new java.sql.Date(dtAdm.getTime()));
-		professor.setCargaHoraria(Integer.valueOf(cargaHoraria));
+		
+		if(qtDependente != null && !qtDependente.equals("")) {
+			professor.setQtDependente(Integer.valueOf(qtDependente));
+		}
+		
+		if(dtAdm != null) {
+			professor.setDtAdmissao(new java.sql.Date(dtAdm.getTime()));
+		}
+		
+		if(cargaHoraria != null && !cargaHoraria.equals("")) {
+			professor.setCargaHoraria(Integer.valueOf(cargaHoraria));
+		}
+		
 		professor.setSalario(valorSalario);
 				
 		//altera em PESSOA

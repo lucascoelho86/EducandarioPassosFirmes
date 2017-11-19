@@ -20,10 +20,19 @@
 
 function desistir(){
 	document.getElementById("<%=ServletProfessor.NM_EVENTO%>").value = "<%=ServletProfessor.NM_JSP_CONSULTAR%>";
+	document.frm_principal.submit();
 }
 
 function cadastrar(){
 	document.getElementById("<%=ServletProfessor.NM_EVENTO%>").value = "<%=ServletProfessor.NM_EVENTO_PROCESSAR_INCLUSAO%>";
+	var valorCPF = document.getElementById("<%=ServletProfessor.NM_PARAMETRO_CPF%>").value;
+	var tamanhoValorCPF = valorCPF.length;
+	
+	if(tamanhoValorCPF == 14){
+		document.frm_principal.submit();
+	}else{
+		alert("CPF obrigatório!");
+	}
 }
 
 function mostrarDP(){
@@ -64,7 +73,7 @@ function mostrarDP(){
 
 	<jsp:include page="cabecalho.jsp" />
 	<a href = "ServletMenu" style="font-size: 14px; font-family: Cooper Black; text-decoration: none; color: black;"> <img width="60px" height="60px" src="img/pe.png"/><b>MENU</b></a>
-	<form action="ServletProfessor" method="post">
+	<form name="frm_principal" action="ServletProfessor" method="post">
 		<input type="hidden" id="<%=ServletProfessor.NM_EVENTO%>"
 			name="<%=ServletProfessor.NM_EVENTO%>" value="">
 		<h2 align="center">CADASTRAR PROFESSOR</h2>
@@ -234,12 +243,12 @@ function mostrarDP(){
 					<table width="50%" align="center">
 						<tr>
 							<td align="center">
-								<button type="submit" id="botaoCadastrar" name="botaoCadastrar"
+								<button type="button" id="botaoCadastrar" name="botaoCadastrar"
 									onclick="cadastrar();">Cadastrar</button>
 							</td>
 
 							<td align="center">
-								<button type="submit" id="botaoDesistir" name="botaoDesistir"
+								<button type="button" id="botaoDesistir" name="botaoDesistir"
 									onclick="desistir();">Voltar</button>
 							</td>
 						</tr>

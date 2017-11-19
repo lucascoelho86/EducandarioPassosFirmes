@@ -83,7 +83,7 @@ if(colecaoPessoa == null){
 						<tr>
 							<th width="10%" align="right"> Matrícula: </th>
 							<td>
-								<input type="text" id="<%=ServletAluno.NM_PARAMETRO_MATRICULA%>" name="<%=ServletAluno.NM_PARAMETRO_MATRICULA%>" value="" size="14" onkeyup="formatarMatricula(event);" maxlength="13">
+								<input type="text" id="<%=ServletAluno.NM_PARAMETRO_MATRICULA%>" name="<%=ServletAluno.NM_PARAMETRO_MATRICULA%>" value="" size="14" onkeyup="formatarMatricula(event);" onkeypress='return SomenteNumero(event)' maxlength="13">
 							</td>
 						
 							<th width="10%" align="right"> Nome: </th>

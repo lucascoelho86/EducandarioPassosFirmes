@@ -72,46 +72,58 @@ function formatarCamposData(pCampo, pValue, pEvento){
 }
 
 function formatarCamposDataAlunoOnload(){
-	var valorDtNasc = document.getElementById("dtNascimento").value;
-	var valorDtAdm = document.getElementById("dtMatricula").value;
-	var valorDtNascResp = document.getElementById("dtNascimentoResp").value;
-	var resDtNasc = valorDtNasc.split("-");
-	var resDtAdm = valorDtAdm.split("-");
-	var resDtNascResp = valorDtNascResp.split("-");
-	var anoDtNasc = resDtNasc[0];
-	var mesDtNasc = resDtNasc[1];
-	var diaDtNasc = resDtNasc[2];
-	var anoDtAdm = resDtAdm[0];
-	var mesDtAdm = resDtAdm[1];
-	var diaDtAdm = resDtAdm[2];
-	var anoDtNascResp = resDtNascResp[0];
-	var mesDtNascResp = resDtNascResp[1];
-	var diaDtNascResp = resDtNascResp[2];
+	if(document.getElementById("dtNascimento").value != ""){
+		var valorDtNasc = document.getElementById("dtNascimento").value;
+		var resDtNasc = valorDtNasc.split("-");
+		var anoDtNasc = resDtNasc[0];
+		var mesDtNasc = resDtNasc[1];
+		var diaDtNasc = resDtNasc[2];
+		valorDtNasc = diaDtNasc.concat("/").concat(mesDtNasc).concat("/").concat(anoDtNasc);
+		document.getElementById("dtNascimento").value = valorDtNasc;		
+	}
 	
-	valorDtNasc = diaDtNasc.concat("/").concat(mesDtNasc).concat("/").concat(anoDtNasc);
-	valorDtAdm = diaDtAdm.concat("/").concat(mesDtAdm).concat("/").concat(anoDtAdm);
-	valorDtNascResp = diaDtNascResp.concat("/").concat(mesDtNascResp).concat("/").concat(anoDtNascResp);
-	document.getElementById("dtNascimento").value = valorDtNasc;
-	document.getElementById("dtMatricula").value = valorDtAdm;
-	document.getElementById("dtNascimentoResp").value = valorDtNascResp;
+	if(document.getElementById("dtMatricula").value != ""){
+		var valorDtAdm = document.getElementById("dtMatricula").value;
+		var resDtAdm = valorDtAdm.split("-");
+		var anoDtAdm = resDtAdm[0];
+		var mesDtAdm = resDtAdm[1];
+		var diaDtAdm = resDtAdm[2];
+		valorDtAdm = diaDtAdm.concat("/").concat(mesDtAdm).concat("/").concat(anoDtAdm);
+		document.getElementById("dtMatricula").value = valorDtAdm;		
+	}
+	
+	if(document.getElementById("dtNascimentoResp").value != ""){
+		var valorDtNascResp = document.getElementById("dtNascimentoResp").value;
+		var resDtNascResp = valorDtNascResp.split("-");
+		var anoDtNascResp = resDtNascResp[0];
+		var mesDtNascResp = resDtNascResp[1];
+		var diaDtNascResp = resDtNascResp[2];
+		valorDtNascResp = diaDtNascResp.concat("/").concat(mesDtNascResp).concat("/").concat(anoDtNascResp);
+		document.getElementById("dtNascimentoResp").value = valorDtNascResp;
+	}
 }
 
 function formatarCamposDataOnload(){
-	var valorDtNasc = document.getElementById("dtNascimento").value;
-	var valorDtAdm = document.getElementById("dtAdmissao").value;
-	var resDtNasc = valorDtNasc.split("-");
-	var resDtAdm = valorDtAdm.split("-");
-	var anoDtNasc = resDtNasc[0];
-	var mesDtNasc = resDtNasc[1];
-	var diaDtNasc = resDtNasc[2];
-	var anoDtAdm = resDtAdm[0];
-	var mesDtAdm = resDtAdm[1];
-	var diaDtAdm = resDtAdm[2];
+	if(document.getElementById("dtNascimento").value){
+		var valorDtNasc = document.getElementById("dtNascimento").value;
+		var resDtNasc = valorDtNasc.split("-");
+		var anoDtNasc = resDtNasc[0];
+		var mesDtNasc = resDtNasc[1];
+		var diaDtNasc = resDtNasc[2];
+		valorDtNasc = diaDtNasc.concat("/").concat(mesDtNasc).concat("/").concat(anoDtNasc);
+		document.getElementById("dtNascimento").value = valorDtNasc;
+	}
 	
-	valorDtNasc = diaDtNasc.concat("/").concat(mesDtNasc).concat("/").concat(anoDtNasc);
-	valorDtAdm = diaDtAdm.concat("/").concat(mesDtAdm).concat("/").concat(anoDtAdm);
-	document.getElementById("dtNascimento").value = valorDtNasc;
-	document.getElementById("dtAdmissao").value = valorDtAdm;
+	if(document.getElementById("dtAdmissao").value){
+		var valorDtAdm = document.getElementById("dtAdmissao").value;
+		var resDtAdm = valorDtAdm.split("-");
+		var anoDtAdm = resDtAdm[0];
+		var mesDtAdm = resDtAdm[1];
+		var diaDtAdm = resDtAdm[2];
+		valorDtAdm = diaDtAdm.concat("/").concat(mesDtAdm).concat("/").concat(anoDtAdm);
+		document.getElementById("dtAdmissao").value = valorDtAdm;
+	}
+	
 }
 
 function formatarCampoCarteiraEstudante(event){
@@ -128,16 +140,18 @@ function formatarCampoCarteiraEstudante(event){
 }
 
 function formatarCampoCarteiraEstudanteOnload(){
-	var valor = document.getElementById("nrCarteiraEstudante").value;
-	var carteiraPrimeiraParte;
-	var carteiraSegundaParte;
-	if(valor != null && valor != ""){
-		carteiraPrimeiraParte = valor.substring(0, 4);
-		carteiraSegundaParte = valor.substring(4);
-		valor = carteiraPrimeiraParte.concat("-").concat(carteiraSegundaParte);
+	if(document.getElementById("nrCarteiraEstudante").value != ""){
+		var valor = document.getElementById("nrCarteiraEstudante").value;
+		var carteiraPrimeiraParte;
+		var carteiraSegundaParte;
+		if(valor != null && valor != ""){
+			carteiraPrimeiraParte = valor.substring(0, 4);
+			carteiraSegundaParte = valor.substring(4);
+			valor = carteiraPrimeiraParte.concat("-").concat(carteiraSegundaParte);
+		}
+		
+		document.getElementById("nrCarteiraEstudante").value = valor;		
 	}
-	
-	document.getElementById("nrCarteiraEstudante").value = valor;
 }
 
 function formatarCampoTelefone(pCampo, pValue, pEvento){
@@ -159,23 +173,26 @@ function formatarCampoTelefone(pCampo, pValue, pEvento){
 }
 
 function formatarCampoTelefoneOnload(){
-	var valor = document.getElementById("telefone").value;
-	var tamanhoValor = valor.length;
-	var abrirParentese = "(";
 	
-	if(tamanhoValor == 10){
-		var ddd = valor.substring(0, 2);
-		var primeiraParte = valor.substring(2, 6);
-		var segundaParte = valor.substring(6, 10);
-		valor = abrirParentese.concat(ddd).concat(")").concat(primeiraParte).concat("-").concat(segundaParte);
-	}else if(tamanhoValor == 11){
-		var ddd = valor.substring(0, 2);
-		var primeiraParte = valor.substring(2, 7);
-		var segundaParte = valor.substring(7, 11);
-		valor = abrirParentese.concat(ddd).concat(")").concat(primeiraParte).concat("-").concat(segundaParte);
-	}
+	if(document.getElementById("telefone").value != ""){
+		var valor = document.getElementById("telefone").value;
+		var tamanhoValor = valor.length;
+		var abrirParentese = "(";
 		
-	document.getElementById("telefone").value = valor;
+		if(tamanhoValor == 10){
+			var ddd = valor.substring(0, 2);
+			var primeiraParte = valor.substring(2, 6);
+			var segundaParte = valor.substring(6, 10);
+			valor = abrirParentese.concat(ddd).concat(")").concat(primeiraParte).concat("-").concat(segundaParte);
+		}else if(tamanhoValor == 11){
+			var ddd = valor.substring(0, 2);
+			var primeiraParte = valor.substring(2, 7);
+			var segundaParte = valor.substring(7, 11);
+			valor = abrirParentese.concat(ddd).concat(")").concat(primeiraParte).concat("-").concat(segundaParte);
+		}
+		
+		document.getElementById("telefone").value = valor;		
+	}
 }
 
 function mascara(o,f){

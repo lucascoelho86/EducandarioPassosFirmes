@@ -53,9 +53,14 @@ function exibirInclusao(){
 </script>
 
 <%
-
+String cpf;
+String nome;
+String disciplinaTela;
 ArrayList<LinkedHashMap<String, String>>colecaoPessoa;
 Iterator<LinkedHashMap<String, String>>itPessoa;
+cpf = (String) request.getAttribute(ServletProfessor.NM_PARAMETRO_CPF);
+nome = (String) request.getAttribute(ServletProfessor.NM_PARAMETRO_NOME);
+disciplinaTela = (String) request.getAttribute(ServletProfessor.NM_PARAMETRO_SELECT_DISCIPLINA);
 colecaoPessoa = (ArrayList<LinkedHashMap<String, String>>) request.getAttribute(ServletProfessor.NM_PARAMETRO_COLECAO_PESSOA);
 
 if(colecaoPessoa == null){
@@ -63,6 +68,18 @@ if(colecaoPessoa == null){
 	itPessoa = colecaoPessoa.iterator();
 }else{
 	itPessoa = colecaoPessoa.iterator();
+}
+
+if(cpf == null){
+	cpf = "";
+}
+
+if(nome == null){
+	nome = "";
+}
+
+if(disciplinaTela == null){
+	disciplinaTela = "";
 }
 
 %>
@@ -82,14 +99,14 @@ if(colecaoPessoa == null){
 						<tr>
 							<th width="10%" align="right"> CPF: </th>
 							<td>
-								<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_CPF%>" name="<%=ServletProfessor.NM_PARAMETRO_CPF%>" value="" size="14" onkeyup="formatarCPF(event);" maxlength="14"
+								<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_CPF%>" name="<%=ServletProfessor.NM_PARAMETRO_CPF%>" value="<%=cpf%>" size="14" onkeyup="formatarCPF(event);" maxlength="14"
 									onkeypress='return SomenteNumero(event)'>
 							
 							</td>
 						
 							<th width="10%" align="right"> Nome: </th>
 							<td>
-								<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_NOME%>" name="<%=ServletProfessor.NM_PARAMETRO_NOME%>" value="" size="50" onkeypress='return letras(event)'>
+								<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_NOME%>" name="<%=ServletProfessor.NM_PARAMETRO_NOME%>" value="<%=nome%>" size="50" onkeypress='return letras(event)'>
 							
 							</td>
 						
@@ -98,15 +115,23 @@ if(colecaoPessoa == null){
 								<%	DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
 									ArrayList<Disciplina>colecaoDisciplina = disciplinaDAO.consultar(0, "", "");
 									boolean ultimaDisciplina = false;
+									boolean mesmaDisciplina = false;
 									for(int x = 0; x < colecaoDisciplina.size(); x++){
 										Disciplina disciplina = colecaoDisciplina.get(x);
 										
 										if(x + 1 == colecaoDisciplina.size()){
 											ultimaDisciplina = true;
-										}%>	
+										}
+										
+										if(disciplinaTela.equals(String.valueOf(disciplina.getIdDisciplina()))){
+											mesmaDisciplina = true;
+										}
+										%>	
 															
-										<%=Select.getInstancia().getHTML(ServletProfessor.NM_PARAMETRO_SELECT_DISCIPLINA, ServletProfessor.NM_PARAMETRO_SELECT_DISCIPLINA, String.valueOf(disciplina.getIdDisciplina()), disciplina.getDsDisciplina(), false, x, ultimaDisciplina, "")%>
-									<%}%>				
+										<%=Select.getInstancia().getHTML(ServletProfessor.NM_PARAMETRO_SELECT_DISCIPLINA, ServletProfessor.NM_PARAMETRO_SELECT_DISCIPLINA, String.valueOf(disciplina.getIdDisciplina()), disciplina.getDsDisciplina(), mesmaDisciplina, x, ultimaDisciplina, "")%>
+									<%
+									mesmaDisciplina = false;
+									}%>				
 							</td>
 							<td>
 								<input type="button" id="botaoLocalizar" name="botaoLocalizar" onclick="consultar();" value="Localizar">

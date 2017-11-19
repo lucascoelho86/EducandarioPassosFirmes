@@ -11,9 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.com.educandariopassosfirmes.dao.ConsultaPrincipalTurmaProfessorDisciplina;
-import br.com.educandariopassosfirmes.dao.TurmaDAO;
 import br.com.educandariopassosfirmes.dao.TurmaProfessorDisciplinaDAO;
-import br.com.educandariopassosfirmes.entidades.Turma;
 import br.com.educandariopassosfirmes.entidades.TurmaProfessorDisciplina;
 
 /**

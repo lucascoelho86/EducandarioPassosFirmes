@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import br.com.educandariopassosfirmes.entidades.Disciplina;
 import br.com.educandariopassosfirmes.entidades.TurmaProfessorDisciplina;
 
 public class TurmaProfessorDisciplinaDAO extends Conexao {

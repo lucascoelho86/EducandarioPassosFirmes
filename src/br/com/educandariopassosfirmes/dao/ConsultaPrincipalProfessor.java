@@ -8,13 +8,16 @@ import java.util.LinkedHashMap;
 
 public class ConsultaPrincipalProfessor extends Conexao{
 	
-	private static final String SQL = "SELECT \n\t" + "PESSOA.ID_PESSOA" + ",\n\t"
+	private static final String SQL_COMPLETO = "SELECT \n\t" + "PESSOA.ID_PESSOA" + ",\n\t"
 				+ "PESSOA.NOME" + ",\n\t" + "PROFESSOR_DISCIPLINA.ID_DISCIPLINA" + ",\n\t" + "DISCIPLINA.DS_DISCIPLINA"
 				+ "\n" + "FROM \n\t" + "PESSOA \n" + "INNER JOIN \n\t" + "PROFESSOR ON PESSOA.ID_PESSOA = PROFESSOR.ID_PESSOA \n"
 				+ "INNER JOIN \n\t" + "PROFESSOR_DISCIPLINA ON PROFESSOR_DISCIPLINA.ID_PESSOA = PROFESSOR.ID_PESSOA  \n"
 				+ "INNER JOIN \n\t" + "DISCIPLINA ON PROFESSOR_DISCIPLINA.ID_DISCIPLINA = DISCIPLINA.ID_DISCIPLINA";
 	
-	public ArrayList<LinkedHashMap<String, String>> consultar(String pMatricula, String pNome, String pDisciplina){
+	private static final String SQL_SIMPLES = "SELECT \n\t" + "PESSOA.ID_PESSOA" + ",\n\t"
+			+ "PESSOA.NOME" + "\n" + "FROM \n\t" + "PESSOA \n" + "INNER JOIN \n\t" + "PROFESSOR ON PESSOA.ID_PESSOA = PROFESSOR.ID_PESSOA";
+	
+	public ArrayList<LinkedHashMap<String, String>> consultar(String pMatricula, String pNome, String pDisciplina, boolean pConsultaCompleta){
 		
 		String sql = "";
 		String where = "WHERE \n\t";
@@ -39,9 +42,17 @@ public class ConsultaPrincipalProfessor extends Conexao{
 			}
 			
 			if(!sqlComplementar.equals("")){
-				sql = SQL + "\n" + where + sqlComplementar;
+				if(pConsultaCompleta || (pDisciplina != null && !pDisciplina.equals("") && !pDisciplina.equals("0"))) {
+					sql = SQL_COMPLETO + "\n" + where + sqlComplementar;
+				}else {
+					sql = SQL_SIMPLES + "\n" + where + sqlComplementar;
+				}
 			}else {
-				sql = SQL;
+				if(pConsultaCompleta || (pDisciplina != null && !pDisciplina.equals("") && !pDisciplina.equals("0"))) {
+					sql = SQL_COMPLETO;
+				}else {
+					sql = SQL_SIMPLES;
+				}				
 			}
 			
 			PreparedStatement preparador = getPreparedStatement(sql);
@@ -68,8 +79,11 @@ public class ConsultaPrincipalProfessor extends Conexao{
 				
 				dados.put("ID_PESSOA", resultado.getString("ID_PESSOA"));
 				dados.put("NOME", resultado.getString("NOME"));
-				dados.put("ID_DISCIPLINA", resultado.getString("ID_DISCIPLINA"));
-				dados.put("DS_DISCIPLINA", resultado.getString("DS_DISCIPLINA"));
+				
+				if (pConsultaCompleta || (pDisciplina != null && !pDisciplina.equals("") && !pDisciplina.equals("0"))) {
+					dados.put("ID_DISCIPLINA", resultado.getString("ID_DISCIPLINA"));
+					dados.put("DS_DISCIPLINA", resultado.getString("DS_DISCIPLINA"));
+				}
 				
 				colecaoDados.add(dados);
 			}

@@ -1,4 +1,5 @@
-<%@page import="br.com.educandariopassosfirmes.util.BibliotecaFormatarDados"%>
+<%@page
+	import="br.com.educandariopassosfirmes.util.BibliotecaFormatarDados"%>
 <%@page import="java.text.DateFormat"%>
 <%@page import="java.util.Date"%>
 <%@page import="br.com.educandariopassosfirmes.entidades.Aluno"%>
@@ -29,19 +30,32 @@
 
 function desistir(){
 	document.getElementById("<%=ServletAluno.NM_EVENTO%>").value = "<%=ServletAluno.NM_JSP_CONSULTAR%>";
+	document.frm_principal.submit();
 }
 
 function cadastrar(){
 	document.getElementById("<%=ServletAluno.NM_EVENTO%>").value = "<%=ServletAluno.NM_EVENTO_PROCESSAR_INCLUSAO%>";
+	var valorCPF = document.getElementById("<%=ServletAluno.NM_PARAMETRO_CPF%>").value;
+	var tamanhoValorCPF = valorCPF.length;
+	var valorSelectTurma = document.getElementById("<%=ServletAluno.NM_PARAMETRO_TURMA%>").value;
+	
+	if(tamanhoValorCPF == 14 && valorSelectTurma > "0"){
+		document.frm_principal.submit();
+	}else if(tamanhoValorCPF < 14){
+		alert("CPF do responsável obrigatório!");
+	}else if(valorSelectTurma == "0"){
+		alert("Selecione uma turma!");
+	}
+	
 }
 
-	function mostrarDP() {
-		document.getElementById("dsNecEspecial").style.visibility = "visible";
-	}
+function mostrarDP() {
+	document.getElementById("dsNecEspecial").style.visibility = "visible";
+}
 
-	function esconderDP() {
-		document.getElementById("dsNecEspecial").style.visibility = "hidden";
-	}
+function esconderDP() {
+	document.getElementById("dsNecEspecial").style.visibility = "hidden";
+}
 </script>
 <script type="text/javascript">
 	jQuery(document).ready(function() {
@@ -61,8 +75,11 @@ function cadastrar(){
 <body>
 
 	<jsp:include page="cabecalho.jsp" />
-	<a href = "ServletMenu" style="font-size: 14px; font-family: Cooper Black; text-decoration: none; color: black;"> <img width="60px" height="60px" src="img/pe.png"/><b>MENU</b></a>
-	<form action="ServletAluno" method="post">
+	<a href="ServletMenu"
+		style="font-size: 14px; font-family: Cooper Black; text-decoration: none; color: black;">
+		<img width="60px" height="60px" src="img/pe.png" /><b>MENU</b>
+	</a>
+	<form name="frm_principal" action="ServletAluno" method="post">
 		<input type="hidden" id="<%=ServletAluno.NM_EVENTO%>"
 			name="<%=ServletAluno.NM_EVENTO%>" value="">
 		<h2 align="center">CADASTRAR ALUNO</h2>
@@ -131,70 +148,78 @@ function cadastrar(){
 							</tr>
 							<tr>
 								<th width="10%" align="right">Matrícula:</th>
-								
-								<%	String matricula = "";
+
+								<%
+									String matricula = "";
 									AlunoDAO alunoDAO = new AlunoDAO();
 									java.util.Date d = new Date();
 									String dStr = java.text.DateFormat.getDateInstance(DateFormat.MEDIUM).format(d);
 									String ano = dStr.substring(6, 10);
 									String mes = dStr.substring(3, 5);
 									String maiorMatricula = alunoDAO.consultarMaiorMatriculaNoAno(ano);
-									
-									if(maiorMatricula == null || maiorMatricula.equals("")){
+
+									if (maiorMatricula == null || maiorMatricula.equals("")) {
 										matricula = ano + "." + mes + ".00001";
-									}else{
+									} else {
 										String primeiraParteMatricula = maiorMatricula.substring(0, 6);
 										String segundaParte = maiorMatricula.substring(6, 11);
 										Integer valorAtual = Integer.valueOf(segundaParte);
 										Integer valorAtualMaisUm = valorAtual + 1;
-										
+
 										matricula = primeiraParteMatricula.substring(0, 4) + "." + primeiraParteMatricula.substring(4, 6) + "."
-										+ BibliotecaFormatarDados.completarNumeroComZerosEsquerda(String.valueOf(valorAtualMaisUm), 5);
+												+ BibliotecaFormatarDados.completarNumeroComZerosEsquerda(String.valueOf(valorAtualMaisUm), 5);
 									}
-									%>	
-																			
-								
+								%>
+
+
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_MATRICULA%>"
-									name="<%=ServletAluno.NM_PARAMETRO_MATRICULA%>" value="<%=matricula%>" readonly></td>
+									name="<%=ServletAluno.NM_PARAMETRO_MATRICULA%>"
+									value="<%=matricula%>" readonly></td>
 
 								<th align="right">Data Matrícula:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_DT_MATRICULA%>"
-									name="<%=ServletAluno.NM_PARAMETRO_DT_MATRICULA%>" value="<%=dStr%>"
-									readonly></td>
-									
+									name="<%=ServletAluno.NM_PARAMETRO_DT_MATRICULA%>"
+									value="<%=dStr%>" readonly></td>
+
 								<th width="20%" align="right">N° Carteira Estudante:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_CARTEIRA_ESTUDANTE%>"
-									name="<%=ServletAluno.NM_PARAMETRO_CARTEIRA_ESTUDANTE%>" value=""
-									onkeyup="formatarCampoCarteiraEstudante(event)" onkeypress='return SomenteNumero(event)'
-									maxlength="14"></td>
+									name="<%=ServletAluno.NM_PARAMETRO_CARTEIRA_ESTUDANTE%>"
+									value="" onkeyup="formatarCampoCarteiraEstudante(event)"
+									onkeypress='return SomenteNumero(event)' maxlength="14"></td>
 							</tr>
 							<tr>
 								<th align="right">Necessidade Especial:</th>
 								<td><input class="esconderEvento" type="radio"
 									id="semNecessidade"
-									name="<%=ServletAluno.NM_PARAMETRO_NECESSIDADE_ESPECIAL%>" value="N">Não
-									<input class="adicionarEvento" type="radio" id="comNecessidade"
-									name="<%=ServletAluno.NM_PARAMETRO_NECESSIDADE_ESPECIAL%>" value="S">Sim
-									<textarea style="visibility: hidden;" id="<%=ServletAluno.NM_PARAMETRO_DS_NECESSIDADE_ESPECIAL%>" name="<%=ServletAluno.NM_PARAMETRO_DS_NECESSIDADE_ESPECIAL%>"
+									name="<%=ServletAluno.NM_PARAMETRO_NECESSIDADE_ESPECIAL%>"
+									value="N">Não <input class="adicionarEvento"
+									type="radio" id="comNecessidade"
+									name="<%=ServletAluno.NM_PARAMETRO_NECESSIDADE_ESPECIAL%>"
+									value="S">Sim <textarea style="visibility: hidden;"
+										id="<%=ServletAluno.NM_PARAMETRO_DS_NECESSIDADE_ESPECIAL%>"
+										name="<%=ServletAluno.NM_PARAMETRO_DS_NECESSIDADE_ESPECIAL%>"
 										rows="1" cols="36"></textarea></td>
-										
+
 								<th align="right">Turma:</th>
 								<td>
-									<%	TurmaDAO turmaDAO = new TurmaDAO();
-										ArrayList<Turma>colecaoTurma = turmaDAO.consultar("", "", "");
+									<%
+										TurmaDAO turmaDAO = new TurmaDAO();
+										ArrayList<Turma> colecaoTurma = turmaDAO.consultar("", "", "");
 										boolean ultimaTurma = false;
-										for(int x = 0; x < colecaoTurma.size(); x++){
+										for (int x = 0; x < colecaoTurma.size(); x++) {
 											Turma turma = colecaoTurma.get(x);
-														
-											if(x + 1 == colecaoTurma.size()){
+
+											if (x + 1 == colecaoTurma.size()) {
 												ultimaTurma = true;
-											}%>	
-																			
-											<%=Select.getInstancia().getHTML(ServletAluno.NM_PARAMETRO_TURMA, ServletAluno.NM_PARAMETRO_TURMA, turma.getIdTurma(), turma.getDsTurma(), false, x, ultimaTurma, "")%>
-									<%}%>				
+											}
+									%> <%=Select.getInstancia().getHTML(ServletAluno.NM_PARAMETRO_TURMA, ServletAluno.NM_PARAMETRO_TURMA,
+								turma.getIdTurma(), turma.getDsTurma(), false, x, ultimaTurma, "")%>
+									<%
+										}
+									%>
 								</td>
 							</tr>
 						</tbody>
@@ -203,27 +228,29 @@ function cadastrar(){
 					<table width="100%">
 						<tr>
 							<td>
-								<table width="65%" align="center" style="background-color: #99CCFF">
+								<table width="65%" align="center"
+									style="background-color: #99CCFF">
 									<tbody>
 										<tr>
 											<th width="10%" align="right">Nome:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_NOME_RESP%>"
-												name="<%=ServletAluno.NM_PARAMETRO_NOME_RESP%>" value="" size="50"
-												onkeypress='return letras(event)'></td>
-			
+												name="<%=ServletAluno.NM_PARAMETRO_NOME_RESP%>" value=""
+												size="50" onkeypress='return letras(event)'></td>
+
 											<th align="right">Data de Nascimento:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_DT_NASCIMENTO_RESP%>"
-												name="<%=ServletAluno.NM_PARAMETRO_DT_NASCIMENTO_RESP%>" value=""
+												name="<%=ServletAluno.NM_PARAMETRO_DT_NASCIMENTO_RESP%>"
+												value=""
 												onkeyup="formatarCamposData(this.name, this, event)"
 												onkeypress='return SomenteNumero(event)' maxlength="10"></td>
-			
+
 											<th width="10%" align="right">Naturalidade:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_NATURALIDADE_RESP%>"
-												name="<%=ServletAluno.NM_PARAMETRO_NATURALIDADE_RESP%>" value=""
-												onkeypress='return letras(event)'></td>
+												name="<%=ServletAluno.NM_PARAMETRO_NATURALIDADE_RESP%>"
+												value="" onkeypress='return letras(event)'></td>
 										</tr>
 										<tr>
 											<th width="10%" align="right">Endereço:</th>
@@ -231,13 +258,13 @@ function cadastrar(){
 												id="<%=ServletAluno.NM_PARAMETRO_ENDERECO_RESP%>"
 												name="<%=ServletAluno.NM_PARAMETRO_ENDERECO_RESP%>" value=""
 												size="50"></td>
-			
+
 											<th align="right">Número:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_NUMERO_RESP%>"
 												name="<%=ServletAluno.NM_PARAMETRO_NUMERO_RESP%>" value=""
 												onkeypress='return SomenteNumero(event)'></td>
-			
+
 											<th align="right">Bairro:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_BAIRRO_RESP%>"
@@ -248,15 +275,15 @@ function cadastrar(){
 											<th width="10%" align="right">Cidade:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_CIDADE_RESP%>"
-												name="<%=ServletAluno.NM_PARAMETRO_CIDADE_RESP%>" value="" size="20"
-												onkeypress='return letras(event)'></td>
-			
+												name="<%=ServletAluno.NM_PARAMETRO_CIDADE_RESP%>" value=""
+												size="20" onkeypress='return letras(event)'></td>
+
 											<th align="right">Estado:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_ESTADO_RESP%>"
 												name="<%=ServletAluno.NM_PARAMETRO_ESTADO_RESP%>" value=""
 												onkeypress='return letras(event)'></td>
-			
+
 											<th align="right">Telefone:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_TELEFONE%>"
@@ -270,14 +297,14 @@ function cadastrar(){
 												id="<%=ServletAluno.NM_PARAMETRO_IDENTIDADE%>"
 												name="<%=ServletAluno.NM_PARAMETRO_IDENTIDADE%>" value=""
 												size="20" onkeypress='return SomenteNumero(event)'></td>
-			
+
 											<th align="right">CPF:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_CPF%>"
 												name="<%=ServletAluno.NM_PARAMETRO_CPF%>" value=""
 												onkeyup="formatarCPF(event);" maxlength="14"
 												onkeypress='return SomenteNumero(event)'></td>
-			
+
 											<th align="right">Parentesco:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_PARENTESCO%>"
@@ -290,13 +317,13 @@ function cadastrar(){
 												id="<%=ServletAluno.NM_PARAMETRO_ESTADO_CIVIL%>"
 												name="<%=ServletAluno.NM_PARAMETRO_ESTADO_CIVIL%>" value=""
 												onkeypress='return letras(event)'></td>
-												
+
 											<th align="right">Escolaridade:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_ESCOLARIDADE%>"
 												name="<%=ServletAluno.NM_PARAMETRO_ESCOLARIDADE%>" value=""
 												onkeypress='return letras(event)'></td>
-												
+
 											<th align="right">Profissão:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_PROFISSAO%>"
@@ -312,75 +339,70 @@ function cadastrar(){
 												onkeypress='return SomenteNumero(event)'></td>
 										</tr>
 									</tbody>
-					</table> <br>
-					<table id="idTableDisciplinas" width="65%" align="center"
-						style="background-color: #99CCFF; visibility: hidden;">
-						<tr>
-							<TH align="center" width="1%">X</TH>
-							<TH align="left" width="10%">Disciplinas</TH>
+								</table> <br>
+								<table id="idTableDisciplinas" width="65%" align="center"
+									style="background-color: #99CCFF; visibility: hidden;">
+									<tr>
+										<TH align="center" width="1%">X</TH>
+										<TH align="left" width="10%">Disciplinas</TH>
+									</tr>
+								</table>
+								<table id="idTableDisciplinas2" width="65%" align="center"
+									style="visibility: hidden;">
+									<%
+										DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
+										ArrayList<Disciplina> colecaoDisciplina = disciplinaDAO.consultar(0, "", "");
+										boolean ultimaDisciplina = false;
+										String cssCorlinha = "";
+										String checked = "";
+										boolean tratamentoCSS = true;
+										for (int x = 0; x < colecaoDisciplina.size(); x++) {
+											Disciplina disciplina = colecaoDisciplina.get(x);
+
+											if (tratamentoCSS) {
+												cssCorlinha = "#c0c0c0";
+												tratamentoCSS = false;
+											} else {
+												cssCorlinha = "#ffffff";
+												tratamentoCSS = true;
+											}
+									%>
+
+									<tr style="background-color: <%=cssCorlinha%>">
+										<th align="center" width="1%"><input type="checkbox"
+											id=<%=ServletAluno.NM_PARAMETRO_ID_DISCIPLINA + x%>
+											name="<%=ServletAluno.NM_PARAMETRO_ID_DISCIPLINA + x%>"
+											value="<%=disciplina.getIdDisciplina()%>"> <input
+											type="hidden"
+											id=<%=ServletAluno.NM_PARAMETRO_TAMANHO_COLECAO_DISCIPLINA%>
+											name="<%=ServletAluno.NM_PARAMETRO_TAMANHO_COLECAO_DISCIPLINA%>"
+											value="<%=String.valueOf(colecaoDisciplina.size())%>"></th>
+										<TH align="left" width="11%"><%=disciplina.getDsDisciplina().toUpperCase()%></TH>
+									</tr>
+									<%
+										}
+									%>
+								</table> <br>
+								<table width="50%" align="center">
+									<tr>
+										<td align="center">
+											<button type="button" id="botaoCadastrar"
+												name="botaoCadastrar" onclick="cadastrar();">Cadastrar</button>
+										</td>
+
+										<td align="center">
+											<button type="button" id="botaoDesistir" name="botaoDesistir"
+												onclick="desistir();">Voltar</button>
+										</td>
+									</tr>
+								</table>
+							</td>
 						</tr>
 					</table>
-					<table id="idTableDisciplinas2" width="65%" align="center"
-						style="visibility: hidden;">
-						<%
-							DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
-							ArrayList<Disciplina> colecaoDisciplina = disciplinaDAO.consultar(
-									0, "", "");
-							boolean ultimaDisciplina = false;
-							String cssCorlinha = "";
-							String checked = "";
-							boolean tratamentoCSS = true;
-							for (int x = 0; x < colecaoDisciplina.size(); x++) {
-								Disciplina disciplina = colecaoDisciplina.get(x);
-
-								if (tratamentoCSS) {
-									cssCorlinha = "#c0c0c0";
-									tratamentoCSS = false;
-								} else {
-									cssCorlinha = "#ffffff";
-									tratamentoCSS = true;
-								}
-						%>
-
-						<tr style="background-color: <%=cssCorlinha%>">
-							<th align="center" width="1%"><input type="checkbox"
-								id=<%=ServletAluno.NM_PARAMETRO_ID_DISCIPLINA + x%>
-								name="<%=ServletAluno.NM_PARAMETRO_ID_DISCIPLINA + x%>"
-								value="<%=disciplina.getIdDisciplina()%>"> <input
-								type="hidden"
-								id=<%=ServletAluno.NM_PARAMETRO_TAMANHO_COLECAO_DISCIPLINA%>
-								name="<%=ServletAluno.NM_PARAMETRO_TAMANHO_COLECAO_DISCIPLINA%>"
-								value="<%=String.valueOf(colecaoDisciplina.size())%>"></th>
-							<TH align="left" width="11%"><%=disciplina.getDsDisciplina().toUpperCase()%></TH>
-						</tr>
-						<%
-							}
-						%>
-					</table> <br>
-					<table width="50%" align="center">
-						<tr>
-							<td align="center">
-								<button type="submit" id="botaoCadastrar" name="botaoCadastrar"
-									onclick="cadastrar();">Cadastrar</button>
-							</td>
-
-							<td align="center">
-								<button type="submit" id="botaoDesistir" name="botaoDesistir"
-									onclick="desistir();">Voltar</button>
-							</td>
-						</tr>
-					</table>
-
 				</td>
 			</tr>
-
-
 		</table>
 		<br>
 	</form>
-
 </body>
-
-
-
 </html>
