@@ -30,20 +30,10 @@ function alterar(){
 String idDisciplina = "";
 String siglaDisciplina = "";
 String dsDisciplina = "";
-String assuntoPrimeiraUnidade = "";
-String assuntoSegundaUnidade = "";
-String assuntoTerceiraUnidade = "";
-String assuntoQuartaUnidade = "";
-Integer cargaHoraria;
 
 idDisciplina = (String)request.getAttribute(ServletDisciplina.NM_PARAMETRO_ID_DISCIPLINA);
 siglaDisciplina = (String)request.getAttribute(ServletDisciplina.NM_PARAMETRO_SIGLA_DISCIPLINA);
 dsDisciplina = (String)request.getAttribute(ServletDisciplina.NM_PARAMETRO_DS_DISCIPLINA);
-assuntoPrimeiraUnidade = (String)request.getAttribute(ServletDisciplina.NM_PARAMETRO_TX_PRIMEIRA_UNIDADE);
-assuntoSegundaUnidade = (String)request.getAttribute(ServletDisciplina.NM_PARAMETRO_TX_SEGUNDA_UNIDADE);
-assuntoTerceiraUnidade = (String)request.getAttribute(ServletDisciplina.NM_PARAMETRO_TX_TERCEIRA_UNIDADE);
-assuntoQuartaUnidade = (String)request.getAttribute(ServletDisciplina.NM_PARAMETRO_TX_QUARTA_UNIDADE);
-cargaHoraria = (Integer)request.getAttribute(ServletDisciplina.NM_PARAMETRO_CAMPO_CARGA_HORARIA);
 
 %>
 
@@ -71,40 +61,6 @@ cargaHoraria = (Integer)request.getAttribute(ServletDisciplina.NM_PARAMETRO_CAMP
 								<td>
 									<input type="text" id="<%=ServletDisciplina.NM_PARAMETRO_DS_DISCIPLINA%>" name="<%=ServletDisciplina.NM_PARAMETRO_DS_DISCIPLINA%>" value="<%=dsDisciplina%>" size="50">
 								
-								</td>
-							</tr>
-							<tr>
-								<th width="15%"  align="right"> Assuntos 1ª Unidade: </th>
-								<td>
-									<textarea id="<%=ServletDisciplina.NM_PARAMETRO_TX_PRIMEIRA_UNIDADE%>" name="<%=ServletDisciplina.NM_PARAMETRO_TX_PRIMEIRA_UNIDADE%>" rows="4" cols="60"><%=assuntoPrimeiraUnidade%></textarea>
-								
-								</td>			
-							
-								<th align="right"> Assuntos 2ª Unidade: </th>
-								<td>
-									<textarea id="<%=ServletDisciplina.NM_PARAMETRO_TX_SEGUNDA_UNIDADE%>" name="<%=ServletDisciplina.NM_PARAMETRO_TX_SEGUNDA_UNIDADE%>" rows="4" cols="60"><%=assuntoSegundaUnidade%></textarea>
-								
-								</td>
-								
-							</tr>
-							<tr>
-								<th width="12%"  align="right"> Assuntos 3ª Unidade: </th>
-								<td>
-									<textarea id="<%=ServletDisciplina.NM_PARAMETRO_TX_TERCEIRA_UNIDADE%>" name="<%=ServletDisciplina.NM_PARAMETRO_TX_TERCEIRA_UNIDADE%>" rows="4" cols="60"><%=assuntoTerceiraUnidade%></textarea>
-								
-								</td>			
-							
-								<th align="right"> Assuntos 4ª Unidade: </th>
-								<td>
-									<textarea id="<%=ServletDisciplina.NM_PARAMETRO_TX_QUARTA_UNIDADE%>" name="<%=ServletDisciplina.NM_PARAMETRO_TX_QUARTA_UNIDADE%>" rows="4" cols="60"><%=assuntoQuartaUnidade%></textarea>
-								
-								</td>
-								
-							</tr>
-							<tr>
-								<th width="12%"  align="right"> Carga Horária: </th>
-								<td>
-									<input type="text" id="<%=ServletDisciplina.NM_PARAMETRO_CAMPO_CARGA_HORARIA%>" name="<%=ServletDisciplina.NM_PARAMETRO_CAMPO_CARGA_HORARIA%>" value="<%=String.valueOf(cargaHoraria)%>">				
 								</td>
 							</tr>
 						</tbody>

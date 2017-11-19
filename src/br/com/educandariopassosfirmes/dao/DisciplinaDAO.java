@@ -61,12 +61,7 @@ public class DisciplinaDAO extends Conexao{
 				disciplina.setIdDisciplina(resultado.getInt("ID_DISCIPLINA"));
 				disciplina.setDsDisciplina(resultado.getString("DS_DISCIPLINA"));
 				disciplina.setSiglaDisciplina(resultado.getString("SIGLA_DISCIPLINA"));
-				disciplina.setCargaHorariaMinima(resultado.getInt("CARGA_HORARIA_MIN"));
-				disciplina.setAssuntoPrimeiraUnidade(resultado.getString("ASSUNTO_PRIMEIRA_UNIDADE"));
-				disciplina.setAssuntoSegundaUnidade(resultado.getString("ASSUNTO_SEGUNDA_UNIDADE"));
-				disciplina.setAssuntoTerceiraUnidade(resultado.getString("ASSUNTO_TERCEIRA_UNIDADE"));
-				disciplina.setAssuntoQuartaUnidade(resultado.getString("ASSUNTO_QUARTA_UNIDADE"));
-				
+								
 				colecaoRetorno.add(disciplina);
 			}
 		}catch(SQLException e){
@@ -99,18 +94,13 @@ public class DisciplinaDAO extends Conexao{
 	 
 	 public void incluir(Disciplina pDisciplina){
 			
-		String sql = "INSERT INTO DISCIPLINA (DS_DISCIPLINA, SIGLA_DISCIPLINA, CARGA_HORARIA_MIN, ASSUNTO_PRIMEIRA_UNIDADE, ASSUNTO_SEGUNDA_UNIDADE, ASSUNTO_TERCEIRA_UNIDADE, ASSUNTO_QUARTA_UNIDADE) values (?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO DISCIPLINA (DS_DISCIPLINA, SIGLA_DISCIPLINA) values (?,?)";
 			
 		try {
 			PreparedStatement preparador = getPreparedStatement(sql);
 				
 			preparador.setString(1, pDisciplina.getDsDisciplina());
 			preparador.setString(2, pDisciplina.getSiglaDisciplina());
-			preparador.setInt(3, pDisciplina.getCargaHorariaMinima());
-			preparador.setString(4, pDisciplina.getAssuntoPrimeiraUnidade());
-			preparador.setString(5, pDisciplina.getAssuntoSegundaUnidade());
-			preparador.setString(6, pDisciplina.getAssuntoTerceiraUnidade());
-			preparador.setString(7, pDisciplina.getAssuntoQuartaUnidade());
 				
 			preparador.execute();
 			preparador.close();
@@ -122,19 +112,14 @@ public class DisciplinaDAO extends Conexao{
 	 
 	 public void alterar(Disciplina pDisciplina){
 			
-		String sql = "UPDATE DISCIPLINA SET DS_DISCIPLINA=?, SIGLA_DISCIPLINA=?, CARGA_HORARIA_MIN=?, ASSUNTO_PRIMEIRA_UNIDADE=?, ASSUNTO_SEGUNDA_UNIDADE=?, ASSUNTO_TERCEIRA_UNIDADE=?, ASSUNTO_QUARTA_UNIDADE=? WHERE ID_DISCIPLINA=?";
+		String sql = "UPDATE DISCIPLINA SET DS_DISCIPLINA=?, SIGLA_DISCIPLINA=? WHERE ID_DISCIPLINA=?";
 			
 		try {
 			PreparedStatement preparador = getPreparedStatement(sql);
 				
 			preparador.setString(1, pDisciplina.getDsDisciplina());
 			preparador.setString(2, pDisciplina.getSiglaDisciplina());
-			preparador.setInt(3, pDisciplina.getCargaHorariaMinima());
-			preparador.setString(4, pDisciplina.getAssuntoPrimeiraUnidade());
-			preparador.setString(5, pDisciplina.getAssuntoSegundaUnidade());
-			preparador.setString(6, pDisciplina.getAssuntoTerceiraUnidade());
-			preparador.setString(7, pDisciplina.getAssuntoQuartaUnidade());
-			preparador.setInt(8, pDisciplina.getIdDisciplina());
+			preparador.setInt(3, pDisciplina.getIdDisciplina());
 				
 			preparador.execute();
 			preparador.close();

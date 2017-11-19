@@ -50,40 +50,6 @@ function cadastrar(){
 								
 								</td>
 							</tr>
-							<tr>
-								<th width="15%"  align="right"> Assuntos 1ª Unidade: </th>
-								<td>
-									<textarea id="<%=ServletDisciplina.NM_PARAMETRO_TX_PRIMEIRA_UNIDADE%>" name="<%=ServletDisciplina.NM_PARAMETRO_TX_PRIMEIRA_UNIDADE%>" rows="4" cols="60"></textarea>
-								
-								</td>			
-							
-								<th align="right"> Assuntos 2ª Unidade: </th>
-								<td>
-									<textarea id="<%=ServletDisciplina.NM_PARAMETRO_TX_SEGUNDA_UNIDADE%>" name="<%=ServletDisciplina.NM_PARAMETRO_TX_SEGUNDA_UNIDADE%>" rows="4" cols="60"></textarea>
-								
-								</td>
-								
-							</tr>
-							<tr>
-								<th width="12%"  align="right"> Assuntos 3ª Unidade: </th>
-								<td>
-									<textarea id="<%=ServletDisciplina.NM_PARAMETRO_TX_TERCEIRA_UNIDADE%>" name="<%=ServletDisciplina.NM_PARAMETRO_TX_TERCEIRA_UNIDADE%>" rows="4" cols="60"></textarea>
-								
-								</td>			
-							
-								<th align="right"> Assuntos 4ª Unidade: </th>
-								<td>
-									<textarea id="<%=ServletDisciplina.NM_PARAMETRO_TX_QUARTA_UNIDADE%>" name="<%=ServletDisciplina.NM_PARAMETRO_TX_QUARTA_UNIDADE%>" rows="4" cols="60"></textarea>
-								
-								</td>
-								
-							</tr>
-							<tr>
-								<th width="12%"  align="right"> Carga Horária: </th>
-								<td>
-									<input type="text" id="<%=ServletDisciplina.NM_PARAMETRO_CAMPO_CARGA_HORARIA%>" name="<%=ServletDisciplina.NM_PARAMETRO_CAMPO_CARGA_HORARIA%>" value="">				
-								</td>
-							</tr>
 						</tbody>
 					</table>
 					<br>

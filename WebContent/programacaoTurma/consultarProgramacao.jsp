@@ -1,3 +1,4 @@
+<%@page import="java.util.LinkedHashMap"%>
 <%@page import="br.com.educandariopassosfirmes.servlet.ServletProgramacao"%>
 <%@page import="br.com.educandariopassosfirmes.dao.TurmaDAO"%>
 <%@page import="java.util.Iterator"%>
@@ -30,7 +31,7 @@ function excluir(){
 	if (isRadioButtonConsultaSelecionado("document.frm_principal.rdb_consulta")){
 		document.frm_principal.submit();		
 	}else{
-		alert("Selecione uma turma!");
+		alert("Selecione uma opção!");
 	}
 }
 
@@ -51,13 +52,19 @@ function exibirInclusao(){
 </script>
 
 <%
-	ArrayList<Turma> colecaoTurma;
-	Iterator<Turma> itTurma;
-	colecaoTurma = (ArrayList<Turma>) request
+	String idTurma;
+	ArrayList<LinkedHashMap<String, String>> colecaoTurma;
+	Iterator<LinkedHashMap<String, String>> itTurma;
+	idTurma = (String) request.getAttribute(ServletProgramacao.NM_PARAMETRO_SELECT_TURMA);
+	colecaoTurma = (ArrayList<LinkedHashMap<String, String>>) request
 			.getAttribute(ServletProgramacao.NM_PARAMETRO_COLECAO_TURMA);
 
+	if(idTurma == null){
+		idTurma = "";
+	}
+	
 	if (colecaoTurma == null) {
-		colecaoTurma = new ArrayList<Turma>();
+		colecaoTurma = new ArrayList<LinkedHashMap<String, String>>();
 		itTurma = colecaoTurma.iterator();
 	} else {
 		itTurma = colecaoTurma.iterator();
@@ -83,15 +90,23 @@ function exibirInclusao(){
 								<%	TurmaDAO turmaDAO = new TurmaDAO();
 									ArrayList<Turma>colecao = turmaDAO.consultar("", "", "");
 									boolean ultimaTurma = false;
+									boolean mesmaTurma = false;
 									for(int x = 0; x < colecao.size(); x++){
 										Turma turma = colecao.get(x);
 										
 										if(x + 1 == colecao.size()){
 											ultimaTurma = true;
-										}%>
+										}
+										
+										if(idTurma.equals(turma.getIdTurma())){
+											mesmaTurma = true;
+										}
+										%>
 															
-										<%=Select.getInstancia().getHTML(ServletProgramacao.NM_PARAMETRO_SIGLA_TURMA, ServletProgramacao.NM_PARAMETRO_SIGLA_TURMA, String.valueOf(turma.getIdTurma()), turma.getDsTurma(), false, x, ultimaTurma, "")%>
-									<%}%>
+										<%=Select.getInstancia().getHTML(ServletProgramacao.NM_PARAMETRO_SELECT_TURMA, ServletProgramacao.NM_PARAMETRO_SELECT_TURMA, turma.getIdTurma(), turma.getDsTurma(), mesmaTurma, x, ultimaTurma, "")%>
+									<%
+									mesmaTurma = false;
+									}%>
 									<button type="submit" id="botaoLocalizar" name="botaoLocalizar"
 										onclick="consultar();">Localizar</button>
 									</h4>
@@ -111,9 +126,8 @@ function exibirInclusao(){
 							boolean tratamentoCSS = true;
 							String chave = "";
 							while (itTurma.hasNext()) {
-								Turma turma = itTurma.next();
-								chave = turma.getIdTurma() + ";" + turma.getDsTurma() + ";"
-										+ turma.getTurno() + ";" + turma.getQtMaxAlunos();
+								LinkedHashMap<String, String> turma = itTurma.next();
+								chave = turma.get("ID_TURMA") + ";" + turma.get("ID_PESSOA") + ";" + turma.get("ID_DISCIPLINA");
 								if (tratamentoCSS) {
 									cssCorlinha = "#c0c0c0";
 									tratamentoCSS = false;
@@ -136,8 +150,9 @@ function exibirInclusao(){
 									}
 								%>
 							</td>
-							<td style="width: 310px; display: block; text-align: left"><%=turma.getDsTurma().toUpperCase()%></td>
-							<td><%=turma.getTurno().toUpperCase()%></td>
+							<td><%=turma.get("DS_TURMA").toUpperCase()%></td>
+							<td><%=turma.get("NOME").toUpperCase()%></td>
+							<td><%=turma.get("DS_DISCIPLINA").toUpperCase()%></td>
 						</tr>
 
 

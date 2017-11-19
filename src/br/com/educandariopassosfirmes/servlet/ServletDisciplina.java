@@ -128,12 +128,7 @@ public class ServletDisciplina extends ServletGenerico {
 		Disciplina disciplina = new Disciplina();
 		disciplina.setSiglaDisciplina(sigla);
 		disciplina.setDsDisciplina(descricao);
-		disciplina.setAssuntoPrimeiraUnidade(assuntoPrimeiraUnidade);
-		disciplina.setAssuntoSegundaUnidade(assuntoSegundaUnidade);
-		disciplina.setAssuntoTerceiraUnidade(assuntoTerceiraUnidade);
-		disciplina.setAssuntoQuartaUnidade(assuntoQuartaUnidade);
-		disciplina.setCargaHorariaMinima(Integer.valueOf(cargaHoraria));
-
+		
 		//inclui em DISCIPLINA
 		DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
 		disciplinaDAO.incluir(disciplina);
@@ -191,11 +186,6 @@ public class ServletDisciplina extends ServletGenerico {
 		String idDisciplina = chaveDisciplina[0];
 		String siglaDisciplina = "";
 		String dsDisciplina = "";
-		String assuntoPrimeiraUnidade = "";
-		String assuntoSegundaUnidade = "";
-		String assuntoTerceiraUnidade = "";
-		String assuntoQuartaUnidade = "";
-		Integer cargaHoraria = 0;
 		DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
 				
 		//consulta pelo id da disciplina recuperar os valores e setar no request				
@@ -207,22 +197,12 @@ public class ServletDisciplina extends ServletGenerico {
 			
 			siglaDisciplina = disciplina.getSiglaDisciplina();
 			dsDisciplina = disciplina.getDsDisciplina();
-			assuntoPrimeiraUnidade = disciplina.getAssuntoPrimeiraUnidade();
-			assuntoSegundaUnidade = disciplina.getAssuntoSegundaUnidade();
-			assuntoTerceiraUnidade = disciplina.getAssuntoTerceiraUnidade();
-			assuntoQuartaUnidade = disciplina.getAssuntoQuartaUnidade();
-			cargaHoraria = disciplina.getCargaHorariaMinima();
 		}
 		
 		//seta os atributos no request para recuperar na JSP
 		request.setAttribute(NM_PARAMETRO_ID_DISCIPLINA, idDisciplina);
 		request.setAttribute(NM_PARAMETRO_SIGLA_DISCIPLINA, siglaDisciplina);
 		request.setAttribute(NM_PARAMETRO_DS_DISCIPLINA, dsDisciplina);
-		request.setAttribute(NM_PARAMETRO_TX_PRIMEIRA_UNIDADE, assuntoPrimeiraUnidade);
-		request.setAttribute(NM_PARAMETRO_TX_SEGUNDA_UNIDADE, assuntoSegundaUnidade);
-		request.setAttribute(NM_PARAMETRO_TX_TERCEIRA_UNIDADE, assuntoTerceiraUnidade);
-		request.setAttribute(NM_PARAMETRO_TX_QUARTA_UNIDADE, assuntoQuartaUnidade);
-		request.setAttribute(NM_PARAMETRO_CAMPO_CARGA_HORARIA, cargaHoraria);
 
 		this.redirecionarPagina(request, response, NM_JSP_ALTERAR_DISCIPLINA);
 	}
@@ -235,34 +215,17 @@ public class ServletDisciplina extends ServletGenerico {
 		String idDisciplina = "";
 		String sigla = "";
 		String descricao = "";
-		String assuntoPrimeiraUnidade = "";
-		String assuntoSegundaUnidade = "";
-		String assuntoTerceiraUnidade = "";
-		String assuntoQuartaUnidade = "";
-		String cargaHoraria = "";
-		String cdTipoEnsino = "";
 
 		// recupera os parametros do request
 		idDisciplina = request.getParameter(NM_PARAMETRO_ID_DISCIPLINA);
 		sigla = request.getParameter(NM_PARAMETRO_SIGLA_DISCIPLINA);
 		descricao = request.getParameter(NM_PARAMETRO_DS_DISCIPLINA);
-		assuntoPrimeiraUnidade = request.getParameter(NM_PARAMETRO_TX_PRIMEIRA_UNIDADE);
-		assuntoSegundaUnidade = request.getParameter(NM_PARAMETRO_TX_SEGUNDA_UNIDADE);
-		assuntoTerceiraUnidade = request.getParameter(NM_PARAMETRO_TX_TERCEIRA_UNIDADE);
-		assuntoQuartaUnidade = request.getParameter(NM_PARAMETRO_TX_QUARTA_UNIDADE);
-		cargaHoraria = request.getParameter(NM_PARAMETRO_CAMPO_CARGA_HORARIA);
-		cdTipoEnsino = request.getParameter(NM_PARAMETRO_SELECT_TIPO_ENSINO);
 
 		//monta a entidade disciplina para alterar
 		Disciplina disciplina = new Disciplina();
 		disciplina.setIdDisciplina(Integer.valueOf(idDisciplina));
 		disciplina.setSiglaDisciplina(sigla);
 		disciplina.setDsDisciplina(descricao);
-		disciplina.setAssuntoPrimeiraUnidade(assuntoPrimeiraUnidade);
-		disciplina.setAssuntoSegundaUnidade(assuntoSegundaUnidade);
-		disciplina.setAssuntoTerceiraUnidade(assuntoTerceiraUnidade);
-		disciplina.setAssuntoQuartaUnidade(assuntoQuartaUnidade);
-		disciplina.setCargaHorariaMinima(Integer.valueOf(cargaHoraria));
 
 		//alterar em DISCIPLINA
 		DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
