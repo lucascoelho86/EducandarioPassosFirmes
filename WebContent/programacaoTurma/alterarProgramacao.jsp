@@ -228,7 +228,7 @@ function alterar(){
 								<td><input type="text"
 									id="<%=ServletDisciplina.NM_PARAMETRO_CAMPO_CARGA_HORARIA%>"
 									name="<%=ServletDisciplina.NM_PARAMETRO_CAMPO_CARGA_HORARIA%>"
-									value="<%=cargaHoraria%>"></td>
+									value="<%=cargaHoraria.equals("0") ? "" : cargaHoraria%>"></td>
 							</tr>
 							<tr>
 								<th align="right">Assuntos 3ª Unidade:</th>

@@ -131,7 +131,7 @@ function esconderDP() {
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_NUMERO%>"
 									name="<%=ServletAluno.NM_PARAMETRO_NUMERO%>"
-									value="<%=pessoaAluno.getNumero()%>"
+									value="<%=pessoaAluno.getNumero() == 0 ? "" : pessoaAluno.getNumero()%>"
 									onkeypress='return SomenteNumero(event)'></td>
 
 								<th align="right">Bairro:</th>
@@ -286,7 +286,7 @@ function esconderDP() {
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_NUMERO_RESP%>"
 												name="<%=ServletAluno.NM_PARAMETRO_NUMERO_RESP%>"
-												value="<%=pesssoaResponsavel.getNumero()%>"
+												value="<%=pesssoaResponsavel.getNumero() == 0 ? "" : pesssoaResponsavel.getNumero()%>"
 												onkeypress='return SomenteNumero(event)'></td>
 
 											<th align="right">Bairro:</th>

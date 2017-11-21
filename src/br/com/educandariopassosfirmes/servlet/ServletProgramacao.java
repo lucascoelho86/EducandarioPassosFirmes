@@ -137,12 +137,19 @@ public class ServletProgramacao extends ServletGenerico {
 
 		turmaProfessorDisciplina.setIdTurma(valorSelectTurma);
 		turmaProfessorDisciplina.setIdProfessor(valorSelectProfessor);
-		turmaProfessorDisciplina.setIdDisciplina(Integer.valueOf(valorSelectDisciplina));
+		
+		if(valorSelectDisciplina != null && !valorSelectDisciplina.equals("0")){
+			turmaProfessorDisciplina.setIdDisciplina(Integer.valueOf(valorSelectDisciplina));
+		}
+		
 		turmaProfessorDisciplina.setAssuntoPrimeiraUnidade(txPrimeiraUnidade);
 		turmaProfessorDisciplina.setAssuntoSegundaUnidade(txSegundaUnidade);
 		turmaProfessorDisciplina.setAssuntoTerceiraUnidade(txTerceiraUnidade);
 		turmaProfessorDisciplina.setAssuntoQuartaUnidade(txQuartaUnidade);
-		turmaProfessorDisciplina.setCargaHorariaMinima(Integer.valueOf(cargaHoraria));
+		
+		if(cargaHoraria != null && !cargaHoraria.equals("")){
+			turmaProfessorDisciplina.setCargaHorariaMinima(Integer.valueOf(cargaHoraria));
+		}
 
 		TurmaProfessorDisciplinaDAO turmaProfessorDisciplinaDAO = new TurmaProfessorDisciplinaDAO();
 		turmaProfessorDisciplinaDAO.incluir(turmaProfessorDisciplina);
@@ -255,8 +262,11 @@ public class ServletProgramacao extends ServletGenerico {
 		turmaProfessorDisciplina.setAssuntoSegundaUnidade(txSegundaUnidade);
 		turmaProfessorDisciplina.setAssuntoTerceiraUnidade(txTerceiraUnidade);
 		turmaProfessorDisciplina.setAssuntoQuartaUnidade(txQuartaUnidade);
-		turmaProfessorDisciplina.setCargaHorariaMinima(Integer.valueOf(cargaHoraria));
-
+		
+		if(cargaHoraria != null && !cargaHoraria.equals("")){
+			turmaProfessorDisciplina.setCargaHorariaMinima(Integer.valueOf(cargaHoraria));
+		}
+		
 		TurmaProfessorDisciplinaDAO turmaProfessorDisciplinaDAO = new TurmaProfessorDisciplinaDAO();
 		turmaProfessorDisciplinaDAO.alterar(turmaProfessorDisciplina);
 

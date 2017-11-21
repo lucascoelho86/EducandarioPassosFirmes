@@ -265,7 +265,9 @@ public class ServletAluno extends ServletGenerico {
 		DecimalFormatSymbols dfs = new DecimalFormatSymbols (new Locale ("pt", "BR"));
 		DecimalFormat df = new DecimalFormat ("#,##0.00", dfs);
 		try {
-			valorSalario = df.parse (renda).doubleValue();
+			if(renda != null && !renda.equals("")) {
+				valorSalario = df.parse (renda).doubleValue();
+			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -295,7 +297,13 @@ public class ServletAluno extends ServletGenerico {
 
 		//inclui em PESSOA 2x
 		PessoaDAO pessoaDAO = new PessoaDAO();
-		pessoaDAO.incluir(pessoa);
+		
+		ArrayList<Pessoa> verificarSeExistePessoa = pessoaDAO.consultar(cpf, nome);
+		
+		if(verificarSeExistePessoa.isEmpty()) {
+			pessoaDAO = new PessoaDAO();
+			pessoaDAO.incluir(pessoa);
+		}
 		
 		Responsavel responsavel = new Responsavel();
 		responsavel.setId(cpf);
@@ -306,8 +314,14 @@ public class ServletAluno extends ServletGenerico {
 		responsavel.setRenda(valorSalario);
 		
 		ResponsavelDAO responsavelDAO = new ResponsavelDAO();
-		responsavelDAO.cadastrar(responsavel);
-
+		
+		Responsavel verificarSeExisteResponsavel = responsavelDAO.consultar(cpf);
+		
+		if(verificarSeExisteResponsavel == null) {
+			responsavelDAO = new ResponsavelDAO();
+			responsavelDAO.cadastrar(responsavel);
+		}
+		
 		//monta a entidade pessoa para incluir aluno
 		pessoa = new Pessoa();
 		pessoa.setId(matricula);

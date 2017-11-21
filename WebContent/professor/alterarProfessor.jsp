@@ -221,7 +221,7 @@ function mostrarDP(){
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_QT_DEPENDENTE%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_QT_DEPENDENTE%>"
-									value="<%=qtDependente%>"
+									value="<%=qtDependente.equals("0") ? "" : qtDependente%>"
 									onkeypress='return SomenteNumero(event)'></td>
 
 								<th align="right">Data Admissão:</th>

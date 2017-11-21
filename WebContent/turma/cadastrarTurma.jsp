@@ -17,18 +17,25 @@
 
 function desistir(){
 	document.getElementById("<%=ServletTurma.NM_EVENTO%>").value = "<%=ServletTurma.NM_JSP_CONSULTAR%>";
+	document.frm_principal.submit();
 }
 
 function cadastrar(){
-	var valorSelectTurno = document.getElementById("selectTurno").value;
+	document.getElementById("<%=ServletTurma.NM_EVENTO%>").value = "<%=ServletTurma.NM_EVENTO_PROCESSAR_INCLUSAO%>";		
+	var campoSigla = document.getElementById("<%=ServletTurma.NM_PARAMETRO_SIGLA_TURMA%>").value;
+	var campoDescricao = document.getElementById("<%=ServletTurma.NM_PARAMETRO_DS_TURMA%>").value;
+	var valorSelectTurno = document.getElementById("<%=ServletTurma.NM_PARAMETRO_SELECT_TURNO%>").value;
 	
-	if(valorSelectTurno != 0){
-		document.getElementById("<%=ServletTurma.NM_EVENTO%>").value = "<%=ServletTurma.NM_EVENTO_PROCESSAR_INCLUSAO%>";		
-	}else{
+	if(campoSigla != "" && campoDescricao != "" && valorSelectTurno != 0){
+		document.frm_principal.submit();
+	}else if(campoSigla == ""){
+		alert("Preencha o campo sigla!");
+	}else if(campoDescricao == ""){
+		alert("Preencha o campo descrição!");
+	}else if(valorSelectTurno == 0){
 		alert("Selecione um turno!");
-		document.getElementById("<%=ServletTurma.NM_EVENTO%>").value = "<%=ServletTurma.NM_EVENTO_EXIBIR_INCLUSAO%>";
-		}
 	}
+}
 </script>
 
 <%
@@ -60,7 +67,7 @@ function cadastrar(){
 
 	<jsp:include page="cabecalho.jsp" />
 	<a href = "ServletMenu" style="font-size: 14px; font-family: Cooper Black; text-decoration: none; color: black;"> <img width="60px" height="60px" src="img/pe.png"/><b>MENU</b></a>
-	<form action="ServletTurma" method="post">
+	<form name="frm_principal" action="ServletTurma" method="post">
 		<input type="hidden" id="<%=ServletTurma.NM_EVENTO%>"
 			name="<%=ServletTurma.NM_EVENTO%>" value="">
 		<h2 align="center">CADASTRAR TURMA</h2>
@@ -119,12 +126,12 @@ function cadastrar(){
 					<table width="50%" align="center">
 						<tr>
 							<td style="width: 600px; text-align: center">
-								<button type="submit" id="botaoCadastrar" name="botaoCadastrar"
+								<button type="button" id="botaoCadastrar" name="botaoCadastrar"
 									onclick="cadastrar();">Cadastrar</button>
 							</td>
 
 							<td style="width: 700px; text-align: center">
-								<button type="submit" id="botaoDesistir" name="botaoDesistir"
+								<button type="button" id="botaoDesistir" name="botaoDesistir"
 									onclick="desistir();">Voltar</button>
 							</td>
 						</tr>

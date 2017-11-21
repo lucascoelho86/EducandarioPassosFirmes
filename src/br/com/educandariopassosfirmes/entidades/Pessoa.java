@@ -3,9 +3,8 @@ package br.com.educandariopassosfirmes.entidades;
 import java.sql.Date;
 
 
-public class Pessoa {
+public class Pessoa extends Membros{
 
-	private String id;
 	private String nome;
 	private Date dtNascimento;
 	private String naturalidade;
@@ -17,12 +16,6 @@ public class Pessoa {
 	private String telefone;
 	private String identidade;
 	
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
 	public String getNome() {
 		return nome;
 	}

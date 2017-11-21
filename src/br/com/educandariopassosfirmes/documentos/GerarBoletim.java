@@ -1,21 +1,9 @@
 package br.com.educandariopassosfirmes.documentos;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-
-import br.com.educandariopassosfirmes.dao.DisciplinaDAO;
-import br.com.educandariopassosfirmes.dao.NotaDAO;
-import br.com.educandariopassosfirmes.entidades.Disciplina;
-import br.com.educandariopassosfirmes.entidades.Nota;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
  
 public class GerarBoletim{
 	

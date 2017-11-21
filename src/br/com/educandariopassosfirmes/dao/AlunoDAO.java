@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.com.educandariopassosfirmes.entidades.Aluno;
-import br.com.educandariopassosfirmes.entidades.Responsavel;
 
 public class AlunoDAO extends Conexao{
 

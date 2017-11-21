@@ -258,7 +258,7 @@ public class ServletProfessor extends ServletGenerico {
 			professor.setCargaHoraria(Integer.valueOf(cargaHoraria));
 		}
 		
-		professor.setSalario(valorSalario);
+		professor.setSalario(professor.getBonificacao(valorSalario));
 		
 		//inclui em PESSOA
 		ProfessorDAO professorDAO = new ProfessorDAO();
@@ -318,6 +318,9 @@ public class ServletProfessor extends ServletGenerico {
 		chave = request.getParameter(NM_PARAMETRO_CHAVE);
 				
 		String idProfessor = chave;
+		
+		ProfessorDisciplinaDAO professorDisciplinaDAO = new ProfessorDisciplinaDAO();
+		professorDisciplinaDAO.excluir(idProfessor);
 
 		ProfessorDAO professorDAO = new ProfessorDAO();		
 		professorDAO.excluir(idProfessor);

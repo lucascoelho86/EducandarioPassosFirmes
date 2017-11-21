@@ -33,10 +33,25 @@
 
 function desistir(){
 	document.getElementById("<%=ServletProgramacao.NM_EVENTO%>").value = "<%=ServletProgramacao.NM_JSP_CONSULTAR%>";
+	document.frm_principal.submit();
 }
 
 function cadastrar(){
-	document.getElementById("<%=ServletProgramacao.NM_EVENTO%>").value = "<%=ServletProgramacao.NM_EVENTO_PROCESSAR_INCLUSAO%>";		
+	document.getElementById("<%=ServletProgramacao.NM_EVENTO%>").value = "<%=ServletProgramacao.NM_EVENTO_PROCESSAR_INCLUSAO%>";
+	
+	var valorSelectTurma = document.getElementById("<%=ServletProgramacao.NM_PARAMETRO_SELECT_TURMA%>").value;
+	var valorSelectProfessor = document.getElementById("<%=ServletProgramacao.NM_PARAMETRO_SELECT_PROFESSOR%>").value;
+	var valorSelectDisciplina = document.getElementById("<%=ServletProgramacao.NM_PARAMETRO_SELECT_DISCIPLINA%>").value;
+	
+	if(valorSelectTurma != 0 && valorSelectProfessor != 0 && valorSelectDisciplina != 0){
+		document.frm_principal.submit();
+	}else if(valorSelectTurma == 0){
+		alert("Selecione uma turma!");
+	}else if(valorSelectProfessor == 0){
+		alert("Selecione um professor!");
+	}else if(valorSelectDisciplina == 0){
+		alert("Selecione uma disciplina!");
+	}
 }
 
 function consultaSelectProfessor(){
@@ -311,12 +326,12 @@ function consultaSelectDisciplina(){
 					<table width="50%" align="center">
 						<tr>
 							<td style="width: 600px; text-align: center">
-								<button type="submit" id="botaoCadastrar" name="botaoCadastrar"
+								<button type="button" id="botaoCadastrar" name="botaoCadastrar"
 									onclick="cadastrar();">Cadastrar</button>
 							</td>
 
 							<td style="width: 700px; text-align: center">
-								<button type="submit" id="botaoDesistir" name="botaoDesistir"
+								<button type="button" id="botaoDesistir" name="botaoDesistir"
 									onclick="desistir();">Voltar</button>
 							</td>
 						</tr>

@@ -17,10 +17,22 @@
 
 function desistir(){
 	document.getElementById("<%=ServletDisciplina.NM_EVENTO%>").value = "<%=ServletDisciplina.NM_JSP_CONSULTAR%>";
+	document.frm_principal.submit();
 }
 
 function alterar(){
 	document.getElementById("<%=ServletDisciplina.NM_EVENTO%>").value = "<%=ServletDisciplina.NM_EVENTO_PROCESSAR_ALTERACAO%>";
+	
+	var campoSigla = document.getElementById("<%=ServletDisciplina.NM_PARAMETRO_SIGLA_DISCIPLINA%>").value;
+	var campoDescricao = document.getElementById("<%=ServletDisciplina.NM_PARAMETRO_DS_DISCIPLINA%>").value;
+	
+	if(campoSigla != "" && campoDescricao != ""){
+		document.frm_principal.submit();
+	}else if(campoSigla == ""){
+		alert("Preencha o campo sigla!");
+	}else if(campoDescricao == ""){
+		alert("Preencha o campo descrição!");
+	}
 }
 
 </script>
@@ -41,7 +53,7 @@ dsDisciplina = (String)request.getAttribute(ServletDisciplina.NM_PARAMETRO_DS_DI
 
 <jsp:include page="cabecalho.jsp"/>
 <a href = "ServletMenu" style="font-size: 14px; font-family: Cooper Black; text-decoration: none; color: black;"> <img width="60px" height="60px" src="img/pe.png"/><b>MENU</b></a>
-<form action="ServletDisciplina" method="post">
+<form name="frm_principal" action="ServletDisciplina" method="post">
 <input type="hidden" id="<%=ServletDisciplina.NM_EVENTO%>" name="<%=ServletDisciplina.NM_EVENTO%>" value="">
 <input type="hidden" id="<%=ServletDisciplina.NM_PARAMETRO_ID_DISCIPLINA%>" name="<%=ServletDisciplina.NM_PARAMETRO_ID_DISCIPLINA%>" value="<%=idDisciplina%>">
 	<h2 align="center">ALTERAR DISCIPLINA</h2>
@@ -69,10 +81,10 @@ dsDisciplina = (String)request.getAttribute(ServletDisciplina.NM_PARAMETRO_DS_DI
 					<table width="50%" align="center">
 						<tr>
 							<td align="center">
-								<button type="submit" id="botaoAlterar" name="botaoAlterar" onclick="alterar();">Alterar</button>				
+								<button type="button" id="botaoAlterar" name="botaoAlterar" onclick="alterar();">Alterar</button>				
 							</td>
 							<td align="center">
-								<button type="submit" id="botaoDesistir" name="botaoDesistir" onclick="desistir();">Voltar</button>				
+								<button type="button" id="botaoDesistir" name="botaoDesistir" onclick="desistir();">Voltar</button>				
 							</td>
 						</tr>
 					</table>

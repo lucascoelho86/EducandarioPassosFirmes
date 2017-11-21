@@ -129,7 +129,10 @@ public class ServletTurma extends ServletGenerico {
 		turma.setIdTurma(siglaTurma);
 		turma.setDsTurma(descricao);
 		turma.setTurno(dsTurno);
-		turma.setQtMaxAlunos(Integer.valueOf(qtMaxAlunos));
+		
+		if(qtMaxAlunos != null && !qtMaxAlunos.equals("")){
+			turma.setQtMaxAlunos(Integer.valueOf(qtMaxAlunos));
+		}
 
 		//inclui em TURMA
 		TurmaDAO turmaDAO = new TurmaDAO();
@@ -240,7 +243,10 @@ public class ServletTurma extends ServletGenerico {
 		turma.setIdTurma(idTurma);
 		turma.setDsTurma(descricao);
 		turma.setTurno(dsTurno);
-		turma.setQtMaxAlunos(Integer.valueOf(qtMaxAlunos));
+		
+		if(qtMaxAlunos != null && !qtMaxAlunos.equals("")){
+			turma.setQtMaxAlunos(Integer.valueOf(qtMaxAlunos));
+		}
 
 		//altera em TURMA
 		TurmaDAO turmaDAO = new TurmaDAO();
