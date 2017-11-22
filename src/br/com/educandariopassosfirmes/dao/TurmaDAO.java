@@ -66,6 +66,7 @@ public class TurmaDAO extends Conexao{
 				turma.setDsTurma(resultado.getString("DS_TURMA"));
 				turma.setTurno(resultado.getString("TURNO"));
 				turma.setQtMaxAlunos(resultado.getInt("QUANTIDADE_MAX_ALUNOS"));
+				turma.setSala(resultado.getString("SALA"));
 					
 				colecaoTurma.add(turma);
 					
@@ -80,7 +81,7 @@ public class TurmaDAO extends Conexao{
 	 
 	 public void incluir(Turma pTurma){
 			
-		String sql = "INSERT INTO TURMA (ID_TURMA, DS_TURMA, TURNO, QUANTIDADE_MAX_ALUNOS) values (?,?,?,?)";
+		String sql = "INSERT INTO TURMA (ID_TURMA, DS_TURMA, TURNO, QUANTIDADE_MAX_ALUNOS, SALA) values (?,?,?,?,?)";
 				
 		try {
 			PreparedStatement preparador = getPreparedStatement(sql);
@@ -89,6 +90,7 @@ public class TurmaDAO extends Conexao{
 			preparador.setString(2, pTurma.getDsTurma());
 			preparador.setString(3, pTurma.getTurno());
 			preparador.setInt(4, pTurma.getQtMaxAlunos());
+			preparador.setString(5, pTurma.getSala());
 					
 			preparador.execute();
 			preparador.close();
@@ -100,7 +102,7 @@ public class TurmaDAO extends Conexao{
 	 
 	 public void alterar(Turma pTurma){
 			
-		String sql = "UPDATE TURMA SET DS_TURMA=?, TURNO=?, QUANTIDADE_MAX_ALUNOS=? WHERE ID_TURMA=?";
+		String sql = "UPDATE TURMA SET DS_TURMA=?, TURNO=?, QUANTIDADE_MAX_ALUNOS=? SALA=? WHERE ID_TURMA=?";
 				
 		try {
 			PreparedStatement preparador = getPreparedStatement(sql);
@@ -108,7 +110,8 @@ public class TurmaDAO extends Conexao{
 			preparador.setString(1, pTurma.getDsTurma());
 			preparador.setString(2, pTurma.getTurno());
 			preparador.setInt(3, pTurma.getQtMaxAlunos());
-			preparador.setString(4, pTurma.getIdTurma());
+			preparador.setString(4, pTurma.getSala());
+			preparador.setString(5, pTurma.getIdTurma());
 					
 			preparador.execute();
 			preparador.close();

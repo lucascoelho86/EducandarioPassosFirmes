@@ -25,8 +25,6 @@ public class ServletTurma extends ServletGenerico {
 
 	private static final String NM_JSP_ALTERAR_TURMA = "/turma/alterarTurma.jsp";
 	
-	private static final String NM_JSP_PROGRAMACAO_TURMA = "/turma/programacaoTurma.jsp";
-
 	public static final String NM_PARAMETRO_CHAVE = "chave";
 	
 	//Parâmetros inclusão disciplina
@@ -34,6 +32,7 @@ public class ServletTurma extends ServletGenerico {
 	public static final String NM_PARAMETRO_DS_TURMA = "descricaoTurma";
 	public static final String NM_PARAMETRO_TURNO = "turno";
 	public static final String NM_PARAMETRO_QT_MAX_ALUNOS = "qtMaxAlunos";
+	public static final String NM_PARAMETRO_SALA = "sala";
 	public static final String NM_PARAMETRO_SELECT_TURNO = "selectTurno";
 	public static final String NM_PARAMETRO_COLECAO_TURMA = "colecaoTurma";
 	
@@ -111,12 +110,14 @@ public class ServletTurma extends ServletGenerico {
 		String turno = "";
 		String dsTurno = "";
 		String qtMaxAlunos = "";
+		String sala = "";
 
 		// recupera os parametros do request
 		siglaTurma = request.getParameter(NM_PARAMETRO_SIGLA_TURMA);
 		descricao = request.getParameter(NM_PARAMETRO_DS_TURMA);
 		turno = request.getParameter(NM_PARAMETRO_SELECT_TURNO);
 		qtMaxAlunos = request.getParameter(NM_PARAMETRO_QT_MAX_ALUNOS);
+		sala = request.getParameter(NM_PARAMETRO_SALA);
 
 		if(turno.equals("1")) {
 			dsTurno = NM_TURNO_MANHA;
@@ -129,6 +130,7 @@ public class ServletTurma extends ServletGenerico {
 		turma.setIdTurma(siglaTurma);
 		turma.setDsTurma(descricao);
 		turma.setTurno(dsTurno);
+		turma.setSala(sala);
 		
 		if(qtMaxAlunos != null && !qtMaxAlunos.equals("")){
 			turma.setQtMaxAlunos(Integer.valueOf(qtMaxAlunos));
@@ -197,20 +199,22 @@ public class ServletTurma extends ServletGenerico {
 		
 		String[] chaveTurma = chave.split(";");
 		String idTurma = chaveTurma[0];
-		String dsTurma = chaveTurma[1];
-		String turno = chaveTurma[2];
-		String qtMaxAlunos = chaveTurma[3];
+		
+		TurmaDAO turmaDAO = new TurmaDAO();
+		ArrayList<Turma> consultaTurma = turmaDAO.consultar(idTurma, "", "");
+		Turma turma = consultaTurma.get(0);
 		
 		//seta os atributos no request para recuperar na JSP
 		request.setAttribute(NM_PARAMETRO_SIGLA_TURMA, idTurma);
-		request.setAttribute(NM_PARAMETRO_DS_TURMA, dsTurma);
+		request.setAttribute(NM_PARAMETRO_DS_TURMA, turma.getDsTurma());
 		
-		if(turno.equals(NM_TURNO_MANHA)) {
+		if(turma.getTurno().equals(NM_TURNO_MANHA)) {
 			request.setAttribute(NM_PARAMETRO_TURNO, "1");			
 		}else{
 			request.setAttribute(NM_PARAMETRO_TURNO, "2");
 		}
-		request.setAttribute(NM_PARAMETRO_QT_MAX_ALUNOS, qtMaxAlunos);
+		request.setAttribute(NM_PARAMETRO_QT_MAX_ALUNOS, String.valueOf(turma.getQtMaxAlunos()));
+		request.setAttribute(NM_PARAMETRO_SALA, turma.getSala());
 
 		this.redirecionarPagina(request, response, NM_JSP_ALTERAR_TURMA);
 	}
@@ -225,12 +229,14 @@ public class ServletTurma extends ServletGenerico {
 		String turno = "";
 		String dsTurno = "";
 		String qtMaxAlunos = "";
+		String sala = "";
 
 		// recupera os parametros do request
 		idTurma = request.getParameter(NM_PARAMETRO_SIGLA_TURMA);
 		descricao = request.getParameter(NM_PARAMETRO_DS_TURMA);
 		turno = request.getParameter(NM_PARAMETRO_SELECT_TURNO);
 		qtMaxAlunos = request.getParameter(NM_PARAMETRO_QT_MAX_ALUNOS);
+		sala = request.getParameter(NM_PARAMETRO_SALA);
 
 		if(turno.equals("1")) {
 			dsTurno = NM_TURNO_MANHA;
@@ -243,6 +249,7 @@ public class ServletTurma extends ServletGenerico {
 		turma.setIdTurma(idTurma);
 		turma.setDsTurma(descricao);
 		turma.setTurno(dsTurno);
+		turma.setSala(sala);
 		
 		if(qtMaxAlunos != null && !qtMaxAlunos.equals("")){
 			turma.setQtMaxAlunos(Integer.valueOf(qtMaxAlunos));

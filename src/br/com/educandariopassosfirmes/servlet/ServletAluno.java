@@ -1,8 +1,10 @@
 package br.com.educandariopassosfirmes.servlet;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,6 +38,8 @@ public class ServletAluno extends ServletGenerico {
 	private static final String NM_JSP_INCLUIR_ALUNO = "/aluno/cadastrarAluno.jsp";
 
 	private static final String NM_JSP_ALTERAR_ALUNO = "/aluno/alterarAluno.jsp";
+
+	public static final String NM_EVENTO_RESPONSAVEL_CADASTRADO = "consultarResponsavelCadastrado";
 
 	public static final String NM_PARAMETRO_CHAVE = "chave";
 	
@@ -77,6 +81,7 @@ public class ServletAluno extends ServletGenerico {
 	public static final String NM_PARAMETRO_IDENTIDADE = "identidade";
 	public static final String NM_PARAMETRO_CPF = "cpf";
 	public static final String NM_PARAMETRO_CPF_ANTERIOR = "cpfAnterior";
+	public static final String NM_PARAMETRO_CPF_RESP_CADASTRADO = "cpfRespCadastrado";
 	public static final String NM_PARAMETRO_FORMACAO = "formacao";
 	public static final String NM_PARAMETRO_ESTADO_CIVIL = "estadoCivil";
 	public static final String NM_PARAMETRO_QT_DEPENDENTE = "qtDependente";
@@ -136,6 +141,9 @@ public class ServletAluno extends ServletGenerico {
 		} else if (acao != null
 				&& acao.equalsIgnoreCase(this.NM_EVENTO_PROCESSAR_ALTERACAO)) {
 			this.processarAlteracao(request, response);
+		} else if (acao != null
+				&& acao.equalsIgnoreCase(NM_EVENTO_RESPONSAVEL_CADASTRADO)) {
+			this.consultarResponsavelCadastrado(request, response);
 		} else {
 			// caso nao tenha nenhum evento, redireciona para a pagina de consulta
 			this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
@@ -667,6 +675,108 @@ public class ServletAluno extends ServletGenerico {
 		alunoDAO.alterar(aluno);
 				
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
+	}
+	
+	public void consultarResponsavelCadastrado(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+
+		// declara as variaveis aluno
+		String nome = "";
+		String dtNascimento = "";
+		String naturalidade = "";
+		String endereco = "";
+		String numero = "";
+		String bairro = "";
+		String cidade = "";
+		String estado = "";
+		String certidaoNasc = "";
+		String matricula = "";
+		String dtMatricula = "";
+		String carteiraEstudante = "";
+		String necEspecial = "";
+		String dsNecEspecial = "";
+		String turma = "";
+				
+		String cpf = "";
+				
+		// recupera os parametros do request Aluno
+		nome = request.getParameter(NM_PARAMETRO_NOME);
+		dtNascimento = request.getParameter(NM_PARAMETRO_DT_NASCIMENTO);
+		naturalidade = request.getParameter(NM_PARAMETRO_NATURALIDADE);
+		endereco = request.getParameter(NM_PARAMETRO_ENDERECO);
+		numero = request.getParameter(NM_PARAMETRO_NUMERO);
+		bairro = request.getParameter(NM_PARAMETRO_BAIRRO);
+		cidade = request.getParameter(NM_PARAMETRO_CIDADE);
+		estado = request.getParameter(NM_PARAMETRO_ESTADO);
+		certidaoNasc = request.getParameter(NM_PARAMETRO_CERTIDAO_NASC);
+		matricula = request.getParameter(NM_PARAMETRO_MATRICULA);
+		dtMatricula = request.getParameter(NM_PARAMETRO_DT_MATRICULA);
+		carteiraEstudante = request.getParameter(NM_PARAMETRO_CARTEIRA_ESTUDANTE);
+		necEspecial = request.getParameter(NM_PARAMETRO_NECESSIDADE_ESPECIAL);
+		dsNecEspecial = request.getParameter(NM_PARAMETRO_DS_NECESSIDADE_ESPECIAL);
+		turma = request.getParameter(NM_PARAMETRO_TURMA);
+
+		// recupera os parametros do request responsável
+		cpf = request.getParameter(NM_PARAMETRO_CPF_RESP_CADASTRADO);
+
+		cpf = cpf.replace(".", "");
+		cpf = cpf.replace("-", "");
+		
+		ResponsavelDAO responsavelDAO = new ResponsavelDAO();
+		Responsavel responsavel = responsavelDAO.consultar(cpf);
+		
+		Pessoa pessoa = null;
+		if(responsavel != null) {
+			PessoaDAO pessoaDAO = new PessoaDAO();
+			ArrayList<Pessoa> consultaPessoa = pessoaDAO.consultar(cpf, "");
+			pessoa = consultaPessoa.get(0);
+			
+			request.setAttribute(NM_PARAMETRO_PARENTESCO, responsavel.getParentesco());
+			request.setAttribute(NM_PARAMETRO_ESTADO_CIVIL, responsavel.getEstadoCivil());
+			request.setAttribute(NM_PARAMETRO_ESCOLARIDADE, responsavel.getEscolaridade());
+			request.setAttribute(NM_PARAMETRO_PROFISSAO, responsavel.getProfissao());
+			
+			double salario = responsavel.getRenda();
+
+			BigDecimal valor = new BigDecimal(String.valueOf(salario));
+			NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+			String salarioFormatado = nf.format(valor);
+			salarioFormatado = salarioFormatado.replace("R$", "");
+			salarioFormatado = salarioFormatado.trim();
+			
+			request.setAttribute(NM_PARAMETRO_RENDA, salarioFormatado);
+		}
+		
+		if(pessoa != null) {
+			
+			request.setAttribute(NM_PARAMETRO_NOME_RESP, pessoa.getNome());
+			request.setAttribute(NM_PARAMETRO_DT_NASCIMENTO_RESP, pessoa.getDtNascimento());
+			request.setAttribute(NM_PARAMETRO_NATURALIDADE_RESP, pessoa.getNaturalidade());
+			request.setAttribute(NM_PARAMETRO_ENDERECO_RESP, pessoa.getEndereco());
+			request.setAttribute(NM_PARAMETRO_NUMERO_RESP, String.valueOf(pessoa.getNumero()));
+			request.setAttribute(NM_PARAMETRO_BAIRRO_RESP, pessoa.getBairro());
+			request.setAttribute(NM_PARAMETRO_CIDADE_RESP, pessoa.getCidade());
+			request.setAttribute(NM_PARAMETRO_ESTADO_RESP, pessoa.getEstado());
+			request.setAttribute(NM_PARAMETRO_TELEFONE, pessoa.getTelefone());
+			request.setAttribute(NM_PARAMETRO_IDENTIDADE, pessoa.getIdentidade());
+			request.setAttribute(NM_PARAMETRO_CPF, pessoa.getId());
+		}
+		
+		request.setAttribute(NM_PARAMETRO_NOME, nome);
+		request.setAttribute(NM_PARAMETRO_DT_NASCIMENTO, dtNascimento);
+		request.setAttribute(NM_PARAMETRO_NATURALIDADE, naturalidade);
+		request.setAttribute(NM_PARAMETRO_ENDERECO, endereco);
+		request.setAttribute(NM_PARAMETRO_NUMERO, numero);
+		request.setAttribute(NM_PARAMETRO_BAIRRO, bairro);
+		request.setAttribute(NM_PARAMETRO_CIDADE, cidade);
+		request.setAttribute(NM_PARAMETRO_ESTADO, estado);
+		request.setAttribute(NM_PARAMETRO_CERTIDAO_NASC, certidaoNasc);
+		request.setAttribute(NM_PARAMETRO_CARTEIRA_ESTUDANTE, carteiraEstudante);
+		request.setAttribute(NM_PARAMETRO_NECESSIDADE_ESPECIAL, necEspecial);
+		request.setAttribute(NM_PARAMETRO_DS_NECESSIDADE_ESPECIAL, dsNecEspecial);
+		request.setAttribute(NM_PARAMETRO_TURMA, turma);
+		
+		this.redirecionarPagina(request, response, NM_JSP_INCLUIR_ALUNO);
 	}
 
 }

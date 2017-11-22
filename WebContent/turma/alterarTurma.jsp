@@ -43,6 +43,7 @@ function alterar(){
 	String dsTurma = "";
 	String turno = "";
 	String qtMaxAlunos = "";
+	String sala = "";
 
 	idTurma = (String) request
 			.getAttribute(ServletTurma.NM_PARAMETRO_SIGLA_TURMA);
@@ -52,6 +53,8 @@ function alterar(){
 			.getAttribute(ServletTurma.NM_PARAMETRO_TURNO);
 	qtMaxAlunos = (String) request
 			.getAttribute(ServletTurma.NM_PARAMETRO_QT_MAX_ALUNOS);
+	sala = (String) request
+			.getAttribute(ServletTurma.NM_PARAMETRO_SALA);
 %>
 
 <body>
@@ -116,6 +119,13 @@ function alterar(){
 									id="<%=ServletTurma.NM_PARAMETRO_QT_MAX_ALUNOS%>"
 									name="<%=ServletTurma.NM_PARAMETRO_QT_MAX_ALUNOS%>"
 									value="<%=qtMaxAlunos.equals("0") ? "" : qtMaxAlunos%>"></td>
+							</tr>
+							<tr>
+								<th align="right">Sala:</th>
+								<td><input type="text"
+									id="<%=ServletTurma.NM_PARAMETRO_SALA%>"
+									name="<%=ServletTurma.NM_PARAMETRO_SALA%>"
+									value="<%=sala%>"></td>
 							</tr>
 						</tbody>
 					</table> <br>

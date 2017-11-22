@@ -42,6 +42,7 @@ function cadastrar(){
 	String descricao;
 	String siglaTurma;
 	String qtMaxAlunos;
+	String sala;
 
 	descricao = (String) request
 			.getAttribute(ServletTurma.NM_PARAMETRO_DS_TURMA);
@@ -49,6 +50,8 @@ function cadastrar(){
 			.getAttribute(ServletTurma.NM_PARAMETRO_SIGLA_TURMA);
 	qtMaxAlunos = (String) request
 			.getAttribute(ServletTurma.NM_PARAMETRO_QT_MAX_ALUNOS);
+	sala = (String) request
+			.getAttribute(ServletTurma.NM_PARAMETRO_SALA);
 
 	if (descricao == null) {
 		descricao = "";
@@ -60,6 +63,10 @@ function cadastrar(){
 
 	if (qtMaxAlunos == null) {
 		qtMaxAlunos = "";
+	}
+
+	if (sala == null) {
+		sala = "";
 	}
 %>
 
@@ -120,6 +127,13 @@ function cadastrar(){
 									id="<%=ServletTurma.NM_PARAMETRO_QT_MAX_ALUNOS%>"
 									name="<%=ServletTurma.NM_PARAMETRO_QT_MAX_ALUNOS%>"
 									value="<%=qtMaxAlunos%>"></td>
+							</tr>
+							<tr>
+								<th align="right">Sala:</th>
+								<td><input type="text"
+									id="<%=ServletTurma.NM_PARAMETRO_SALA%>"
+									name="<%=ServletTurma.NM_PARAMETRO_SALA%>"
+									value="<%=sala%>"></td>
 							</tr>
 						</tbody>
 					</table> <br>

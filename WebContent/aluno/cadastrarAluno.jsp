@@ -56,6 +56,24 @@ function mostrarDP() {
 function esconderDP() {
 	document.getElementById("dsNecEspecial").style.visibility = "hidden";
 }
+
+function copiar() {
+	document.getElementById("<%=ServletAluno.NM_PARAMETRO_ENDERECO_RESP%>").value = document.getElementById("<%=ServletAluno.NM_PARAMETRO_ENDERECO%>").value;
+	document.getElementById("<%=ServletAluno.NM_PARAMETRO_NUMERO_RESP%>").value = document.getElementById("<%=ServletAluno.NM_PARAMETRO_NUMERO%>").value;
+	document.getElementById("<%=ServletAluno.NM_PARAMETRO_BAIRRO_RESP%>").value = document.getElementById("<%=ServletAluno.NM_PARAMETRO_BAIRRO%>").value;
+	document.getElementById("<%=ServletAluno.NM_PARAMETRO_CIDADE_RESP%>").value = document.getElementById("<%=ServletAluno.NM_PARAMETRO_CIDADE%>").value;
+	document.getElementById("<%=ServletAluno.NM_PARAMETRO_ESTADO_RESP%>").value = document.getElementById("<%=ServletAluno.NM_PARAMETRO_ESTADO%>").value;
+}
+
+function consultarResponsavel(pCampo){
+	var tamanhoCampo = pCampo.length;
+	
+	if(tamanhoCampo == 14){
+		document.getElementById("<%=ServletAluno.NM_EVENTO%>").value = "<%=ServletAluno.NM_EVENTO_RESPONSAVEL_CADASTRADO%>";
+		document.frm_principal.submit();		
+	}
+}
+
 </script>
 <script type="text/javascript">
 	jQuery(document).ready(function() {
@@ -72,6 +90,42 @@ function esconderDP() {
 
 	});
 </script>
+
+<%
+
+	String nome = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_NOME);
+	String dtNascimento = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_DT_NASCIMENTO);
+	String naturalidade = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_NATURALIDADE);
+	String endereco = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_ENDERECO);
+	String numero = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_NUMERO);
+	String bairro = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_BAIRRO);
+	String cidade = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_CIDADE);
+	String estado = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_ESTADO);
+	String certidaoNasc = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_CERTIDAO_NASC);
+	String carteiraEstudante = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_CARTEIRA_ESTUDANTE);
+	String necEspecial = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_NECESSIDADE_ESPECIAL);
+	String dsNecEspecial = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_DS_NECESSIDADE_ESPECIAL);
+	String turmaTela = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_TURMA);
+
+	String nomeResp = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_NOME_RESP);
+	String dtNascimentoResp = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_DT_NASCIMENTO_RESP);
+	String naturalidadeResp = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_NATURALIDADE_RESP);
+	String enderecoResp = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_ENDERECO_RESP);
+	String numeroResp = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_NUMERO_RESP);
+	String bairroResp = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_BAIRRO_RESP);
+	String cidadeResp = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_CIDADE_RESP);
+	String estadoResp = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_ESTADO_RESP);
+	String telefone = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_TELEFONE);
+	String identidade = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_IDENTIDADE);
+	String cpf = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_CPF);
+
+	String parentesco = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_PARENTESCO);
+	String estadoCivil = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_ESTADO_CIVIL);
+	String escolaridade = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_ESCOLARIDADE);
+	String profissao = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_PROFISSAO);
+	String salarioFormatado = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_RENDA);
+%>
+
 <body>
 
 	<jsp:include page="cabecalho.jsp" />
@@ -92,58 +146,58 @@ function esconderDP() {
 								<th width="20%" align="right">Nome:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_NOME%>"
-									name="<%=ServletAluno.NM_PARAMETRO_NOME%>" value="" size="50"
+									name="<%=ServletAluno.NM_PARAMETRO_NOME%>" value="<%=nome == null ? "" : nome%>" size="50"
 									onkeypress='return letras(event)'></td>
 
 								<th width="20%" align="right">Data de Nascimento:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_DT_NASCIMENTO%>"
-									name="<%=ServletAluno.NM_PARAMETRO_DT_NASCIMENTO%>" value=""
+									name="<%=ServletAluno.NM_PARAMETRO_DT_NASCIMENTO%>" value="<%=dtNascimento == null ? "" : dtNascimento%>"
 									onkeyup="formatarCamposData(this.name, this, event)"
 									onkeypress='return SomenteNumero(event)' maxlength="10"></td>
 
 								<th width="10%" align="right">Naturalidade:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_NATURALIDADE%>"
-									name="<%=ServletAluno.NM_PARAMETRO_NATURALIDADE%>" value=""
+									name="<%=ServletAluno.NM_PARAMETRO_NATURALIDADE%>" value="<%=naturalidade == null ? "" : naturalidade%>"
 									onkeypress='return letras(event)'></td>
 							</tr>
 							<tr>
 								<th align="right">Endereço:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_ENDERECO%>"
-									name="<%=ServletAluno.NM_PARAMETRO_ENDERECO%>" value=""
+									name="<%=ServletAluno.NM_PARAMETRO_ENDERECO%>" value="<%=endereco == null ? "" : endereco%>"
 									size="50"></td>
 
 								<th align="right">Número:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_NUMERO%>"
-									name="<%=ServletAluno.NM_PARAMETRO_NUMERO%>" value=""
+									name="<%=ServletAluno.NM_PARAMETRO_NUMERO%>" value="<%=numero == null ? "" : numero%>"
 									onkeypress='return SomenteNumero(event)'></td>
 
 								<th align="right">Bairro:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_BAIRRO%>"
-									name="<%=ServletAluno.NM_PARAMETRO_BAIRRO%>" value=""
+									name="<%=ServletAluno.NM_PARAMETRO_BAIRRO%>" value="<%=bairro == null ? "" : bairro%>"
 									onkeypress='return letras(event)'></td>
 							</tr>
 							<tr>
 								<th width="10%" align="right">Cidade:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_CIDADE%>"
-									name="<%=ServletAluno.NM_PARAMETRO_CIDADE%>" value="" size="20"
+									name="<%=ServletAluno.NM_PARAMETRO_CIDADE%>" value="<%=cidade == null ? "" : cidade%>" size="20"
 									onkeypress='return letras(event)'></td>
 
 								<th align="right">Estado:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_ESTADO%>"
-									name="<%=ServletAluno.NM_PARAMETRO_ESTADO%>" value=""
+									name="<%=ServletAluno.NM_PARAMETRO_ESTADO%>" value="<%=estado == null ? "" : estado%>"
 									onkeypress='return letras(event)'></td>
 
 								<th align="right">Código Certidão Nas:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_CERTIDAO_NASC%>"
-									name="<%=ServletAluno.NM_PARAMETRO_CERTIDAO_NASC%>" value=""
+									name="<%=ServletAluno.NM_PARAMETRO_CERTIDAO_NASC%>" value="<%=certidaoNasc == null ? "" : certidaoNasc%>"
 									size="20"></td>
 							</tr>
 							<tr>
@@ -187,7 +241,7 @@ function esconderDP() {
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_CARTEIRA_ESTUDANTE%>"
 									name="<%=ServletAluno.NM_PARAMETRO_CARTEIRA_ESTUDANTE%>"
-									value="" onkeyup="formatarCampoCarteiraEstudante(event)"
+									value="<%=carteiraEstudante == null ? "" : carteiraEstudante%>" onkeyup="formatarCampoCarteiraEstudante(event)"
 									onkeypress='return SomenteNumero(event)' maxlength="14"></td>
 							</tr>
 							<tr>
@@ -223,9 +277,34 @@ function esconderDP() {
 								</td>
 							</tr>
 						</tbody>
-					</table> <br>
-					<h2 align="center">CADASTRAR RESPONSÁVEL</h2>
-					<table width="100%">
+					</table>
+				</td>
+			</tr>
+		</table>
+		<table align="center">
+			<tr>
+				<th align="right">O Aluno mora no mesmo endereço do responsável?</th>
+					<td>
+						<button type="button" id="botaoCopiar"
+							name="botaoCopiar" onclick="copiar();">Copiar</button>
+					</td>
+				</tr>
+		</table>
+		<h2 align="center">CADASTRAR RESPONSÁVEL</h2>
+		<table width="50%" align="left">
+							<tr>
+								<th align="right">Responsável já cadastrado?</th>
+										<td><input type="text"
+												id="<%=ServletAluno.NM_PARAMETRO_CPF_RESP_CADASTRADO%>"
+												name="<%=ServletAluno.NM_PARAMETRO_CPF_RESP_CADASTRADO%>" value=""
+												onkeyup="formatarCPFRespCadastrado(event); consultarResponsavel(this.value);"
+												maxlength="14" onkeypress='return SomenteNumero(event)'></td>
+							</tr>
+					</table>
+		<table width="100%">
+			<tr>
+				<td>
+					<table width="65%" align="center">
 						<tr>
 							<td>
 								<table width="65%" align="center"
@@ -235,14 +314,14 @@ function esconderDP() {
 											<th width="10%" align="right">Nome:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_NOME_RESP%>"
-												name="<%=ServletAluno.NM_PARAMETRO_NOME_RESP%>" value=""
+												name="<%=ServletAluno.NM_PARAMETRO_NOME_RESP%>" value="<%=nomeResp == null ? "" : nomeResp%>"
 												size="50" onkeypress='return letras(event)'></td>
 
 											<th align="right">Data de Nascimento:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_DT_NASCIMENTO_RESP%>"
 												name="<%=ServletAluno.NM_PARAMETRO_DT_NASCIMENTO_RESP%>"
-												value=""
+												value="<%=dtNascimentoResp == null ? "" : dtNascimentoResp%>"
 												onkeyup="formatarCamposData(this.name, this, event)"
 												onkeypress='return SomenteNumero(event)' maxlength="10"></td>
 
@@ -250,44 +329,44 @@ function esconderDP() {
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_NATURALIDADE_RESP%>"
 												name="<%=ServletAluno.NM_PARAMETRO_NATURALIDADE_RESP%>"
-												value="" onkeypress='return letras(event)'></td>
+												value="<%=naturalidade == null ? "" : naturalidade%>" onkeypress='return letras(event)'></td>
 										</tr>
 										<tr>
 											<th width="10%" align="right">Endereço:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_ENDERECO_RESP%>"
-												name="<%=ServletAluno.NM_PARAMETRO_ENDERECO_RESP%>" value=""
+												name="<%=ServletAluno.NM_PARAMETRO_ENDERECO_RESP%>" value="<%=endereco == null ? "" : endereco%>"
 												size="50"></td>
 
 											<th align="right">Número:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_NUMERO_RESP%>"
-												name="<%=ServletAluno.NM_PARAMETRO_NUMERO_RESP%>" value=""
+												name="<%=ServletAluno.NM_PARAMETRO_NUMERO_RESP%>" value="<%=numero == null ? "" : numero%>"
 												onkeypress='return SomenteNumero(event)'></td>
 
 											<th align="right">Bairro:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_BAIRRO_RESP%>"
-												name="<%=ServletAluno.NM_PARAMETRO_BAIRRO_RESP%>" value=""
+												name="<%=ServletAluno.NM_PARAMETRO_BAIRRO_RESP%>" value="<%=bairro == null ? "" : bairro%>"
 												onkeypress='return letras(event)'></td>
 										</tr>
 										<tr>
 											<th width="10%" align="right">Cidade:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_CIDADE_RESP%>"
-												name="<%=ServletAluno.NM_PARAMETRO_CIDADE_RESP%>" value=""
+												name="<%=ServletAluno.NM_PARAMETRO_CIDADE_RESP%>" value="<%=cidade == null ? "" : cidade%>"
 												size="20" onkeypress='return letras(event)'></td>
 
 											<th align="right">Estado:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_ESTADO_RESP%>"
-												name="<%=ServletAluno.NM_PARAMETRO_ESTADO_RESP%>" value=""
+												name="<%=ServletAluno.NM_PARAMETRO_ESTADO_RESP%>" value="<%=estadoResp == null ? "" : estadoResp%>"
 												onkeypress='return letras(event)'></td>
 
 											<th align="right">Telefone:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_TELEFONE%>"
-												name="<%=ServletAluno.NM_PARAMETRO_TELEFONE%>" value=""
+												name="<%=ServletAluno.NM_PARAMETRO_TELEFONE%>" value="<%=telefone == null ? "" : telefone%>"
 												onkeyup="formatarCampoTelefone(this.name, this, event);"
 												onkeypress='return SomenteNumero(event)'></td>
 										</tr>
@@ -295,46 +374,46 @@ function esconderDP() {
 											<th width="10%" align="right">Identidade:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_IDENTIDADE%>"
-												name="<%=ServletAluno.NM_PARAMETRO_IDENTIDADE%>" value=""
+												name="<%=ServletAluno.NM_PARAMETRO_IDENTIDADE%>" value="<%=identidade == null ? "" : identidade%>"
 												size="20" onkeypress='return SomenteNumero(event)'></td>
 
 											<th align="right">CPF:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_CPF%>"
-												name="<%=ServletAluno.NM_PARAMETRO_CPF%>" value=""
+												name="<%=ServletAluno.NM_PARAMETRO_CPF%>" value="<%=cpf == null ? "" : cpf%>"
 												onkeyup="formatarCPF(event);" maxlength="14"
 												onkeypress='return SomenteNumero(event)'></td>
 
 											<th align="right">Parentesco:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_PARENTESCO%>"
-												name="<%=ServletAluno.NM_PARAMETRO_PARENTESCO%>" value=""
+												name="<%=ServletAluno.NM_PARAMETRO_PARENTESCO%>" value="<%=parentesco == null ? "" : parentesco%>"
 												onkeypress='return letras(event)' maxlength="10"></td>
 										</tr>
 										<tr>
 											<th align="right">Estado Civil:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_ESTADO_CIVIL%>"
-												name="<%=ServletAluno.NM_PARAMETRO_ESTADO_CIVIL%>" value=""
+												name="<%=ServletAluno.NM_PARAMETRO_ESTADO_CIVIL%>" value="<%=estadoCivil == null ? "" : estadoCivil%>"
 												onkeypress='return letras(event)'></td>
 
 											<th align="right">Escolaridade:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_ESCOLARIDADE%>"
-												name="<%=ServletAluno.NM_PARAMETRO_ESCOLARIDADE%>" value=""
+												name="<%=ServletAluno.NM_PARAMETRO_ESCOLARIDADE%>" value="<%=escolaridade == null ? "" : escolaridade%>"
 												onkeypress='return letras(event)'></td>
 
 											<th align="right">Profissão:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_PROFISSAO%>"
-												name="<%=ServletAluno.NM_PARAMETRO_PROFISSAO%>" value=""
+												name="<%=ServletAluno.NM_PARAMETRO_PROFISSAO%>" value="<%=profissao == null ? "" : profissao%>"
 												onkeypress='return letras(event)'></td>
 										</tr>
 										<tr>
 											<th align="right">Renda:</th>
 											<td><input type="text"
 												id="<%=ServletAluno.NM_PARAMETRO_RENDA%>"
-												name="<%=ServletAluno.NM_PARAMETRO_RENDA%>" value=""
+												name="<%=ServletAluno.NM_PARAMETRO_RENDA%>" value="<%=salarioFormatado == null ? "" : salarioFormatado%>"
 												onKeydown="Formata(this,20,event,2)"
 												onkeypress='return SomenteNumero(event)'></td>
 										</tr>

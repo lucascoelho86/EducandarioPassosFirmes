@@ -126,8 +126,7 @@ function exibirInclusao(){
 							String chave = "";
 							while (itTurma.hasNext()) {
 								Turma turma = itTurma.next();
-								chave = turma.getIdTurma() + ";" + turma.getDsTurma() + ";"
-										+ turma.getTurno() + ";" + turma.getQtMaxAlunos();
+								chave = turma.getIdTurma();
 								if (tratamentoCSS) {
 									cssCorlinha = "#c0c0c0";
 									tratamentoCSS = false;

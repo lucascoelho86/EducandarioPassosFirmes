@@ -2,6 +2,21 @@
  * Funções utilizadas no projeto
  */
 
+function formatarCPFRespCadastrado(event){
+	var valor = document.getElementById("cpfRespCadastrado").value;
+	var tamanhoValor = valor.length;
+	var tecla = event.keyCode;
+	
+	if(tecla != 8 && tecla != 46){
+		if(tamanhoValor == 3 || tamanhoValor == 7){
+			valor = valor.concat(".");
+		}else if(tamanhoValor == 11){
+			valor = valor.concat("-");
+		}
+	}
+	document.getElementById("cpfRespCadastrado").value = valor;
+}
+
 function formatarCPF(event){
 	var valor = document.getElementById("cpf").value;
 	var tamanhoValor = valor.length;
