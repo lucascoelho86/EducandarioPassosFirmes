@@ -66,6 +66,8 @@ public class ServletAluno extends ServletGenerico {
 	public static final String NM_PARAMETRO_DT_NASCIMENTO_RESP = "dtNascimentoResp";
 	public static final String NM_PARAMETRO_NATURALIDADE = "naturalidade";
 	public static final String NM_PARAMETRO_NATURALIDADE_RESP = "naturalidadeResp";
+	public static final String NM_PARAMETRO_CEP = "cep";
+	public static final String NM_PARAMETRO_CEP_RESP = "cepResp";
 	public static final String NM_PARAMETRO_ENDERECO = "endereco";
 	public static final String NM_PARAMETRO_ENDERECO_RESP = "enderecoResp";
 	public static final String NM_PARAMETRO_NUMERO = "numero";
@@ -167,6 +169,7 @@ public class ServletAluno extends ServletGenerico {
 		String nome = "";
 		String dtNascimento = "";
 		String naturalidade = "";
+		String cep = "";
 		String endereco = "";
 		String numero = "";
 		String bairro = "";
@@ -184,6 +187,7 @@ public class ServletAluno extends ServletGenerico {
 		String nomeResp = "";
 		String dtNascimentoResp = "";
 		String naturalidadeResp = "";
+		String cepResp = "";
 		String enderecoResp = "";
 		String numeroResp = "";
 		String bairroResp = "";
@@ -207,6 +211,7 @@ public class ServletAluno extends ServletGenerico {
 		nome = request.getParameter(NM_PARAMETRO_NOME);
 		dtNascimento = request.getParameter(NM_PARAMETRO_DT_NASCIMENTO);
 		naturalidade = request.getParameter(NM_PARAMETRO_NATURALIDADE);
+		cep = request.getParameter(NM_PARAMETRO_CEP);
 		endereco = request.getParameter(NM_PARAMETRO_ENDERECO);
 		numero = request.getParameter(NM_PARAMETRO_NUMERO);
 		bairro = request.getParameter(NM_PARAMETRO_BAIRRO);
@@ -224,6 +229,7 @@ public class ServletAluno extends ServletGenerico {
 		nomeResp = request.getParameter(NM_PARAMETRO_NOME_RESP);
 		dtNascimentoResp = request.getParameter(NM_PARAMETRO_DT_NASCIMENTO_RESP);
 		naturalidadeResp = request.getParameter(NM_PARAMETRO_NATURALIDADE_RESP);
+		cepResp = request.getParameter(NM_PARAMETRO_CEP_RESP);
 		enderecoResp = request.getParameter(NM_PARAMETRO_ENDERECO_RESP);
 		numeroResp = request.getParameter(NM_PARAMETRO_NUMERO_RESP);
 		bairroResp = request.getParameter(NM_PARAMETRO_BAIRRO_RESP);
@@ -291,6 +297,10 @@ public class ServletAluno extends ServletGenerico {
 		}
 		
 		pessoa.setNaturalidade(naturalidadeResp);
+		
+		cepResp = cepResp.replace("-", "");
+		
+		pessoa.setCep(cepResp);
 		pessoa.setEndereco(enderecoResp);
 		
 		if(numeroResp != null && !numeroResp.equals("")) {
@@ -340,6 +350,10 @@ public class ServletAluno extends ServletGenerico {
 		}
 		
 		pessoa.setNaturalidade(naturalidade);
+		
+		cep = cep.replace("-", "");
+		
+		pessoa.setCep(cep);
 		pessoa.setEndereco(endereco);
 		
 		if(numero != null && !numero.equals("")) {
@@ -391,12 +405,16 @@ public class ServletAluno extends ServletGenerico {
 		String nome = (String) request.getParameter(NM_PARAMETRO_NOME);
 		String turma = (String) request.getParameter(NM_PARAMETRO_SELECT_TURMA);
 
+		request.setAttribute(NM_PARAMETRO_MATRICULA, matricula);
+		
 		matricula = matricula.replace(".", "");
 		
 		ConsultaPrincipalAluno consulta = new ConsultaPrincipalAluno();
 		
 		colecaoAluno = consulta.consultar(matricula, nome, turma);
 		
+		request.setAttribute(NM_PARAMETRO_NOME, nome);
+		request.setAttribute(NM_PARAMETRO_SELECT_TURMA, turma);
 		request.setAttribute(NM_PARAMETRO_COLECAO_PESSOA, colecaoAluno);
 
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
@@ -479,6 +497,7 @@ public class ServletAluno extends ServletGenerico {
 		String nome = "";
 		String dtNascimento = "";
 		String naturalidade = "";
+		String cep = "";
 		String endereco = "";
 		String numero = "";
 		String bairro = "";
@@ -496,6 +515,7 @@ public class ServletAluno extends ServletGenerico {
 		String nomeResp = "";
 		String dtNascimentoResp = "";
 		String naturalidadeResp = "";
+		String cepResp = "";
 		String enderecoResp = "";
 		String numeroResp = "";
 		String bairroResp = "";
@@ -519,6 +539,7 @@ public class ServletAluno extends ServletGenerico {
 		nome = request.getParameter(NM_PARAMETRO_NOME);
 		dtNascimento = request.getParameter(NM_PARAMETRO_DT_NASCIMENTO);
 		naturalidade = request.getParameter(NM_PARAMETRO_NATURALIDADE);
+		cep = request.getParameter(NM_PARAMETRO_CEP);
 		endereco = request.getParameter(NM_PARAMETRO_ENDERECO);
 		numero = request.getParameter(NM_PARAMETRO_NUMERO);
 		bairro = request.getParameter(NM_PARAMETRO_BAIRRO);
@@ -536,6 +557,7 @@ public class ServletAluno extends ServletGenerico {
 		nomeResp = request.getParameter(NM_PARAMETRO_NOME_RESP);
 		dtNascimentoResp = request.getParameter(NM_PARAMETRO_DT_NASCIMENTO_RESP);
 		naturalidadeResp = request.getParameter(NM_PARAMETRO_NATURALIDADE_RESP);
+		cepResp = request.getParameter(NM_PARAMETRO_CEP_RESP);
 		enderecoResp = request.getParameter(NM_PARAMETRO_ENDERECO_RESP);
 		numeroResp = request.getParameter(NM_PARAMETRO_NUMERO_RESP);
 		bairroResp = request.getParameter(NM_PARAMETRO_BAIRRO_RESP);
@@ -601,6 +623,10 @@ public class ServletAluno extends ServletGenerico {
 		}
 		
 		pessoa.setNaturalidade(naturalidadeResp);
+		
+		cepResp = cepResp.replace("-", "");
+		
+		pessoa.setCep(cepResp);
 		pessoa.setEndereco(enderecoResp);
 		
 		if(numeroResp != null && !numeroResp.equals("")) {
@@ -638,6 +664,10 @@ public class ServletAluno extends ServletGenerico {
 		}
 		
 		pessoa.setNaturalidade(naturalidade);
+		
+		cep = cep.replace("-", "");
+		
+		pessoa.setCep(cep);
 		pessoa.setEndereco(endereco);
 		
 		if(numero != null && !numero.equals("")) {
@@ -684,6 +714,7 @@ public class ServletAluno extends ServletGenerico {
 		String nome = "";
 		String dtNascimento = "";
 		String naturalidade = "";
+		String cep = "";
 		String endereco = "";
 		String numero = "";
 		String bairro = "";
@@ -703,6 +734,7 @@ public class ServletAluno extends ServletGenerico {
 		nome = request.getParameter(NM_PARAMETRO_NOME);
 		dtNascimento = request.getParameter(NM_PARAMETRO_DT_NASCIMENTO);
 		naturalidade = request.getParameter(NM_PARAMETRO_NATURALIDADE);
+		cep = request.getParameter(NM_PARAMETRO_CEP);
 		endereco = request.getParameter(NM_PARAMETRO_ENDERECO);
 		numero = request.getParameter(NM_PARAMETRO_NUMERO);
 		bairro = request.getParameter(NM_PARAMETRO_BAIRRO);
@@ -752,6 +784,7 @@ public class ServletAluno extends ServletGenerico {
 			request.setAttribute(NM_PARAMETRO_NOME_RESP, pessoa.getNome());
 			request.setAttribute(NM_PARAMETRO_DT_NASCIMENTO_RESP, pessoa.getDtNascimento());
 			request.setAttribute(NM_PARAMETRO_NATURALIDADE_RESP, pessoa.getNaturalidade());
+			request.setAttribute(NM_PARAMETRO_CEP_RESP, pessoa.getCep());
 			request.setAttribute(NM_PARAMETRO_ENDERECO_RESP, pessoa.getEndereco());
 			request.setAttribute(NM_PARAMETRO_NUMERO_RESP, String.valueOf(pessoa.getNumero()));
 			request.setAttribute(NM_PARAMETRO_BAIRRO_RESP, pessoa.getBairro());
@@ -765,6 +798,7 @@ public class ServletAluno extends ServletGenerico {
 		request.setAttribute(NM_PARAMETRO_NOME, nome);
 		request.setAttribute(NM_PARAMETRO_DT_NASCIMENTO, dtNascimento);
 		request.setAttribute(NM_PARAMETRO_NATURALIDADE, naturalidade);
+		request.setAttribute(NM_PARAMETRO_CEP, cep);
 		request.setAttribute(NM_PARAMETRO_ENDERECO, endereco);
 		request.setAttribute(NM_PARAMETRO_NUMERO, numero);
 		request.setAttribute(NM_PARAMETRO_BAIRRO, bairro);

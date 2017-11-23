@@ -89,32 +89,44 @@ function formatarCamposData(pCampo, pValue, pEvento){
 function formatarCamposDataAlunoOnload(){
 	if(document.getElementById("dtNascimento").value != ""){
 		var valorDtNasc = document.getElementById("dtNascimento").value;
-		var resDtNasc = valorDtNasc.split("-");
-		var anoDtNasc = resDtNasc[0];
-		var mesDtNasc = resDtNasc[1];
-		var diaDtNasc = resDtNasc[2];
-		valorDtNasc = diaDtNasc.concat("/").concat(mesDtNasc).concat("/").concat(anoDtNasc);
-		document.getElementById("dtNascimento").value = valorDtNasc;		
+		var contem = valorDtNasc.includes("/");
+		
+		if(!contem){
+			var resDtNasc = valorDtNasc.split("-");
+			var anoDtNasc = resDtNasc[0];
+			var mesDtNasc = resDtNasc[1];
+			var diaDtNasc = resDtNasc[2];
+			valorDtNasc = diaDtNasc.concat("/").concat(mesDtNasc).concat("/").concat(anoDtNasc);
+			document.getElementById("dtNascimento").value = valorDtNasc;		
+		}
 	}
 	
 	if(document.getElementById("dtMatricula").value != ""){
 		var valorDtAdm = document.getElementById("dtMatricula").value;
-		var resDtAdm = valorDtAdm.split("-");
-		var anoDtAdm = resDtAdm[0];
-		var mesDtAdm = resDtAdm[1];
-		var diaDtAdm = resDtAdm[2];
-		valorDtAdm = diaDtAdm.concat("/").concat(mesDtAdm).concat("/").concat(anoDtAdm);
-		document.getElementById("dtMatricula").value = valorDtAdm;		
+		var contem = valorDtAdm.includes("/");
+		
+		if(!contem){
+			var resDtAdm = valorDtAdm.split("-");
+			var anoDtAdm = resDtAdm[0];
+			var mesDtAdm = resDtAdm[1];
+			var diaDtAdm = resDtAdm[2];
+			valorDtAdm = diaDtAdm.concat("/").concat(mesDtAdm).concat("/").concat(anoDtAdm);
+			document.getElementById("dtMatricula").value = valorDtAdm;
+		}
 	}
 	
 	if(document.getElementById("dtNascimentoResp").value != ""){
 		var valorDtNascResp = document.getElementById("dtNascimentoResp").value;
-		var resDtNascResp = valorDtNascResp.split("-");
-		var anoDtNascResp = resDtNascResp[0];
-		var mesDtNascResp = resDtNascResp[1];
-		var diaDtNascResp = resDtNascResp[2];
-		valorDtNascResp = diaDtNascResp.concat("/").concat(mesDtNascResp).concat("/").concat(anoDtNascResp);
-		document.getElementById("dtNascimentoResp").value = valorDtNascResp;
+		var contem = valorDtNascResp.includes("/");
+		
+		if(!contem){
+			var resDtNascResp = valorDtNascResp.split("-");
+			var anoDtNascResp = resDtNascResp[0];
+			var mesDtNascResp = resDtNascResp[1];
+			var diaDtNascResp = resDtNascResp[2];
+			valorDtNascResp = diaDtNascResp.concat("/").concat(mesDtNascResp).concat("/").concat(anoDtNascResp);
+			document.getElementById("dtNascimentoResp").value = valorDtNascResp;
+		}
 	}
 }
 
@@ -139,6 +151,66 @@ function formatarCamposDataOnload(){
 		document.getElementById("dtAdmissao").value = valorDtAdm;
 	}
 	
+}
+
+function formatarCampoCEP(event){
+	if(document.getElementById("cep").value != ""){
+		var valor = document.getElementById("cep").value;
+		var tamanhoValor = valor.length;
+		var tecla = event.keyCode;
+		
+		if(tecla != 8 && tecla != 46){
+			if(tamanhoValor == 5){
+				valor = valor.concat("-");
+			}
+		}
+		document.getElementById("cep").value = valor;
+	}
+	
+	if(document.getElementById("cepResp").value != ""){
+		var valor = document.getElementById("cepResp").value;
+		var tamanhoValor = valor.length;
+		var tecla = event.keyCode;
+		
+		if(tecla != 8 && tecla != 46){
+			if(tamanhoValor == 5){
+				valor = valor.concat("-");
+			}
+		}
+		document.getElementById("cepResp").value = valor;
+	}
+}
+
+function formatarCampoCEPOnload(){
+	if(document.getElementById("cep").value != ""){
+		var valor = document.getElementById("cep").value;
+		var contem = valor.includes("-");
+		
+		if(!contem){
+			var carteiraPrimeiraParte;
+			var carteiraSegundaParte;
+			if(valor != null && valor != ""){
+				carteiraPrimeiraParte = valor.substring(0, 5);
+				carteiraSegundaParte = valor.substring(5);
+				valor = carteiraPrimeiraParte.concat("-").concat(carteiraSegundaParte);
+			}
+			
+			document.getElementById("cep").value = valor;		
+		}
+	}
+	
+	if(document.getElementById("cepResp").value != ""){
+		var valor = document.getElementById("cepResp").value;
+		var carteiraPrimeiraParte;
+		var carteiraSegundaParte;
+		if(valor != null && valor != ""){
+			carteiraPrimeiraParte = valor.substring(0, 5);
+			carteiraSegundaParte = valor.substring(5);
+			valor = carteiraPrimeiraParte.concat("-").concat(carteiraSegundaParte);
+		}
+		
+		document.getElementById("cepResp").value = valor;		
+	}
 }
 
 function formatarCampoCarteiraEstudante(event){

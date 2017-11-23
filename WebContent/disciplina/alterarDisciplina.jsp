@@ -63,15 +63,15 @@ dsDisciplina = (String)request.getAttribute(ServletDisciplina.NM_PARAMETRO_DS_DI
 					<table width="65%" align="center" style="background-color: #99CCFF">
 						<tbody>
 							<tr>			
-								<th width="12%" align="right"> Sigla Disciplina: </th>
+								<th width="15%" align="right"> Sigla Disciplina: </th>
 								<td>
 									<input type="text" id="<%=ServletDisciplina.NM_PARAMETRO_SIGLA_DISCIPLINA%>" name="<%=ServletDisciplina.NM_PARAMETRO_SIGLA_DISCIPLINA%>" value="<%=siglaDisciplina%>">
 								
 								</td>			
 							
-								<th align="right"> Descrição Disciplina: </th>
+								<th width="20%" align="right"> Descrição Disciplina: </th>
 								<td>
-									<input type="text" id="<%=ServletDisciplina.NM_PARAMETRO_DS_DISCIPLINA%>" name="<%=ServletDisciplina.NM_PARAMETRO_DS_DISCIPLINA%>" value="<%=dsDisciplina%>" size="50">
+									<input type="text" id="<%=ServletDisciplina.NM_PARAMETRO_DS_DISCIPLINA%>" name="<%=ServletDisciplina.NM_PARAMETRO_DS_DISCIPLINA%>" value="<%=dsDisciplina%>" size="40">
 								
 								</td>
 							</tr>

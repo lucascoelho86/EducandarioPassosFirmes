@@ -81,16 +81,16 @@ function cadastrar(){
 		<table width="100%">
 			<tr>
 				<td>
-					<table width="60%" align="center" style="background-color: #99CCFF">
+					<table width="70%" align="center" style="background-color: #99CCFF">
 						<tbody>
 							<tr>
-								<th width="15%" align="right">Sigla Turma:</th>
+								<th width="13%" align="left">Sigla Turma:</th>
 								<td><input type="text"
 									id="<%=ServletTurma.NM_PARAMETRO_SIGLA_TURMA%>"
 									name="<%=ServletTurma.NM_PARAMETRO_SIGLA_TURMA%>"
 									value="<%=siglaTurma%>" size="10" maxlength="5"></td>
 
-								<th align="right">Descrição Turma:</th>
+								<th align="left">Descrição Turma:</th>
 								<td><input type="text"
 									id="<%=ServletTurma.NM_PARAMETRO_DS_TURMA%>"
 									name="<%=ServletTurma.NM_PARAMETRO_DS_TURMA%>"
@@ -98,7 +98,20 @@ function cadastrar(){
 
 							</tr>
 							<tr>
-								<th align="right">Turno:</th>
+								<th align="left">Sala:</th>
+								<td><input type="text"
+									id="<%=ServletTurma.NM_PARAMETRO_SALA%>"
+									name="<%=ServletTurma.NM_PARAMETRO_SALA%>"
+									value="<%=sala%>" size="10"></td>
+									
+								<th align="left">Quantidade Máxima de Alunos:</th>
+								<td><input type="text"
+									id="<%=ServletTurma.NM_PARAMETRO_QT_MAX_ALUNOS%>"
+									name="<%=ServletTurma.NM_PARAMETRO_QT_MAX_ALUNOS%>"
+									value="<%=qtMaxAlunos%>" size="5"></td>
+							</tr>
+							<tr>
+								<th align="left">Turno:</th>
 								<td>
 									<%
 										int contador = 0;
@@ -121,19 +134,6 @@ function cadastrar(){
  	}
  %>
 								</td>
-
-								<th align="right">Quantidade Máxima de Alunos:</th>
-								<td><input type="text"
-									id="<%=ServletTurma.NM_PARAMETRO_QT_MAX_ALUNOS%>"
-									name="<%=ServletTurma.NM_PARAMETRO_QT_MAX_ALUNOS%>"
-									value="<%=qtMaxAlunos%>"></td>
-							</tr>
-							<tr>
-								<th align="right">Sala:</th>
-								<td><input type="text"
-									id="<%=ServletTurma.NM_PARAMETRO_SALA%>"
-									name="<%=ServletTurma.NM_PARAMETRO_SALA%>"
-									value="<%=sala%>"></td>
 							</tr>
 						</tbody>
 					</table> <br>

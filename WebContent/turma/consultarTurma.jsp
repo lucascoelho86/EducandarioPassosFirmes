@@ -51,14 +51,33 @@ function exibirInclusao(){
 <%
 	ArrayList<Turma> colecaoTurma;
 	Iterator<Turma> itTurma;
+	String sigla = "";
+	String descricao = "";
+	String turno = "";
 	colecaoTurma = (ArrayList<Turma>) request
 			.getAttribute(ServletTurma.NM_PARAMETRO_COLECAO_TURMA);
 
+	sigla = (String) request.getAttribute(ServletTurma.NM_PARAMETRO_SIGLA_TURMA);
+	descricao = (String) request.getAttribute(ServletTurma.NM_PARAMETRO_DS_TURMA);
+	turno = (String) request.getAttribute(ServletTurma.NM_PARAMETRO_SELECT_TURNO);
+	
 	if (colecaoTurma == null) {
 		colecaoTurma = new ArrayList<Turma>();
 		itTurma = colecaoTurma.iterator();
 	} else {
 		itTurma = colecaoTurma.iterator();
+	}
+	
+	if(sigla == null){
+		sigla = "";
+	}
+	
+	if(descricao == null){
+		descricao = "";
+	}
+	
+	if(turno == null){
+		turno = "";
 	}
 %>
 
@@ -73,35 +92,46 @@ function exibirInclusao(){
 		<table width="100%">
 			<tr>
 				<td>
-					<table width="50%" align="center">
+					<table width="70%" align="center">
 						<tbody>
 							<tr>
-								<th width="15%">Descrição Turma:</th>
+								<th>Sigla Turma:</th>
+								<td><input type="text"
+									id="<%=ServletTurma.NM_PARAMETRO_SIGLA_TURMA%>"
+									name="<%=ServletTurma.NM_PARAMETRO_SIGLA_TURMA%>" value="<%=sigla%>" maxlength="5" size="5"></td>
+								
+								<th>Descrição Turma:</th>
 								<td><input type="text"
 									id="<%=ServletTurma.NM_PARAMETRO_DS_TURMA%>"
-									name="<%=ServletTurma.NM_PARAMETRO_DS_TURMA%>" value=""
-									size="50"></td>
+									name="<%=ServletTurma.NM_PARAMETRO_DS_TURMA%>" value="<%=descricao%>"
+									size="40"></td>
 
-								<th width="2%" align="right">Turno:</th>
+								<th align="right">Turno:</th>
 								<td>
 									<%
 										int contador = 0;
+										boolean mesmoTurno = false;
 										for (int x = 0; x < 2; x++) {
 
+											if(turno.equals(String.valueOf(x))){
+												mesmoTurno = true;
+											}
+											
 											if (x == 0) {
 														%> <%=Select.getInstancia()
 												.getHTML(ServletTurma.NM_PARAMETRO_SELECT_TURNO,
 														ServletTurma.NM_PARAMETRO_SELECT_TURNO,
-														String.valueOf(x + 1), ServletTurma.NM_TURNO_MANHA, false,
+														String.valueOf(x + 1), ServletTurma.NM_TURNO_MANHA, mesmoTurno,
 														contador, false, "")%> <%
  											} else {
 					 							%> <%=Select.getInstancia().getHTML(
 												ServletTurma.NM_PARAMETRO_SELECT_TURNO,
 												ServletTurma.NM_PARAMETRO_SELECT_TURNO, String.valueOf(x + 1),
-												ServletTurma.NM_TURNO_TARDE, false, contador, true, "")%> <%
+												ServletTurma.NM_TURNO_TARDE, mesmoTurno, contador, true, "")%> <%
  											}
  										contador++;
 									 %> <%
+									 	mesmoTurno = false;
 									 	}
 									 %>
 								</td>

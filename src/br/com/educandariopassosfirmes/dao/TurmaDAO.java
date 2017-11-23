@@ -49,7 +49,7 @@ public class TurmaDAO extends Conexao{
 			
 			if(pDescricao != null && !pDescricao.equals("")){
 				contador++;
-				preparador.setString(contador, pDescricao);
+				preparador.setString(contador, "%" + pDescricao + "%");
 			}
 
 			if(pTurno != null && !pTurno.equals("")){

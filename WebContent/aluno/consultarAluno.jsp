@@ -57,6 +57,13 @@ function exibirInclusao(){
 
 ArrayList<LinkedHashMap<String, String>>colecaoPessoa;
 Iterator<LinkedHashMap<String, String>>itPessoa;
+String matricula = "";
+String nome = "";
+String turmaTela = "";
+
+matricula = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_MATRICULA);
+nome = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_NOME);
+turmaTela = (String)request.getAttribute(ServletAluno.NM_PARAMETRO_SELECT_TURMA);
 colecaoPessoa = (ArrayList<LinkedHashMap<String, String>>) request.getAttribute(ServletAluno.NM_PARAMETRO_COLECAO_PESSOA);
 
 if(colecaoPessoa == null){
@@ -64,6 +71,18 @@ if(colecaoPessoa == null){
 	itPessoa = colecaoPessoa.iterator();
 }else{
 	itPessoa = colecaoPessoa.iterator();
+}
+
+if(matricula == null){
+	matricula = "";
+}
+
+if(nome == null){
+	nome = "";
+}
+
+if(turmaTela == null){
+	turmaTela = "";
 }
 
 %>
@@ -83,12 +102,12 @@ if(colecaoPessoa == null){
 						<tr>
 							<th width="10%" align="right"> Matrícula: </th>
 							<td>
-								<input type="text" id="<%=ServletAluno.NM_PARAMETRO_MATRICULA%>" name="<%=ServletAluno.NM_PARAMETRO_MATRICULA%>" value="" size="14" onkeyup="formatarMatricula(event);" onkeypress='return SomenteNumero(event)' maxlength="13">
+								<input type="text" id="<%=ServletAluno.NM_PARAMETRO_MATRICULA%>" name="<%=ServletAluno.NM_PARAMETRO_MATRICULA%>" value="<%=matricula%>" size="14" onkeyup="formatarMatricula(event);" onkeypress='return SomenteNumero(event)' maxlength="13">
 							</td>
 						
 							<th width="10%" align="right"> Nome: </th>
 							<td>
-								<input type="text" id="<%=ServletAluno.NM_PARAMETRO_NOME%>" name="<%=ServletAluno.NM_PARAMETRO_NOME%>" value="" size="50" onkeypress='return letras(event)'>
+								<input type="text" id="<%=ServletAluno.NM_PARAMETRO_NOME%>" name="<%=ServletAluno.NM_PARAMETRO_NOME%>" value="<%=nome%>" size="50" onkeypress='return letras(event)'>
 							
 							</td>
 						
@@ -97,15 +116,23 @@ if(colecaoPessoa == null){
 								<%	TurmaDAO turmaDAO = new TurmaDAO();
 									ArrayList<Turma>colecaoTurma = turmaDAO.consultar("", "", "");
 									boolean ultimaTurma = false;
+									boolean mesmaTurma = false;
 									for(int x = 0; x < colecaoTurma.size(); x++){
 										Turma turma = colecaoTurma.get(x);
 										
 										if(x + 1 == colecaoTurma.size()){
 											ultimaTurma = true;
-										}%>	
+										}
+										
+										if(turmaTela.equals(turma.getIdTurma())){
+											mesmaTurma = true;
+										}
+										%>	
 															
-										<%=Select.getInstancia().getHTML(ServletAluno.NM_PARAMETRO_SELECT_TURMA, ServletAluno.NM_PARAMETRO_SELECT_TURMA, String.valueOf(turma.getIdTurma()), turma.getDsTurma(), false, x, ultimaTurma, "")%>
-									<%}%>				
+										<%=Select.getInstancia().getHTML(ServletAluno.NM_PARAMETRO_SELECT_TURMA, ServletAluno.NM_PARAMETRO_SELECT_TURMA, turma.getIdTurma(), turma.getDsTurma(), mesmaTurma, x, ultimaTurma, "")%>
+									<%
+									mesmaTurma = false;
+									}%>				
 							</td>
 							<td>
 								<input type="button" id="botaoLocalizar" name="botaoLocalizar" onclick="consultar();" value="Localizar">

@@ -80,61 +80,61 @@ function mostrarDP(){
 		<table width="100%">
 			<tr>
 				<td>
-					<table width="90%" align="center" style="background-color: #99CCFF">
+					<table width="100%" align="center" style="background-color: #99CCFF">
 						<tbody>
 							<tr>
-								<th width="10%" align="right">Nome:</th>
+								<th width="13%" align="left">Nome:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_NOME%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_NOME%>" value=""
 									size="50" onkeypress='return letras(event)'></td>
 
-								<th align="right">Data de Nascimento:</th>
+								<th width="15%" align="left">Data de Nascimento:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_DT_NASCIMENTO%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_DT_NASCIMENTO%>"
 									value="" onkeyup="formatarCamposData(this.name, this, event)"
 									onkeypress='return SomenteNumero(event)' maxlength="10"></td>
 
-								<th align="right">Naturalidade:</th>
+								<th width="10%" align="left">Naturalidade:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_NATURALIDADE%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_NATURALIDADE%>" value=""
 									onkeypress='return letras(event)'></td>
 							</tr>
 							<tr>
-								<th width="10%" align="right">Endereço:</th>
+								<th align="left">Endereço:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_ENDERECO%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_ENDERECO%>" value=""
 									size="50"></td>
 
-								<th align="right">Número:</th>
+								<th align="left">Número:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_NUMERO%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_NUMERO%>" value=""
 									onkeypress='return SomenteNumero(event)'></td>
 
-								<th align="right">Bairro:</th>
+								<th align="left">Bairro:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_BAIRRO%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_BAIRRO%>" value=""
 									onkeypress='return letras(event)'></td>
 							</tr>
 							<tr>
-								<th width="10%" align="right">Cidade:</th>
+								<th align="left">Cidade:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_CIDADE%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_CIDADE%>" value=""
 									size="20" onkeypress='return letras(event)'></td>
 
-								<th align="right">Estado:</th>
+								<th align="left">Estado:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_ESTADO%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_ESTADO%>" value=""
 									onkeypress='return letras(event)'></td>
 
-								<th align="right">Telefone:</th>
+								<th align="left">Telefone:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_TELEFONE%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_TELEFONE%>" value=""
@@ -142,39 +142,39 @@ function mostrarDP(){
 									onkeypress='return SomenteNumero(event)'></td>
 							</tr>
 							<tr>
-								<th width="10%" align="right">Identidade:</th>
+								<th align="left">Identidade:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_IDENTIDADE%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_IDENTIDADE%>" value=""
 									size="20" onkeypress='return SomenteNumero(event)'></td>
 
-								<th align="right">CPF:</th>
+								<th align="left">CPF:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_CPF%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_CPF%>" value=""
 									onkeyup="formatarCPF(event);" maxlength="14"
 									onkeypress='return SomenteNumero(event)'></td>
 
-								<th align="right">Formação:</th>
+								<th align="left">Formação:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_FORMACAO%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_FORMACAO%>" value=""
 									onkeypress='return letras(event)'></td>
 							</tr>
 							<tr>
-								<th width="10%" align="right">Estado Civil:</th>
+								<th align="left">Estado Civil:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_ESTADO_CIVIL%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_ESTADO_CIVIL%>" value=""
 									size="20" onkeypress='return letras(event)'></td>
 
-								<th align="right">Quantidade Dependentes:</th>
+								<th align="left">Quantidade Dependentes:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_QT_DEPENDENTE%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_QT_DEPENDENTE%>"
 									value="" onkeypress='return SomenteNumero(event)'></td>
 
-								<th align="right">Data Admissão:</th>
+								<th align="left">Data Admissão:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_DT_ADMISSAO%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_DT_ADMISSAO%>" value=""
@@ -182,13 +182,13 @@ function mostrarDP(){
 									onkeypress='return SomenteNumero(event)' maxlength="10"></td>
 							</tr>
 							<tr>
-								<th width="10%" align="right">Carga Horária:</th>
+								<th align="left">Carga Horária Semanal:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_CARGA_HORARIA%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_CARGA_HORARIA%>"
 									value="" size="10" onkeypress='return SomenteNumero(event)'></td>
 
-								<th align="right">Salário:</th>
+								<th align="left">Salário:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_SALARIO%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_SALARIO%>" value=""

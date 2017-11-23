@@ -153,10 +153,10 @@ function consultaSelectDisciplina(){
 		<table width="100%">
 			<tr>
 				<td>
-					<table width="60%" align="center" style="background-color: #99CCFF">
+					<table width="80%" align="center" style="background-color: #99CCFF;">
 						<tbody>
 							<tr>
-								<th align="right">Turma:</th>
+								<th align="left">Turma:</th>
 								<td>
 									<%
 										TurmaDAO turmaDAO = new TurmaDAO();
@@ -181,7 +181,7 @@ function consultaSelectDisciplina(){
 										}
 									%>
 								</td>
-								<th align="right">Professor:</th>
+								<th align="left">Professor:</th>
 								<td>
 									<%
 										if(!eventoSelectDisciplina.equals("")){
@@ -235,7 +235,7 @@ function consultaSelectDisciplina(){
 										}
 									%>
 								</td>
-								<th align="right">Disciplina:</th>
+								<th align="left">Disciplina:</th>
 								<td>
 									<%
 										if(!eventoSelectProfessor.equals("")){
@@ -290,31 +290,31 @@ function consultaSelectDisciplina(){
 								</td>
 							</tr>
 							<tr>
-								<th align="right">Assuntos 1ª Unidade:</th>
+								<th align="left">Assuntos 1ª Unidade:</th>
 								<td><textarea
 										id="<%=ServletDisciplina.NM_PARAMETRO_TX_PRIMEIRA_UNIDADE%>"
 										name="<%=ServletDisciplina.NM_PARAMETRO_TX_PRIMEIRA_UNIDADE%>"
 										rows="4" cols="30"><%=txPrimeiraUnidade%></textarea></td>
 
-								<th align="right">Assuntos 2ª Unidade:</th>
+								<th align="left">Assuntos 2ª Unidade:</th>
 								<td><textarea
 										id="<%=ServletDisciplina.NM_PARAMETRO_TX_SEGUNDA_UNIDADE%>"
 										name="<%=ServletDisciplina.NM_PARAMETRO_TX_SEGUNDA_UNIDADE%>"
 										rows="4" cols="30"><%=txSegundaUnidade%></textarea></td>
-								<th align="right">Carga Horária:</th>
+								<th align="left">Carga Horária:</th>
 								<td><input type="text"
 									id="<%=ServletDisciplina.NM_PARAMETRO_CAMPO_CARGA_HORARIA%>"
 									name="<%=ServletDisciplina.NM_PARAMETRO_CAMPO_CARGA_HORARIA%>"
 									value="<%=cargaHoraria%>"></td>
 							</tr>
 							<tr>
-								<th align="right">Assuntos 3ª Unidade:</th>
+								<th align="left">Assuntos 3ª Unidade:</th>
 								<td><textarea
 										id="<%=ServletDisciplina.NM_PARAMETRO_TX_TERCEIRA_UNIDADE%>"
 										name="<%=ServletDisciplina.NM_PARAMETRO_TX_TERCEIRA_UNIDADE%>"
 										rows="4" cols="30"><%=txTerceiraUnidade%></textarea></td>
 
-								<th align="right">Assuntos 4ª Unidade:</th>
+								<th align="left">Assuntos 4ª Unidade:</th>
 								<td><textarea
 										id="<%=ServletDisciplina.NM_PARAMETRO_TX_QUARTA_UNIDADE%>"
 										name="<%=ServletDisciplina.NM_PARAMETRO_TX_QUARTA_UNIDADE%>"

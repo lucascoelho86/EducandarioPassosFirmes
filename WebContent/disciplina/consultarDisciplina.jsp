@@ -72,7 +72,7 @@ if(colecaoDisciplina == null){
 	<table width="100%">
 		<tr>
 			<td>
-				<table width="50%" align="center">
+				<table width="60%" align="center">
 					<tbody>
 						<tr>
 						
@@ -84,7 +84,7 @@ if(colecaoDisciplina == null){
 						
 							<th align="right"> Descrição Disciplina: </th>
 							<td>
-								<input type="text" id="<%=ServletDisciplina.NM_PARAMETRO_DS_DISCIPLINA%>" name="<%=ServletDisciplina.NM_PARAMETRO_DS_DISCIPLINA%>" value="" size="50">
+								<input type="text" id="<%=ServletDisciplina.NM_PARAMETRO_DS_DISCIPLINA%>" name="<%=ServletDisciplina.NM_PARAMETRO_DS_DISCIPLINA%>" value="" size="30">
 							
 							</td>
 							<td>

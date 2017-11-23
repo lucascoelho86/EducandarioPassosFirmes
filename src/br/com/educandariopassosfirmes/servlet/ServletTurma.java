@@ -150,7 +150,8 @@ public class ServletTurma extends ServletGenerico {
 
 		String dsTurno = "";
 		// recupera os parametros do request
-		String dsDisciplina = (String) request.getParameter(NM_PARAMETRO_DS_TURMA);
+		String sigla = (String) request.getParameter(NM_PARAMETRO_SIGLA_TURMA);
+		String descricao = (String) request.getParameter(NM_PARAMETRO_DS_TURMA);
 		String turno = (String) request.getParameter(NM_PARAMETRO_SELECT_TURNO);
 
 		if(turno.equals("1")) {
@@ -161,8 +162,11 @@ public class ServletTurma extends ServletGenerico {
 		
 		TurmaDAO turmaDAO = new TurmaDAO();
 		//consultar todas as turmas
-		ArrayList<Turma> colecaoTurma = turmaDAO.consultar("", dsDisciplina, dsTurno);
+		ArrayList<Turma> colecaoTurma = turmaDAO.consultar(sigla, descricao, dsTurno);
 		
+		request.setAttribute(NM_PARAMETRO_SIGLA_TURMA, sigla);
+		request.setAttribute(NM_PARAMETRO_DS_TURMA, descricao);
+		request.setAttribute(NM_PARAMETRO_SELECT_TURNO, turno);
 		request.setAttribute(NM_PARAMETRO_COLECAO_TURMA, colecaoTurma);
 
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
