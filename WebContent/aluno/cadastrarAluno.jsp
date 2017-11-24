@@ -71,9 +71,10 @@ function consultarResponsavel(pCampo){
 	
 	if(tamanhoCampo == 14){
 		document.getElementById("<%=ServletAluno.NM_EVENTO%>").value = "<%=ServletAluno.NM_EVENTO_RESPONSAVEL_CADASTRADO%>";
-			document.frm_principal.submit();
-		}
+		document.getElementById("<%=ServletAluno.NM_PARAMETRO_TELA_EVENTO%>").value = "<%=ServletAluno.NM_JSP_INCLUIR_ALUNO%>";
+		document.frm_principal.submit();
 	}
+}
 </script>
 <script type="text/javascript">
 	jQuery(document).ready(function() {
@@ -160,6 +161,8 @@ function consultarResponsavel(pCampo){
 			.getAttribute(ServletAluno.NM_PARAMETRO_PROFISSAO);
 	String salarioFormatado = (String) request
 			.getAttribute(ServletAluno.NM_PARAMETRO_RENDA);
+	String telaEvento = (String) request
+			.getAttribute(ServletAluno.NM_PARAMETRO_TELA_EVENTO);
 %>
 
 <body onload="formatarCPFOnload(); formatarCampoTelefoneOnload(); formatarCampoCEPOnload(); formatarCamposDataAlunoOnload();">
@@ -172,6 +175,8 @@ function consultarResponsavel(pCampo){
 	<form name="frm_principal" action="ServletAluno" method="post">
 		<input type="hidden" id="<%=ServletAluno.NM_EVENTO%>"
 			name="<%=ServletAluno.NM_EVENTO%>" value="">
+		<input type="hidden" id="<%=ServletAluno.NM_PARAMETRO_TELA_EVENTO%>"
+			name="<%=ServletAluno.NM_PARAMETRO_TELA_EVENTO%>" value="">
 		<h2 align="center">CADASTRAR ALUNO</h2>
 		<table width="100%">
 			<tr>
@@ -369,6 +374,7 @@ function consultarResponsavel(pCampo){
 				</td>
 			</tr>
 		</table>
+		<%if(telaEvento == null || telaEvento.equals("")){ %>
 		<table align="center">
 			<tr>
 				<th align="right">O Aluno mora no mesmo endereço do
@@ -379,24 +385,23 @@ function consultarResponsavel(pCampo){
 				</td>
 			</tr>
 		</table>
+		<%} %>
 		<h2 align="center">CADASTRAR RESPONSÁVEL</h2>
-		<table align="center">
-			<tr>
-				<th align="right">Responsável já cadastrado? CPF:</th>
-				<td><input type="text"
-					id="<%=ServletAluno.NM_PARAMETRO_CPF_RESP_CADASTRADO%>"
-					name="<%=ServletAluno.NM_PARAMETRO_CPF_RESP_CADASTRADO%>" value=""
-					onkeyup="formatarCPFRespCadastrado(event); consultarResponsavel(this.value);"
-					maxlength="14" onkeypress='return SomenteNumero(event)'></td>
-			</tr>
-		</table>
 		<table width="100%" align="center">
 			<tr>
 				<td>
 					<table width="100%" align="center" style="background-color: #99CCFF">
 						<tbody>
 							<tr>
-								<th width="5%" align="left">Nome:</th>
+								<th width="6%" align="left">CPF:</th>
+								<td><input type="text"
+									id="<%=ServletAluno.NM_PARAMETRO_CPF%>"
+									name="<%=ServletAluno.NM_PARAMETRO_CPF%>" value="<%=cpf == null ? "" : cpf%>"
+									onkeyup="formatarCPF(event); consultarResponsavel(this.value);"
+									onblur="formatarCPF(event); consultarResponsavel(this.value);"
+									maxlength="14" onkeypress='return SomenteNumero(event)' size="15"></td>
+							
+								<th width="8%" align="left">Nome:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_NOME_RESP%>"
 									name="<%=ServletAluno.NM_PARAMETRO_NOME_RESP%>"
@@ -417,16 +422,16 @@ function consultarResponsavel(pCampo){
 									name="<%=ServletAluno.NM_PARAMETRO_NATURALIDADE_RESP%>"
 									value="<%=naturalidadeResp == null ? "" : naturalidadeResp%>"
 									onkeypress='return letras(event)'></td>
-
+							</tr>
+							<tr>
 								<th width="5%" align="left">CEP:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_CEP_RESP%>"
 									name="<%=ServletAluno.NM_PARAMETRO_CEP_RESP%>"
 									value="<%=cepResp == null ? "" : cepResp%>"
 									onkeyup="formatarCampoCEP(event)" maxlength="9"
-									onkeypress='return SomenteNumero(event)'></td>
-							</tr>
-							<tr>
+									onkeypress='return SomenteNumero(event)' size="15"></td>
+							
 								<th align="left">Endereço:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_ENDERECO_RESP%>"
@@ -447,14 +452,15 @@ function consultarResponsavel(pCampo){
 									value="<%=bairroResp == null ? "" : bairroResp%>"
 									onkeypress='return letras(event)'></td>
 									
+							</tr>
+							<tr>
 								<th align="left">Cidade:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_CIDADE_RESP%>"
 									name="<%=ServletAluno.NM_PARAMETRO_CIDADE_RESP%>"
-									value="<%=cidadeResp == null ? "" : cidadeResp%>" size="20"
-									onkeypress='return letras(event)'></td>
-							</tr>
-							<tr>
+									value="<%=cidadeResp == null ? "" : cidadeResp%>"
+									onkeypress='return letras(event)' size="15"></td>
+									
 								<th align="left">Estado:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_ESTADO_RESP%>"
@@ -476,14 +482,6 @@ function consultarResponsavel(pCampo){
 									name="<%=ServletAluno.NM_PARAMETRO_IDENTIDADE%>"
 									value="<%=identidade == null ? "" : identidade%>" size="20"
 									onkeypress='return SomenteNumero(event)'></td>
-
-								<th align="left">CPF:</th>
-								<td><input type="text"
-									id="<%=ServletAluno.NM_PARAMETRO_CPF%>"
-									name="<%=ServletAluno.NM_PARAMETRO_CPF%>"
-									value="<%=cpf == null ? "" : cpf%>"
-									onkeyup="formatarCPF(event);" maxlength="14"
-									onkeypress='return SomenteNumero(event)'></td>
 							</tr>
 							<tr>
 								<th align="left">Parentesco:</th>
@@ -491,8 +489,8 @@ function consultarResponsavel(pCampo){
 									id="<%=ServletAluno.NM_PARAMETRO_PARENTESCO%>"
 									name="<%=ServletAluno.NM_PARAMETRO_PARENTESCO%>"
 									value="<%=parentesco == null ? "" : parentesco%>"
-									onkeypress='return letras(event)' maxlength="10"></td>
-								
+									onkeypress='return letras(event)' maxlength="10" size="15"></td>
+							
 								<th align="left">Estado Civil:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_ESTADO_CIVIL%>"
@@ -520,7 +518,7 @@ function consultarResponsavel(pCampo){
 									name="<%=ServletAluno.NM_PARAMETRO_RENDA%>"
 									value="<%=salarioFormatado == null ? "" : salarioFormatado%>"
 									onKeydown="Formata(this,20,event,2)"
-									onkeypress='return SomenteNumero(event)'></td>
+									onkeypress='return SomenteNumero(event)' size="15"></td>
 							</tr>
 						</tbody>
 					</table>

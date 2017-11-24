@@ -35,9 +35,9 @@ public class ServletAluno extends ServletGenerico {
 
 	public static final String NM_JSP_CONSULTAR = "/aluno/consultarAluno.jsp";
 
-	private static final String NM_JSP_INCLUIR_ALUNO = "/aluno/cadastrarAluno.jsp";
+	public static final String NM_JSP_INCLUIR_ALUNO = "/aluno/cadastrarAluno.jsp";
 
-	private static final String NM_JSP_ALTERAR_ALUNO = "/aluno/alterarAluno.jsp";
+	public static final String NM_JSP_ALTERAR_ALUNO = "/aluno/alterarAluno.jsp";
 
 	public static final String NM_EVENTO_RESPONSAVEL_CADASTRADO = "consultarResponsavelCadastrado";
 
@@ -101,6 +101,7 @@ public class ServletAluno extends ServletGenerico {
 	public static final String NM_PARAMETRO_DT_MATRICULA = "dtMatricula";
 	public static final String NM_PARAMETRO_CARTEIRA_ESTUDANTE = "nrCarteiraEstudante";
 	public static final String NM_PARAMETRO_TURMA = "turma";
+	public static final String NM_PARAMETRO_TELA_EVENTO = "telaEvento";
 	
 	//Constantes utilizadas na inclusão de turmas
 	public static final String NM_TURNO_MANHA = "Matutino";
@@ -325,7 +326,6 @@ public class ServletAluno extends ServletGenerico {
 		
 		Responsavel responsavel = new Responsavel();
 		responsavel.setId(cpf);
-		responsavel.setParentesco(parentesco);
 		responsavel.setEstadoCivil(estadoCivil);
 		responsavel.setEscolaridade(escolaridade);
 		responsavel.setProfissao(profissao);
@@ -370,6 +370,7 @@ public class ServletAluno extends ServletGenerico {
 		Aluno aluno = new Aluno();
 		aluno.setId(matricula);
 		aluno.setIdResponsavel(cpf);
+		aluno.setParentesco(parentesco);
 		aluno.setIdTurma(turma);
 		
 		if(dtMatr != null) {
@@ -645,7 +646,6 @@ public class ServletAluno extends ServletGenerico {
 				
 		Responsavel responsavel = new Responsavel();
 		responsavel.setId(cpf);
-		responsavel.setParentesco(parentesco);
 		responsavel.setEstadoCivil(estadoCivil);
 		responsavel.setEscolaridade(escolaridade);
 		responsavel.setProfissao(profissao);
@@ -684,6 +684,7 @@ public class ServletAluno extends ServletGenerico {
 		Aluno aluno = new Aluno();
 		aluno.setId(matricula);
 		aluno.setIdResponsavel(cpf);
+		aluno.setParentesco(parentesco);
 		aluno.setIdTurma(turma);
 		
 		if(dtMatr != null) {
@@ -727,6 +728,7 @@ public class ServletAluno extends ServletGenerico {
 		String necEspecial = "";
 		String dsNecEspecial = "";
 		String turma = "";
+		String telaEvento = "";
 				
 		String cpf = "";
 				
@@ -747,12 +749,15 @@ public class ServletAluno extends ServletGenerico {
 		necEspecial = request.getParameter(NM_PARAMETRO_NECESSIDADE_ESPECIAL);
 		dsNecEspecial = request.getParameter(NM_PARAMETRO_DS_NECESSIDADE_ESPECIAL);
 		turma = request.getParameter(NM_PARAMETRO_TURMA);
+		telaEvento = request.getParameter(NM_PARAMETRO_TELA_EVENTO);
 
 		// recupera os parametros do request responsável
-		cpf = request.getParameter(NM_PARAMETRO_CPF_RESP_CADASTRADO);
+		cpf = request.getParameter(NM_PARAMETRO_CPF);
 
 		cpf = cpf.replace(".", "");
 		cpf = cpf.replace("-", "");
+		
+		matricula = matricula.replace(".", "");
 		
 		ResponsavelDAO responsavelDAO = new ResponsavelDAO();
 		Responsavel responsavel = responsavelDAO.consultar(cpf);
@@ -763,7 +768,6 @@ public class ServletAluno extends ServletGenerico {
 			ArrayList<Pessoa> consultaPessoa = pessoaDAO.consultar(cpf, "");
 			pessoa = consultaPessoa.get(0);
 			
-			request.setAttribute(NM_PARAMETRO_PARENTESCO, responsavel.getParentesco());
 			request.setAttribute(NM_PARAMETRO_ESTADO_CIVIL, responsavel.getEstadoCivil());
 			request.setAttribute(NM_PARAMETRO_ESCOLARIDADE, responsavel.getEscolaridade());
 			request.setAttribute(NM_PARAMETRO_PROFISSAO, responsavel.getProfissao());
@@ -777,6 +781,8 @@ public class ServletAluno extends ServletGenerico {
 			salarioFormatado = salarioFormatado.trim();
 			
 			request.setAttribute(NM_PARAMETRO_RENDA, salarioFormatado);
+		}else {
+			responsavel = new Responsavel();
 		}
 		
 		if(pessoa != null) {
@@ -792,9 +798,11 @@ public class ServletAluno extends ServletGenerico {
 			request.setAttribute(NM_PARAMETRO_ESTADO_RESP, pessoa.getEstado());
 			request.setAttribute(NM_PARAMETRO_TELEFONE, pessoa.getTelefone());
 			request.setAttribute(NM_PARAMETRO_IDENTIDADE, pessoa.getIdentidade());
-			request.setAttribute(NM_PARAMETRO_CPF, pessoa.getId());
+		}else {
+			pessoa = new Pessoa();
 		}
 		
+		request.setAttribute(NM_PARAMETRO_CPF, cpf);
 		request.setAttribute(NM_PARAMETRO_NOME, nome);
 		request.setAttribute(NM_PARAMETRO_DT_NASCIMENTO, dtNascimento);
 		request.setAttribute(NM_PARAMETRO_NATURALIDADE, naturalidade);
@@ -810,7 +818,39 @@ public class ServletAluno extends ServletGenerico {
 		request.setAttribute(NM_PARAMETRO_DS_NECESSIDADE_ESPECIAL, dsNecEspecial);
 		request.setAttribute(NM_PARAMETRO_TURMA, turma);
 		
-		this.redirecionarPagina(request, response, NM_JSP_INCLUIR_ALUNO);
+		if(telaEvento.equals(NM_JSP_INCLUIR_ALUNO)) {
+			request.setAttribute(NM_PARAMETRO_TELA_EVENTO, telaEvento);
+			this.redirecionarPagina(request, response, NM_JSP_INCLUIR_ALUNO);
+		}else {
+			
+			AlunoDAO alunoDAO = new AlunoDAO();
+			
+			ArrayList<Aluno> consultaAluno = alunoDAO.consultar(matricula, "", "");
+			Aluno aluno = new Aluno();
+			
+			PessoaDAO pessoaDAO = new PessoaDAO();
+			
+			ArrayList<Pessoa> consultaPessoa = pessoaDAO.consultar(matricula, "");
+			Pessoa pessoaAluno = new Pessoa();
+			
+			if(matricula != null && !matricula.equals("") && !consultaAluno.isEmpty()) {
+				aluno = consultaAluno.get(0);
+				request.setAttribute(NM_PARAMETRO_ALUNO, aluno);
+			}else {
+				request.setAttribute(NM_PARAMETRO_ALUNO, aluno);
+			}
+			
+			if(matricula != null && !matricula.equals("") && !consultaPessoa.isEmpty()) {
+				pessoaAluno = consultaPessoa.get(0);
+				request.setAttribute(NM_PARAMETRO_PESSOA_ALUNO, pessoaAluno);
+			}else {
+				request.setAttribute(NM_PARAMETRO_PESSOA_ALUNO, pessoaAluno);
+			}
+			
+			request.setAttribute(NM_PARAMETRO_RESPONSAVEL, responsavel);
+			request.setAttribute(NM_PARAMETRO_PESSOA_RESPONSAVEL, pessoa);
+			this.redirecionarPagina(request, response, NM_JSP_ALTERAR_ALUNO);
+		}
 	}
 
 }

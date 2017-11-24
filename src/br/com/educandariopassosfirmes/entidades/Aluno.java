@@ -2,10 +2,11 @@ package br.com.educandariopassosfirmes.entidades;
 
 import java.sql.Date;
 
-public class Aluno extends Membros{
+public class Aluno extends Membros {
 
 	private String idTurma;
 	private String idResponsavel;
+	private String parentesco;
 	private Date dtMatricula;
 	private String necessidadeEspecial;
 	private String detalheNecessidadeEspecial;
@@ -26,6 +27,14 @@ public class Aluno extends Membros{
 
 	public void setIdResponsavel(String idResponsavel) {
 		this.idResponsavel = idResponsavel;
+	}
+
+	public String getParentesco() {
+		return parentesco;
+	}
+
+	public void setParentesco(String parentesco) {
+		this.parentesco = parentesco;
 	}
 
 	public Date getDtMatricula() {

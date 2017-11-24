@@ -10,17 +10,16 @@ public class ResponsavelDAO extends Conexao{
 
 	 public void cadastrar(Responsavel pResponsavel){
 		
-		String sql = "INSERT INTO RESPONSAVEL (ID_PESSOA, PARENTESCO, ESTADO_CIVIL, ESCOLARIDADE, PROFISSAO, RENDA) values (?,?,?,?,?,?)";
+		String sql = "INSERT INTO RESPONSAVEL (ID_PESSOA, ESTADO_CIVIL, ESCOLARIDADE, PROFISSAO, RENDA) values (?,?,?,?,?)";
 		
 		try {
 			PreparedStatement preparador = getPreparedStatement(sql);
 			
 			preparador.setString(1, pResponsavel.getId());
-			preparador.setString(2, pResponsavel.getParentesco());
-			preparador.setString(3, pResponsavel.getEstadoCivil());
-			preparador.setString(4, pResponsavel.getEscolaridade());
-			preparador.setString(5, pResponsavel.getProfissao());
-			preparador.setDouble(6, pResponsavel.getRenda());
+			preparador.setString(2, pResponsavel.getEstadoCivil());
+			preparador.setString(3, pResponsavel.getEscolaridade());
+			preparador.setString(4, pResponsavel.getProfissao());
+			preparador.setDouble(5, pResponsavel.getRenda());
 			
 			preparador.execute();
 			preparador.close();
@@ -79,7 +78,6 @@ public class ResponsavelDAO extends Conexao{
 					responsavel = new Responsavel();
 					
 					responsavel.setId(resultado.getString("ID_PESSOA"));
-					responsavel.setParentesco(resultado.getString("PARENTESCO"));
 					responsavel.setEstadoCivil(resultado.getString("ESTADO_CIVIL"));
 					responsavel.setEscolaridade(resultado.getString("ESCOLARIDADE"));
 					responsavel.setProfissao(resultado.getString("PROFISSAO"));
@@ -96,17 +94,16 @@ public class ResponsavelDAO extends Conexao{
 	 
 	 public void alterar(Responsavel pResponsavel){
 			
-			String sql = "UPDATE RESPONSAVEL SET PARENTESCO=?, ESTADO_CIVIL=?, ESCOLARIDADE=?, PROFISSAO=?, RENDA=? WHERE ID_PESSOA=?";
+			String sql = "UPDATE RESPONSAVEL SET ESTADO_CIVIL=?, ESCOLARIDADE=?, PROFISSAO=?, RENDA=? WHERE ID_PESSOA=?";
 			
 			try {
 				PreparedStatement preparador = getPreparedStatement(sql);
 				
-				preparador.setString(1, pResponsavel.getParentesco());
-				preparador.setString(2, pResponsavel.getEstadoCivil());
-				preparador.setString(3, pResponsavel.getEscolaridade());
-				preparador.setString(4, pResponsavel.getProfissao());
-				preparador.setDouble(5, pResponsavel.getRenda());
-				preparador.setString(6, pResponsavel.getId());
+				preparador.setString(1, pResponsavel.getEstadoCivil());
+				preparador.setString(2, pResponsavel.getEscolaridade());
+				preparador.setString(3, pResponsavel.getProfissao());
+				preparador.setDouble(4, pResponsavel.getRenda());
+				preparador.setString(5, pResponsavel.getId());
 				
 				preparador.execute();
 				preparador.close();

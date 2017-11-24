@@ -48,6 +48,16 @@ function alterar(){
 	function esconderDP() {
 		document.getElementById("dsNecEspecial").style.visibility = "hidden";
 	}
+	
+function consultarResponsavel(pCampo){
+	var tamanhoCampo = pCampo.length;
+		
+	if(tamanhoCampo == 14){
+		document.getElementById("<%=ServletAluno.NM_EVENTO%>").value = "<%=ServletAluno.NM_EVENTO_RESPONSAVEL_CADASTRADO%>";
+		document.getElementById("<%=ServletAluno.NM_PARAMETRO_TELA_EVENTO%>").value = "<%=ServletAluno.NM_JSP_ALTERAR_ALUNO%>";
+		document.frm_principal.submit();
+	}
+}
 </script>
 <script type="text/javascript">
 	jQuery(document).ready(function() {
@@ -93,9 +103,11 @@ function alterar(){
 		style="font-size: 14px; font-family: Cooper Black; text-decoration: none; color: black;">
 		<img width="60px" height="60px" src="img/pe.png" /><b>MENU</b>
 	</a>
-	<form action="ServletAluno" method="post">
+	<form name="frm_principal" action="ServletAluno" method="post">
 		<input type="hidden" id="<%=ServletAluno.NM_EVENTO%>"
 			name="<%=ServletAluno.NM_EVENTO%>" value="">
+			<input type="hidden" id="<%=ServletAluno.NM_PARAMETRO_TELA_EVENTO%>"
+			name="<%=ServletAluno.NM_PARAMETRO_TELA_EVENTO%>" value="">
 		<h2 align="center">ALTERAR ALUNO</h2>
 		<table width="100%">
 			<tr>
@@ -277,7 +289,16 @@ function alterar(){
 					<table width="100%" align="center" style="background-color: #99CCFF">
 						<tbody>
 							<tr>
-								<th width="5%" align="left">Nome:</th>
+								<th align="left">CPF:</th>
+								<td><input type="text"
+									id="<%=ServletAluno.NM_PARAMETRO_CPF%>"
+									name="<%=ServletAluno.NM_PARAMETRO_CPF%>"
+									value="<%=pesssoaResponsavel.getId()%>"
+									onkeyup="formatarCPF(event); consultarResponsavel(this.value);"
+									onblur="formatarCPF(event); consultarResponsavel(this.value);"
+									maxlength="14" onkeypress='return SomenteNumero(event)'size="15"></td>
+									
+								<th width="8%" align="left">Nome:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_NOME_RESP%>"
 									name="<%=ServletAluno.NM_PARAMETRO_NOME_RESP%>"
@@ -299,7 +320,8 @@ function alterar(){
 									name="<%=ServletAluno.NM_PARAMETRO_NATURALIDADE_RESP%>"
 									value="<%=pesssoaResponsavel.getNaturalidade()%>"
 									onkeypress='return letras(event)'></td>
-									
+							</tr>
+							<tr>
 								<th width="5%" align="left">CEP:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_CEP_RESP%>"
@@ -307,9 +329,8 @@ function alterar(){
 									value="<%=pesssoaResponsavel.getCep() == null ? ""
 					: pesssoaResponsavel.getCep()%>"
 									onkeyup="formatarCampoCEP(event)" maxlength="9"
-									onkeypress='return SomenteNumero(event)'></td>
-							</tr>
-							<tr>
+									onkeypress='return SomenteNumero(event)' size="15"></td>
+									
 								<th align="left">Endereço:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_ENDERECO_RESP%>"
@@ -330,15 +351,15 @@ function alterar(){
 									name="<%=ServletAluno.NM_PARAMETRO_BAIRRO_RESP%>"
 									value="<%=pesssoaResponsavel.getBairro()%>"
 									onkeypress='return letras(event)'></td>
-									
+							</tr>
+							<tr>
 								<th align="left">Cidade:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_CIDADE_RESP%>"
 									name="<%=ServletAluno.NM_PARAMETRO_CIDADE_RESP%>"
-									value="<%=pesssoaResponsavel.getCidade()%>" size="20"
-									onkeypress='return letras(event)'></td>
-							</tr>
-							<tr>
+									value="<%=pesssoaResponsavel.getCidade()%>"
+									onkeypress='return letras(event)' size="15"></td>
+									
 								<th align="left">Estado:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_ESTADO_RESP%>"
@@ -360,20 +381,14 @@ function alterar(){
 									name="<%=ServletAluno.NM_PARAMETRO_IDENTIDADE%>"
 									value="<%=pesssoaResponsavel.getIdentidade()%>" size="20"
 									onkeypress='return SomenteNumero(event)'></td>
-
-								<th align="left">CPF:</th>
-								<td><input type="text"
-									id="<%=ServletAluno.NM_PARAMETRO_CPF%>"
-									name="<%=ServletAluno.NM_PARAMETRO_CPF%>"
-									value="<%=pesssoaResponsavel.getId()%>" readonly></td>
 							</tr>
 							<tr>
 								<th align="left">Parentesco:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_PARENTESCO%>"
 									name="<%=ServletAluno.NM_PARAMETRO_PARENTESCO%>"
-									value="<%=responsavel.getParentesco()%>"
-									onkeypress='return letras(event)' maxlength="10"></td>
+									value="<%=aluno.getParentesco() == null ? "" : aluno.getParentesco()%>"
+									onkeypress='return letras(event)' maxlength="10" size="15"></td>
 									
 								<th align="left">Estado Civil:</th>
 								<td><input type="text"
@@ -403,7 +418,7 @@ function alterar(){
 									name="<%=ServletAluno.NM_PARAMETRO_RENDA%>"
 									value="<%=salarioFormatado%>"
 									onKeydown="Formata(this,20,event,2)"
-									onkeypress='return SomenteNumero(event)'></td>
+									onkeypress='return SomenteNumero(event)' size="15"></td>
 							</tr>
 						</tbody>
 					</table>

@@ -298,7 +298,7 @@ public class ServletProfessor extends ServletGenerico {
 		
 		ConsultaPrincipalProfessor consulta = new ConsultaPrincipalProfessor();
 		
-		colecaoProfessor = consulta.consultar(cpf, nome, disciplina, false);
+		colecaoProfessor = consulta.consultar(cpf, nome, disciplina, false, false);
 		
 		request.setAttribute(NM_PARAMETRO_NOME, nome);
 		request.setAttribute(NM_PARAMETRO_SELECT_DISCIPLINA, disciplina);

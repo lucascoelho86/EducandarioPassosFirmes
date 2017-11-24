@@ -13,11 +13,16 @@ public class ConsultaPrincipalProfessor extends Conexao{
 				+ "\n" + "FROM \n\t" + "PESSOA \n" + "INNER JOIN \n\t" + "PROFESSOR ON PESSOA.ID_PESSOA = PROFESSOR.ID_PESSOA \n"
 				+ "INNER JOIN \n\t" + "PROFESSOR_DISCIPLINA ON PROFESSOR_DISCIPLINA.ID_PESSOA = PROFESSOR.ID_PESSOA  \n"
 				+ "INNER JOIN \n\t" + "DISCIPLINA ON PROFESSOR_DISCIPLINA.ID_DISCIPLINA = DISCIPLINA.ID_DISCIPLINA";
+
+	private static final String SQL_COMPLETO_DISCIPLINA = "SELECT DISTINCT \n\t" + "PROFESSOR_DISCIPLINA.ID_DISCIPLINA"
+			+ ",\n\t" + "DISCIPLINA.DS_DISCIPLINA"	+ "\n" + "FROM \n\t" + "PESSOA \n" + "INNER JOIN \n\t"
+			+ "PROFESSOR_DISCIPLINA ON PROFESSOR_DISCIPLINA.ID_PESSOA = PESSOA.ID_PESSOA  \n"
+			+ "INNER JOIN \n\t" + "DISCIPLINA ON PROFESSOR_DISCIPLINA.ID_DISCIPLINA = DISCIPLINA.ID_DISCIPLINA";
 	
 	private static final String SQL_SIMPLES = "SELECT \n\t" + "PESSOA.ID_PESSOA" + ",\n\t"
 			+ "PESSOA.NOME" + "\n" + "FROM \n\t" + "PESSOA \n" + "INNER JOIN \n\t" + "PROFESSOR ON PESSOA.ID_PESSOA = PROFESSOR.ID_PESSOA";
 	
-	public ArrayList<LinkedHashMap<String, String>> consultar(String pMatricula, String pNome, String pDisciplina, boolean pConsultaCompleta){
+	public ArrayList<LinkedHashMap<String, String>> consultar(String pMatricula, String pNome, String pDisciplina, boolean pConsultaCompleta, boolean pApenasDisciplinaProf){
 		
 		String sql = "";
 		String where = "WHERE \n\t";
@@ -48,11 +53,13 @@ public class ConsultaPrincipalProfessor extends Conexao{
 					sql = SQL_SIMPLES + "\n" + where + sqlComplementar;
 				}
 			}else {
-				if(pConsultaCompleta || (pDisciplina != null && !pDisciplina.equals("") && !pDisciplina.equals("0"))) {
+				if(pApenasDisciplinaProf) {
+					sql = SQL_COMPLETO_DISCIPLINA;
+				}else if(pConsultaCompleta || (pDisciplina != null && !pDisciplina.equals("") && !pDisciplina.equals("0"))) {
 					sql = SQL_COMPLETO;
 				}else {
 					sql = SQL_SIMPLES;
-				}				
+				}
 			}
 			
 			PreparedStatement preparador = getPreparedStatement(sql);
@@ -77,10 +84,12 @@ public class ConsultaPrincipalProfessor extends Conexao{
 			while(resultado.next()){
 				dados = new LinkedHashMap<String, String>();
 				
-				dados.put("ID_PESSOA", resultado.getString("ID_PESSOA"));
-				dados.put("NOME", resultado.getString("NOME"));
+				if(!pApenasDisciplinaProf) {
+					dados.put("ID_PESSOA", resultado.getString("ID_PESSOA"));
+					dados.put("NOME", resultado.getString("NOME"));
+				}
 				
-				if (pConsultaCompleta || (pDisciplina != null && !pDisciplina.equals("") && !pDisciplina.equals("0"))) {
+				if (pApenasDisciplinaProf || pConsultaCompleta || (pDisciplina != null && !pDisciplina.equals("") && !pDisciplina.equals("0"))) {
 					dados.put("ID_DISCIPLINA", resultado.getString("ID_DISCIPLINA"));
 					dados.put("DS_DISCIPLINA", resultado.getString("DS_DISCIPLINA"));
 				}

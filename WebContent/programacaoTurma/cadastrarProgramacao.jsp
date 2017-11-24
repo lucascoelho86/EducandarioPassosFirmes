@@ -33,6 +33,7 @@
 
 function desistir(){
 	document.getElementById("<%=ServletProgramacao.NM_EVENTO%>").value = "<%=ServletProgramacao.NM_JSP_CONSULTAR%>";
+	window.open('/projeto/ServletProfessor', "botaoDesistir");
 	document.frm_principal.submit();
 }
 
@@ -193,7 +194,7 @@ function consultaSelectDisciplina(){
 												javascript = "onchange='consultaSelectProfessor()';";
 											}
 											
-											colecaoProfessor = consulta.consultar("", "", idDisciplina, false);
+											colecaoProfessor = consulta.consultar("", "", idDisciplina, false, false);
 											boolean ultimoProfessor = false;
 											for (int x = 0; x < colecaoProfessor.size(); x++) {
 												LinkedHashMap<String, String> dados = colecaoProfessor.get(x);
@@ -212,7 +213,7 @@ function consultaSelectDisciplina(){
 											ArrayList<LinkedHashMap<String, String>> colecaoProfessor = new ArrayList<LinkedHashMap<String, String>>();
 											ConsultaPrincipalProfessor consulta = new ConsultaPrincipalProfessor();
 	
-											colecaoProfessor = consulta.consultar("", "", "", false);
+											colecaoProfessor = consulta.consultar("", "", "", false, false);
 											boolean ultimoProfessor = false;
 											boolean mesmoProfessor = false;
 											for (int x = 0; x < colecaoProfessor.size(); x++) {
@@ -246,7 +247,7 @@ function consultaSelectDisciplina(){
 												javascript = "onchange='consultaSelectDisciplina()';";
 											}
 											
-											colecaoProfessor2 = consulta2.consultar(idProfessor, "", "", true);
+											colecaoProfessor2 = consulta2.consultar(idProfessor, "", "", true, true);
 											boolean ultimoProfessor2 = false;
 											for (int x = 0; x < colecaoProfessor2.size(); x++) {
 												LinkedHashMap<String, String> dados = colecaoProfessor2.get(x);
@@ -264,7 +265,7 @@ function consultaSelectDisciplina(){
 											ArrayList<LinkedHashMap<String, String>> colecaoProfessor2 = new ArrayList<LinkedHashMap<String, String>>();
 											ConsultaPrincipalProfessor consulta2 = new ConsultaPrincipalProfessor();
 
-											colecaoProfessor2 = consulta2.consultar("", "", "", true);
+											colecaoProfessor2 = consulta2.consultar("", "", "", true, true);
 											boolean ultimoDisciplina = false;
 											boolean mesmaDisciplina = false;
 											for (int x = 0; x < colecaoProfessor2.size(); x++) {

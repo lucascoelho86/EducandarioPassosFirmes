@@ -11,7 +11,7 @@ public class AlunoDAO extends Conexao{
 
 	 public void cadastrar(Aluno pAluno){
 		
-		String sql = "INSERT INTO ALUNO (ID_PESSOA, ID_TURMA, ID_RESPONSAVEL, DT_MATRICULA, NEC_ESPECIAL, DETALHE_NEC_ESPECIAL, CD_CARTEIRA_ESTUDANTE, CD_CERTIDAO_NASCIMENTO) values (?,?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO ALUNO (ID_PESSOA, ID_TURMA, ID_RESPONSAVEL, PARENTESCO_RESPONSAVEL, DT_MATRICULA, NEC_ESPECIAL, DETALHE_NEC_ESPECIAL, CD_CARTEIRA_ESTUDANTE, CD_CERTIDAO_NASCIMENTO) values (?,?,?,?,?,?,?,?,?)";
 		
 		try {
 			PreparedStatement preparador = getPreparedStatement(sql);
@@ -19,11 +19,12 @@ public class AlunoDAO extends Conexao{
 			preparador.setString(1, pAluno.getId());
 			preparador.setString(2, pAluno.getIdTurma());
 			preparador.setString(3, pAluno.getIdResponsavel());
-			preparador.setDate(4, pAluno.getDtMatricula());
-			preparador.setString(5, pAluno.getNecessidadeEspecial());
-			preparador.setString(6, pAluno.getDetalheNecessidadeEspecial());
-			preparador.setString(7, pAluno.getCdCarteiraEstudante());
-			preparador.setString(8, pAluno.getCdCertidaoNascimento());
+			preparador.setString(4, pAluno.getParentesco());
+			preparador.setDate(5, pAluno.getDtMatricula());
+			preparador.setString(6, pAluno.getNecessidadeEspecial());
+			preparador.setString(7, pAluno.getDetalheNecessidadeEspecial());
+			preparador.setString(8, pAluno.getCdCarteiraEstudante());
+			preparador.setString(9, pAluno.getCdCertidaoNascimento());
 			
 			preparador.execute();
 			preparador.close();
@@ -119,6 +120,7 @@ public class AlunoDAO extends Conexao{
 				aluno.setId(resultado.getString("ID_PESSOA"));
 				aluno.setIdTurma(resultado.getString("ID_TURMA"));
 				aluno.setIdResponsavel(resultado.getString("ID_RESPONSAVEL"));
+				aluno.setParentesco(resultado.getString("PARENTESCO_RESPONSAVEL"));
 				aluno.setDtMatricula(resultado.getDate("DT_MATRICULA"));
 				aluno.setNecessidadeEspecial(resultado.getString("NEC_ESPECIAL"));
 				aluno.setDetalheNecessidadeEspecial(resultado.getString("DETALHE_NEC_ESPECIAL"));
@@ -154,19 +156,20 @@ public class AlunoDAO extends Conexao{
 	
 	 public void alterar(Aluno pAluno){
 			
-			String sql = "UPDATE ALUNO SET ID_TURMA=?, ID_RESPONSAVEL=?, DT_MATRICULA=?, NEC_ESPECIAL=?, DETALHE_NEC_ESPECIAL=?, CD_CARTEIRA_ESTUDANTE=?, CD_CERTIDAO_NASCIMENTO=? WHERE ID_PESSOA=?";
+			String sql = "UPDATE ALUNO SET ID_TURMA=?, ID_RESPONSAVEL=?, PARENTESCO_RESPONSAVEL=?, DT_MATRICULA=?, NEC_ESPECIAL=?, DETALHE_NEC_ESPECIAL=?, CD_CARTEIRA_ESTUDANTE=?, CD_CERTIDAO_NASCIMENTO=? WHERE ID_PESSOA=?";
 			
 			try {
 				PreparedStatement preparador = getPreparedStatement(sql);
 				
 				preparador.setString(1, pAluno.getIdTurma());
 				preparador.setString(2, pAluno.getIdResponsavel());
-				preparador.setDate(3, pAluno.getDtMatricula());
-				preparador.setString(4, pAluno.getNecessidadeEspecial());
-				preparador.setString(5, pAluno.getDetalheNecessidadeEspecial());
-				preparador.setString(6, pAluno.getCdCarteiraEstudante());
-				preparador.setString(7, pAluno.getCdCertidaoNascimento());
-				preparador.setString(8, pAluno.getId());
+				preparador.setString(3, pAluno.getParentesco());
+				preparador.setDate(4, pAluno.getDtMatricula());
+				preparador.setString(5, pAluno.getNecessidadeEspecial());
+				preparador.setString(6, pAluno.getDetalheNecessidadeEspecial());
+				preparador.setString(7, pAluno.getCdCarteiraEstudante());
+				preparador.setString(8, pAluno.getCdCertidaoNascimento());
+				preparador.setString(9, pAluno.getId());
 				
 				preparador.execute();
 				preparador.close();

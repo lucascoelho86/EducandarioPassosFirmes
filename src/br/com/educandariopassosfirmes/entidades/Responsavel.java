@@ -2,19 +2,10 @@ package br.com.educandariopassosfirmes.entidades;
 
 public class Responsavel extends Membros {
 
-	private String parentesco;
 	private String estadoCivil;
 	private String escolaridade;
 	private String profissao;
 	private double renda;
-
-	public String getParentesco() {
-		return parentesco;
-	}
-
-	public void setParentesco(String parentesco) {
-		this.parentesco = parentesco;
-	}
 
 	public String getEstadoCivil() {
 		return estadoCivil;
