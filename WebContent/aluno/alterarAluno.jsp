@@ -39,15 +39,37 @@ function desistir(){
 
 function alterar(){
 	document.getElementById("<%=ServletAluno.NM_EVENTO%>").value = "<%=ServletAluno.NM_EVENTO_PROCESSAR_ALTERACAO%>";
+	var muitosDependentes = document.getElementById("<%=ServletAluno.NM_PARAMETRO_RESP_POR_MUITOS%>").value;
+	
+	if(muitosDependentes > 1){
+		var cpfRespAnterior = document.getElementById("<%=ServletAluno.NM_PARAMETRO_CPF_ANTERIOR%>").value;
+		var qtAlunoRestante = muitosDependentes - 1;
+		var mensagem1 = "O responsável do CPF Anterior: ";
+		var mensagem2 = mensagem1.concat(cpfRespAnterior);
+		var mensagem3 = mensagem2.concat(" continua sendo responsável por mais ");
+		var mensagem4 = mensagem3.concat(qtAlunoRestante);
+		var mensagem5 = mensagem4.concat(qtAlunoRestante > 1 ? " alunos." : " aluno.");
+		var mensagem6 = mensagem5.concat(" Deseja alterar o responsável de todos?");
+		var confirma = window.confirm(mensagem6);
+		
+	    if(confirma) {
+	    	document.getElementById("<%=ServletAluno.NM_PARAMETRO_ALTERAR_RESPONSAVEL_PARA_TODOS%>").value = "<%=ServletAluno.NM_PARAMETRO_ALTERAR_RESPONSAVEL_PARA_TODOS%>";
+			document.frm_principal.submit();
+	    }else{
+	    	document.frm_principal.submit();
+	    }
+	}else{
+		document.frm_principal.submit();
 	}
+}
 
-	function mostrarDP() {
-		document.getElementById("dsNecEspecial").style.visibility = "visible";
-	}
+function mostrarDP() {
+	document.getElementById("dsNecEspecial").style.visibility = "visible";
+}
 
-	function esconderDP() {
-		document.getElementById("dsNecEspecial").style.visibility = "hidden";
-	}
+function esconderDP() {
+	document.getElementById("dsNecEspecial").style.visibility = "hidden";
+}
 	
 function consultarResponsavel(pCampo){
 	var tamanhoCampo = pCampo.length;
@@ -76,6 +98,10 @@ function consultarResponsavel(pCampo){
 </script>
 
 <%
+	String cpf = (String) request
+			.getAttribute(ServletAluno.NM_PARAMETRO_CPF);
+	String cpfAnterior = (String) request
+			.getAttribute(ServletAluno.NM_PARAMETRO_CPF_ANTERIOR);
 	Aluno aluno = (Aluno) request
 			.getAttribute(ServletAluno.NM_PARAMETRO_ALUNO);
 	Pessoa pessoaAluno = (Pessoa) request
@@ -84,6 +110,8 @@ function consultarResponsavel(pCampo){
 			.getAttribute(ServletAluno.NM_PARAMETRO_RESPONSAVEL);
 	Pessoa pesssoaResponsavel = (Pessoa) request
 			.getAttribute(ServletAluno.NM_PARAMETRO_PESSOA_RESPONSAVEL);
+	Integer responsavelPorMaisDeUm = (Integer) request
+			.getAttribute(ServletAluno.NM_PARAMETRO_RESP_POR_MUITOS);
 
 	double salario = responsavel.getRenda();
 
@@ -108,6 +136,12 @@ function consultarResponsavel(pCampo){
 			name="<%=ServletAluno.NM_EVENTO%>" value="">
 			<input type="hidden" id="<%=ServletAluno.NM_PARAMETRO_TELA_EVENTO%>"
 			name="<%=ServletAluno.NM_PARAMETRO_TELA_EVENTO%>" value="">
+			<input type="hidden" id="<%=ServletAluno.NM_PARAMETRO_CPF_ANTERIOR%>"
+			name="<%=ServletAluno.NM_PARAMETRO_CPF_ANTERIOR%>" value="<%=cpfAnterior == null ? "" : cpfAnterior%>">
+			<input type="hidden" id="<%=ServletAluno.NM_PARAMETRO_RESP_POR_MUITOS%>"
+			name="<%=ServletAluno.NM_PARAMETRO_RESP_POR_MUITOS%>" value="<%=responsavelPorMaisDeUm%>">
+			<input type="hidden" id="<%=ServletAluno.NM_PARAMETRO_ALTERAR_RESPONSAVEL_PARA_TODOS%>"
+			name="<%=ServletAluno.NM_PARAMETRO_ALTERAR_RESPONSAVEL_PARA_TODOS%>" value="">
 		<h2 align="center">ALTERAR ALUNO</h2>
 		<table width="100%">
 			<tr>
@@ -182,7 +216,7 @@ function consultarResponsavel(pCampo){
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_NATURALIDADE%>"
 									name="<%=ServletAluno.NM_PARAMETRO_NATURALIDADE%>"
-									value="<%=pessoaAluno.getNaturalidade()%>"
+									value="<%=pessoaAluno.getNaturalidade() == null ? "" : pessoaAluno.getNaturalidade()%>"
 									onkeypress='return letras(event)'></td>
 							</tr>
 							<tr>
@@ -293,7 +327,7 @@ function consultarResponsavel(pCampo){
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_CPF%>"
 									name="<%=ServletAluno.NM_PARAMETRO_CPF%>"
-									value="<%=pesssoaResponsavel.getId()%>"
+									value="<%=cpf == null ? "" : cpf%>"
 									onkeyup="formatarCPF(event); consultarResponsavel(this.value);"
 									onblur="formatarCPF(event); consultarResponsavel(this.value);"
 									maxlength="14" onkeypress='return SomenteNumero(event)'size="15"></td>
@@ -302,7 +336,7 @@ function consultarResponsavel(pCampo){
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_NOME_RESP%>"
 									name="<%=ServletAluno.NM_PARAMETRO_NOME_RESP%>"
-									value="<%=pesssoaResponsavel.getNome()%>" size="50"
+									value="<%=pesssoaResponsavel.getNome() == null ? "" : pesssoaResponsavel.getNome()%>" size="50"
 									onkeypress='return letras(event)'></td>
 
 								<th width="12%" align="left">Data de Nascimento:</th>
@@ -318,7 +352,7 @@ function consultarResponsavel(pCampo){
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_NATURALIDADE_RESP%>"
 									name="<%=ServletAluno.NM_PARAMETRO_NATURALIDADE_RESP%>"
-									value="<%=pesssoaResponsavel.getNaturalidade()%>"
+									value="<%=pesssoaResponsavel.getNaturalidade() == null ? "" : pesssoaResponsavel.getNaturalidade()%>"
 									onkeypress='return letras(event)'></td>
 							</tr>
 							<tr>
@@ -335,7 +369,7 @@ function consultarResponsavel(pCampo){
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_ENDERECO_RESP%>"
 									name="<%=ServletAluno.NM_PARAMETRO_ENDERECO_RESP%>"
-									value="<%=pesssoaResponsavel.getEndereco()%>" size="50"></td>
+									value="<%=pesssoaResponsavel.getEndereco() == null ? "" : pesssoaResponsavel.getEndereco()%>" size="50"></td>
 
 								<th align="left">Número:</th>
 								<td><input type="text"
@@ -349,7 +383,7 @@ function consultarResponsavel(pCampo){
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_BAIRRO_RESP%>"
 									name="<%=ServletAluno.NM_PARAMETRO_BAIRRO_RESP%>"
-									value="<%=pesssoaResponsavel.getBairro()%>"
+									value="<%=pesssoaResponsavel.getBairro() == null ? "" : pesssoaResponsavel.getBairro()%>"
 									onkeypress='return letras(event)'></td>
 							</tr>
 							<tr>
@@ -357,21 +391,21 @@ function consultarResponsavel(pCampo){
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_CIDADE_RESP%>"
 									name="<%=ServletAluno.NM_PARAMETRO_CIDADE_RESP%>"
-									value="<%=pesssoaResponsavel.getCidade()%>"
+									value="<%=pesssoaResponsavel.getCidade() == null ? "" : pesssoaResponsavel.getCidade()%>"
 									onkeypress='return letras(event)' size="15"></td>
 									
 								<th align="left">Estado:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_ESTADO_RESP%>"
 									name="<%=ServletAluno.NM_PARAMETRO_ESTADO_RESP%>"
-									value="<%=pesssoaResponsavel.getEstado()%>"
+									value="<%=pesssoaResponsavel.getEstado() == null ? "" : pesssoaResponsavel.getEstado()%>"
 									onkeypress='return letras(event)'></td>
 									
 								<th align="left">Telefone:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_TELEFONE%>"
 									name="<%=ServletAluno.NM_PARAMETRO_TELEFONE%>"
-									value="<%=pesssoaResponsavel.getTelefone()%>"
+									value="<%=pesssoaResponsavel.getTelefone() == null ? "" : pesssoaResponsavel.getTelefone()%>"
 									onkeyup="formatarCampoTelefone(this.name, this, event);"
 									onkeypress='return SomenteNumero(event)'></td>
 									
@@ -379,7 +413,7 @@ function consultarResponsavel(pCampo){
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_IDENTIDADE%>"
 									name="<%=ServletAluno.NM_PARAMETRO_IDENTIDADE%>"
-									value="<%=pesssoaResponsavel.getIdentidade()%>" size="20"
+									value="<%=pesssoaResponsavel.getIdentidade() == null ? "" : pesssoaResponsavel.getIdentidade()%>" size="20"
 									onkeypress='return SomenteNumero(event)'></td>
 							</tr>
 							<tr>
@@ -394,21 +428,21 @@ function consultarResponsavel(pCampo){
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_ESTADO_CIVIL%>"
 									name="<%=ServletAluno.NM_PARAMETRO_ESTADO_CIVIL%>"
-									value="<%=responsavel.getEstadoCivil()%>"
+									value="<%=responsavel.getEstadoCivil() == null ? "" : responsavel.getEstadoCivil()%>"
 									onkeypress='return letras(event)'></td>
 
 								<th align="left">Escolaridade:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_ESCOLARIDADE%>"
 									name="<%=ServletAluno.NM_PARAMETRO_ESCOLARIDADE%>"
-									value="<%=responsavel.getEscolaridade()%>"
+									value="<%=responsavel.getEscolaridade() == null ? "" : responsavel.getEscolaridade()%>"
 									onkeypress='return letras(event)'></td>
 									
 								<th align="left">Profissão:</th>
 								<td><input type="text"
 									id="<%=ServletAluno.NM_PARAMETRO_PROFISSAO%>"
 									name="<%=ServletAluno.NM_PARAMETRO_PROFISSAO%>"
-									value="<%=responsavel.getProfissao()%>"
+									value="<%=responsavel.getProfissao() == null ? "" : responsavel.getProfissao()%>"
 									onkeypress='return letras(event)'></td>
 							</tr>
 							<tr>
@@ -426,7 +460,7 @@ function consultarResponsavel(pCampo){
 					<table width="50%" align="center">
 						<tr>
 							<td align="center">
-								<button type="submit" id="botaoAlterar" name="botaoAlterar"
+								<button type="button" id="botaoAlterar" name="botaoAlterar"
 									onclick="alterar();">Alterar</button>
 							</td>
 

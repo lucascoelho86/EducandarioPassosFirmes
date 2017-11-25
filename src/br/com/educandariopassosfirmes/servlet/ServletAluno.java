@@ -25,6 +25,7 @@ import br.com.educandariopassosfirmes.dao.ResponsavelDAO;
 import br.com.educandariopassosfirmes.entidades.Aluno;
 import br.com.educandariopassosfirmes.entidades.Pessoa;
 import br.com.educandariopassosfirmes.entidades.Responsavel;
+import br.com.educandariopassosfirmes.rn.RegraNegocioAlteracaoTodosResponsaveis;
 
 
 /**
@@ -84,6 +85,8 @@ public class ServletAluno extends ServletGenerico {
 	public static final String NM_PARAMETRO_CPF = "cpf";
 	public static final String NM_PARAMETRO_CPF_ANTERIOR = "cpfAnterior";
 	public static final String NM_PARAMETRO_CPF_RESP_CADASTRADO = "cpfRespCadastrado";
+	public static final String NM_PARAMETRO_RESP_POR_MUITOS = "respPorMuitos";
+	public static final String NM_PARAMETRO_ALTERAR_RESPONSAVEL_PARA_TODOS = "alterarRespTodos";
 	public static final String NM_PARAMETRO_FORMACAO = "formacao";
 	public static final String NM_PARAMETRO_ESTADO_CIVIL = "estadoCivil";
 	public static final String NM_PARAMETRO_QT_DEPENDENTE = "qtDependente";
@@ -482,6 +485,8 @@ public class ServletAluno extends ServletGenerico {
 		ArrayList<Pessoa> consultaPessoaResp = pessoaDAO.consultar(idResponsavel, "");
 		Pessoa pessoaResp = consultaPessoaResp.get(0);
 		
+		request.setAttribute(NM_PARAMETRO_CPF, idResponsavel);
+		request.setAttribute(NM_PARAMETRO_CPF_ANTERIOR, idResponsavel);
 		request.setAttribute(NM_PARAMETRO_ALUNO, aluno);
 		request.setAttribute(NM_PARAMETRO_PESSOA_ALUNO, pessoaAluno);
 		request.setAttribute(NM_PARAMETRO_RESPONSAVEL, responsavel);
@@ -530,6 +535,8 @@ public class ServletAluno extends ServletGenerico {
 		String escolaridade = "";
 		String profissao = "";
 		String renda = "";
+		String cpfAnterior = "";
+		String alterarRespParaTodosAlunos = "";
 				
 		Date dtNasc = null;
 		Date dtNascResp = null;
@@ -572,6 +579,8 @@ public class ServletAluno extends ServletGenerico {
 		escolaridade = request.getParameter(NM_PARAMETRO_ESCOLARIDADE);
 		profissao = request.getParameter(NM_PARAMETRO_PROFISSAO);
 		renda = request.getParameter(NM_PARAMETRO_RENDA);
+		cpfAnterior = request.getParameter(NM_PARAMETRO_CPF_ANTERIOR);
+		alterarRespParaTodosAlunos = request.getParameter(NM_PARAMETRO_ALTERAR_RESPONSAVEL_PARA_TODOS);
 
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 				
@@ -598,6 +607,9 @@ public class ServletAluno extends ServletGenerico {
 				
 		carteiraEstudante = carteiraEstudante.replace("-", "");
 				
+		cpfAnterior = cpfAnterior.replace(".", "");
+		cpfAnterior = cpfAnterior.replace("-", "");
+
 		cpf = cpf.replace(".", "");
 		cpf = cpf.replace("-", "");
 				
@@ -639,48 +651,38 @@ public class ServletAluno extends ServletGenerico {
 		pessoa.setEstado(estadoResp);
 		pessoa.setTelefone(telefone);
 		pessoa.setIdentidade(identidade);
-
-		//inclui em PESSOA 2x
-		PessoaDAO pessoaDAO = new PessoaDAO();
-		pessoaDAO.alterar(pessoa);
-				
-		Responsavel responsavel = new Responsavel();
-		responsavel.setId(cpf);
-		responsavel.setEstadoCivil(estadoCivil);
-		responsavel.setEscolaridade(escolaridade);
-		responsavel.setProfissao(profissao);
-		responsavel.setRenda(valorSalario);
-				
-		ResponsavelDAO responsavelDAO = new ResponsavelDAO();
-		responsavelDAO.alterar(responsavel);
-
+		
 		//monta a entidade pessoa para incluir aluno
-		pessoa = new Pessoa();
-		pessoa.setId(matricula);
-		pessoa.setNome(nome);
+		Pessoa pessoaAluno = new Pessoa();
+		pessoaAluno.setId(matricula);
+		pessoaAluno.setNome(nome);
 		
 		if(dtNasc != null) {
-			pessoa.setDtNascimento(new java.sql.Date(dtNasc.getTime()));
+			pessoaAluno.setDtNascimento(new java.sql.Date(dtNasc.getTime()));
 		}
 		
 		pessoa.setNaturalidade(naturalidade);
 		
 		cep = cep.replace("-", "");
 		
-		pessoa.setCep(cep);
-		pessoa.setEndereco(endereco);
+		pessoaAluno.setCep(cep);
+		pessoaAluno.setEndereco(endereco);
 		
 		if(numero != null && !numero.equals("")) {
-			pessoa.setNumero(Integer.valueOf(numero));
+			pessoaAluno.setNumero(Integer.valueOf(numero));
 		}
 		
-		pessoa.setBairro(bairro);
-		pessoa.setCidade(cidade);
-		pessoa.setEstado(estado);
-				
-		pessoaDAO = new PessoaDAO();
-		pessoaDAO.alterar(pessoa);
-				
+		pessoaAluno.setBairro(bairro);
+		pessoaAluno.setCidade(cidade);
+		pessoaAluno.setEstado(estado);
+
+		Responsavel responsavel = new Responsavel();
+		responsavel.setId(cpf);
+		responsavel.setEstadoCivil(estadoCivil);
+		responsavel.setEscolaridade(escolaridade);
+		responsavel.setProfissao(profissao);
+		responsavel.setRenda(valorSalario);
+
 		Aluno aluno = new Aluno();
 		aluno.setId(matricula);
 		aluno.setIdResponsavel(cpf);
@@ -701,9 +703,44 @@ public class ServletAluno extends ServletGenerico {
 		
 		aluno.setCdCarteiraEstudante(carteiraEstudante);
 		aluno.setCdCertidaoNascimento(certidaoNasc);
-				
+
+		//inclui em PESSOA 2x
+		PessoaDAO pessoaDAO = new PessoaDAO();
+		ResponsavelDAO responsavelDAO = new ResponsavelDAO();
 		AlunoDAO alunoDAO = new AlunoDAO();
-		alunoDAO.alterar(aluno);
+		
+		if(cpf.equals(cpfAnterior)){
+			pessoaDAO.alterar(pessoa);
+			responsavelDAO.alterar(responsavel);
+			
+			pessoaDAO.alterar(pessoaAluno);			
+			alunoDAO.alterar(aluno);
+		}else if(!cpf.equals(cpfAnterior) && alterarRespParaTodosAlunos.equals("")){
+			alunoDAO.excluir(matricula);
+			pessoaDAO.excluir(matricula);
+			
+			responsavelDAO.excluir(cpfAnterior);
+			pessoaDAO.excluir(cpfAnterior);
+			
+			pessoaDAO.incluir(pessoa);
+			responsavelDAO.cadastrar(responsavel);
+
+			pessoaDAO.incluir(pessoaAluno);
+			alunoDAO.cadastrar(aluno);
+		}else {
+			
+			alunoDAO.excluir(matricula);
+			pessoaDAO.excluir(matricula);
+			
+			pessoaDAO.incluir(pessoa);
+			responsavelDAO.cadastrar(responsavel);
+
+			pessoaDAO.incluir(pessoaAluno);
+			alunoDAO.cadastrar(aluno);
+			
+			RegraNegocioAlteracaoTodosResponsaveis regra = new RegraNegocioAlteracaoTodosResponsaveis();
+			regra.executar(cpfAnterior, cpf);
+		}
 				
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
 	}
@@ -729,8 +766,10 @@ public class ServletAluno extends ServletGenerico {
 		String dsNecEspecial = "";
 		String turma = "";
 		String telaEvento = "";
+		int qtAlunosResponsavel = 0;
 				
 		String cpf = "";
+		String cpfAnterior = "";
 				
 		// recupera os parametros do request Aluno
 		nome = request.getParameter(NM_PARAMETRO_NOME);
@@ -753,10 +792,23 @@ public class ServletAluno extends ServletGenerico {
 
 		// recupera os parametros do request responsável
 		cpf = request.getParameter(NM_PARAMETRO_CPF);
+		cpfAnterior = request.getParameter(NM_PARAMETRO_CPF_ANTERIOR);
 
 		cpf = cpf.replace(".", "");
 		cpf = cpf.replace("-", "");
 		
+		cpfAnterior = cpfAnterior.replace(".", "");
+		cpfAnterior = cpfAnterior.replace("-", "");
+		
+		ArrayList<Aluno> consultaQtRespAlunos = new ArrayList<Aluno>();
+		if(cpfAnterior != null && !cpfAnterior.equals("")){
+			AlunoDAO alunoDAO = new AlunoDAO();
+			
+			consultaQtRespAlunos = alunoDAO.consultar("", "", cpfAnterior);
+			qtAlunosResponsavel = consultaQtRespAlunos.size();
+		}
+		
+		request.setAttribute(NM_PARAMETRO_RESP_POR_MUITOS, qtAlunosResponsavel);
 		matricula = matricula.replace(".", "");
 		
 		ResponsavelDAO responsavelDAO = new ResponsavelDAO();
@@ -803,6 +855,7 @@ public class ServletAluno extends ServletGenerico {
 		}
 		
 		request.setAttribute(NM_PARAMETRO_CPF, cpf);
+		request.setAttribute(NM_PARAMETRO_CPF_ANTERIOR, cpfAnterior);
 		request.setAttribute(NM_PARAMETRO_NOME, nome);
 		request.setAttribute(NM_PARAMETRO_DT_NASCIMENTO, dtNascimento);
 		request.setAttribute(NM_PARAMETRO_NATURALIDADE, naturalidade);

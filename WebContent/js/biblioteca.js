@@ -46,6 +46,22 @@ function formatarCPFOnload(){
 	}
 	
 	document.getElementById("cpf").value = valor;
+	
+	if(document.getElementById("cpfAnterior").value != ""){
+		var valor = document.getElementById("cpfAnterior").value;
+		var tamanhoValor = valor.length;
+		
+		if(tamanhoValor == 11){
+			var primeiraParteCPF = valor.substring(0, 3);
+			var segundaParteCPF = valor.substring(3, 6);
+			var terceiraParteCPF = valor.substring(6, 9);
+			var quartaParteCPF = valor.substring(9, 11);
+			
+			valor = primeiraParteCPF.concat(".").concat(segundaParteCPF).concat(".").concat(terceiraParteCPF).concat("-").concat(quartaParteCPF);
+		}
+		
+		document.getElementById("cpfAnterior").value = valor;
+	}
 }
 
 function formatarMatricula(event){
