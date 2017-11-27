@@ -21,9 +21,11 @@ import br.com.educandariopassosfirmes.dao.ConsultaPrincipalProfessor;
 import br.com.educandariopassosfirmes.dao.PessoaDAO;
 import br.com.educandariopassosfirmes.dao.ProfessorDAO;
 import br.com.educandariopassosfirmes.dao.ProfessorDisciplinaDAO;
+import br.com.educandariopassosfirmes.dao.TurmaProfessorDisciplinaDAO;
 import br.com.educandariopassosfirmes.entidades.Pessoa;
 import br.com.educandariopassosfirmes.entidades.Professor;
 import br.com.educandariopassosfirmes.entidades.ProfessorDisciplina;
+import br.com.educandariopassosfirmes.entidades.TurmaProfessorDisciplina;
 
 
 /**
@@ -74,6 +76,10 @@ public class ServletProfessor extends ServletGenerico {
 	//Constantes utilizadas na inclusão de turmas
 	public static final String NM_TURNO_MANHA = "Matutino";
 	public static final String NM_TURNO_TARDE = "Vespertino";
+
+	public static final String NM_MAGISTERIO = "Magistério";
+	public static final String NM_PEDAGOGIA = "Pedagógia";
+	public static final String NM_OUTROS = "Outros";
 
 	@Override
 	protected void doGet(HttpServletRequest request,
@@ -243,7 +249,17 @@ public class ServletProfessor extends ServletGenerico {
 		//monta a entidade professor para incluir
 		Professor professor = new Professor();
 		professor.setId(cpf);
-		professor.setFormacao(formacao);
+		
+		if(formacao.equals("1")) {
+			professor.setFormacao(NM_MAGISTERIO);
+		}else if(formacao.equals("2")) {
+			professor.setFormacao(NM_PEDAGOGIA);
+		}else if(formacao.equals("3")) {
+			professor.setFormacao(NM_OUTROS);
+		}else {
+			professor.setFormacao("");
+		}
+		
 		professor.setEstadoCivil(estadoCivil);
 		
 		if(qtDependente != null && !qtDependente.equals("")) {
@@ -258,7 +274,12 @@ public class ServletProfessor extends ServletGenerico {
 			professor.setCargaHoraria(Integer.valueOf(cargaHoraria));
 		}
 		
-		professor.setSalario(professor.getBonificacao(valorSalario));
+		//SE FOR PEDAGOGO GANHA 20% A MAIS NO SALÁRIO
+		if(formacao.equals("2")) {
+			professor.setSalario(professor.getBonificacao(valorSalario));			
+		}else {
+			professor.setSalario(valorSalario);
+		}
 		
 		//inclui em PESSOA
 		ProfessorDAO professorDAO = new ProfessorDAO();
@@ -373,7 +394,15 @@ public class ServletProfessor extends ServletGenerico {
 			Professor professor = itProfessor.next();
 			
 			//seta os atributos no request para recuperar na JSP
-			request.setAttribute(NM_PARAMETRO_FORMACAO, professor.getFormacao());
+			
+			if(professor.getFormacao().equals(NM_MAGISTERIO)) {
+				request.setAttribute(NM_PARAMETRO_FORMACAO, "1");
+			}else if(professor.getFormacao().equals(NM_PEDAGOGIA)) {
+				request.setAttribute(NM_PARAMETRO_FORMACAO, "2");
+			}else if(professor.getFormacao().equals(NM_OUTROS)) {
+				request.setAttribute(NM_PARAMETRO_FORMACAO, "3");
+			}
+			
 			request.setAttribute(NM_PARAMETRO_ESTADO_CIVIL, professor.getEstadoCivil());
 			request.setAttribute(NM_PARAMETRO_QT_DEPENDENTE, String.valueOf(professor.getQtDependente()));
 			request.setAttribute(NM_PARAMETRO_DT_ADMISSAO, String.valueOf(professor.getDtAdmissao()));
@@ -405,6 +434,7 @@ public class ServletProfessor extends ServletGenerico {
 		String telefone = "";
 		String identidade = "";
 		String cpf = "";
+		String cpfAnt = "";
 		String formacao = "";
 		String estadoCivil = "";
 		String qtDependente = "";
@@ -429,6 +459,7 @@ public class ServletProfessor extends ServletGenerico {
 		telefone = request.getParameter(NM_PARAMETRO_TELEFONE);
 		identidade = request.getParameter(NM_PARAMETRO_IDENTIDADE);
 		cpf = request.getParameter(NM_PARAMETRO_CPF);
+		cpfAnt = request.getParameter(NM_PARAMETRO_CPF_ANTERIOR);
 		formacao = request.getParameter(NM_PARAMETRO_FORMACAO);
 		estadoCivil = request.getParameter(NM_PARAMETRO_ESTADO_CIVIL);
 		qtDependente = request.getParameter(NM_PARAMETRO_QT_DEPENDENTE);
@@ -452,6 +483,9 @@ public class ServletProfessor extends ServletGenerico {
 			e.printStackTrace();
 		}
 		
+		cpfAnt = cpfAnt.replace(".", "");
+		cpfAnt = cpfAnt.replace("-", "");
+
 		cpf = cpf.replace(".", "");
 		cpf = cpf.replace("-", "");
 		
@@ -492,12 +526,27 @@ public class ServletProfessor extends ServletGenerico {
 				
 		//altera em PESSOA
 		PessoaDAO pessoaDAO = new PessoaDAO();
-		pessoaDAO.alterar(pessoa);
+		
+		if(cpf.equals(cpfAnt)) {
+			pessoaDAO.alterar(pessoa);
+		}else {
+			pessoaDAO.incluir(pessoa);
+		}
 				
 		//monta a entidade professor para alterar
 		Professor professor = new Professor();
 		professor.setId(cpf);
-		professor.setFormacao(formacao);
+		
+		if(formacao.equals("1")) {
+			professor.setFormacao(NM_MAGISTERIO);
+		}else if(formacao.equals("2")) {
+			professor.setFormacao(NM_PEDAGOGIA);
+		}else if(formacao.equals("3")) {
+			professor.setFormacao(NM_OUTROS);
+		}else {
+			professor.setFormacao("");
+		}
+		
 		professor.setEstadoCivil(estadoCivil);
 		
 		if(qtDependente != null && !qtDependente.equals("")) {
@@ -516,11 +565,33 @@ public class ServletProfessor extends ServletGenerico {
 				
 		//altera em PESSOA
 		ProfessorDAO professorDAO = new ProfessorDAO();
-		professorDAO.alterar(professor);
 		
+		if(cpf.equals(cpfAnt)) {
+			professorDAO.alterar(professor);
+		}else {
+			professorDAO.incluir(professor);
+		}
+		
+		ArrayList<TurmaProfessorDisciplina> colecaoNovaProgramacao = new ArrayList<TurmaProfessorDisciplina>();
+		if(!cpf.equals(cpfAnt)) {
+			TurmaProfessorDisciplinaDAO turmaProfessorDisciplinaDAO = new TurmaProfessorDisciplinaDAO();
+			ArrayList<TurmaProfessorDisciplina> consultaTurmaProfessorDisciplina = turmaProfessorDisciplinaDAO.consultar("", cpfAnt, "");
+			
+			for(int x = 0; x < consultaTurmaProfessorDisciplina.size(); x++) {
+				TurmaProfessorDisciplina turmaProfessorDisciplina = consultaTurmaProfessorDisciplina.get(x);
+				
+				String idTurma = turmaProfessorDisciplina.getIdTurma();
+				Integer idDisciplinaAux = turmaProfessorDisciplina.getIdDisciplina();
+				turmaProfessorDisciplinaDAO.excluir(idTurma, cpfAnt, String.valueOf(idDisciplinaAux));
+				
+				turmaProfessorDisciplina.setIdProfessor(cpf);
+				colecaoNovaProgramacao.add(turmaProfessorDisciplina);
+			}
+		}
+
 		//primeiro exclui depois inclui novamente
 		ProfessorDisciplinaDAO professorDisciplinaDAO = new ProfessorDisciplinaDAO();
-		professorDisciplinaDAO.excluir(cpf);
+		professorDisciplinaDAO.excluir(cpfAnt);
 		
 		for(int x = 0; x < Integer.valueOf(tamanhoColecaoDisciplina); x++) {
 			idDisciplina = request.getParameter(NM_PARAMETRO_ID_DISCIPLINA + x);
@@ -532,6 +603,15 @@ public class ServletProfessor extends ServletGenerico {
 				professorDisciplinaDAO = new ProfessorDisciplinaDAO();
 				professorDisciplinaDAO.cadastrar(professorDisciplina);
 			}
+		}
+		
+		if(!colecaoNovaProgramacao.isEmpty()) {
+			TurmaProfessorDisciplinaDAO turmaProfessorDisciplinaDAO = new TurmaProfessorDisciplinaDAO();
+			for(int x = 0; x < colecaoNovaProgramacao.size(); x++) {
+				turmaProfessorDisciplinaDAO.incluir(colecaoNovaProgramacao.get(x));
+			}
+			professorDAO.excluir(cpfAnt);
+			pessoaDAO.excluir(cpfAnt);
 		}
 				
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);

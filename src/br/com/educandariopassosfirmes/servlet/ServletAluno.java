@@ -760,7 +760,6 @@ public class ServletAluno extends ServletGenerico {
 		String estado = "";
 		String certidaoNasc = "";
 		String matricula = "";
-		String dtMatricula = "";
 		String carteiraEstudante = "";
 		String necEspecial = "";
 		String dsNecEspecial = "";
@@ -783,7 +782,6 @@ public class ServletAluno extends ServletGenerico {
 		estado = request.getParameter(NM_PARAMETRO_ESTADO);
 		certidaoNasc = request.getParameter(NM_PARAMETRO_CERTIDAO_NASC);
 		matricula = request.getParameter(NM_PARAMETRO_MATRICULA);
-		dtMatricula = request.getParameter(NM_PARAMETRO_DT_MATRICULA);
 		carteiraEstudante = request.getParameter(NM_PARAMETRO_CARTEIRA_ESTUDANTE);
 		necEspecial = request.getParameter(NM_PARAMETRO_NECESSIDADE_ESPECIAL);
 		dsNecEspecial = request.getParameter(NM_PARAMETRO_DS_NECESSIDADE_ESPECIAL);
@@ -888,6 +886,7 @@ public class ServletAluno extends ServletGenerico {
 			
 			if(matricula != null && !matricula.equals("") && !consultaAluno.isEmpty()) {
 				aluno = consultaAluno.get(0);
+				aluno.setParentesco("");
 				request.setAttribute(NM_PARAMETRO_ALUNO, aluno);
 			}else {
 				request.setAttribute(NM_PARAMETRO_ALUNO, aluno);

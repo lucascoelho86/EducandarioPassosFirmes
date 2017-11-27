@@ -26,10 +26,22 @@
 
 function desistir(){
 	document.getElementById("<%=ServletProfessor.NM_EVENTO%>").value = "<%=ServletProfessor.NM_JSP_CONSULTAR%>";
+	document.frm_principal.submit();
 }
 
 function alterar(){
 	document.getElementById("<%=ServletProfessor.NM_EVENTO%>").value = "<%=ServletProfessor.NM_EVENTO_PROCESSAR_ALTERACAO%>";
+	var valorCPF = document.getElementById("<%=ServletProfessor.NM_PARAMETRO_CPF%>").value;
+	var valorSelectFormacao = document.getElementById("<%=ServletProfessor.NM_PARAMETRO_FORMACAO%>").value;
+	var tamanhoValorCPF = valorCPF.length;
+	
+	if (tamanhoValorCPF == 14 && valorSelectFormacao != 0) {
+		document.frm_principal.submit();
+	}else if(tamanhoValorCPF < 14){
+		alert("CPF obrigatório!");
+	}else if(valorSelectFormacao == 0){
+		alert("Selecione uma formação!");
+	}
 }
 
 function mostrarDP(){
@@ -120,6 +132,8 @@ function mostrarDP(){
 	<form name="frm_principal" action="ServletProfessor" method="post">
 		<input type="hidden" id="<%=ServletProfessor.NM_EVENTO%>"
 			name="<%=ServletProfessor.NM_EVENTO%>" value="">
+		<input type="hidden" id="<%=ServletProfessor.NM_PARAMETRO_CPF_ANTERIOR%>"
+			name="<%=ServletProfessor.NM_PARAMETRO_CPF_ANTERIOR%>" value="<%=cpf%>">
 		<h2 align="center">ALTERAR PROFESSOR</h2>
 		<table width="100%">
 			<tr>
@@ -200,14 +214,38 @@ function mostrarDP(){
 									id="<%=ServletProfessor.NM_PARAMETRO_CPF%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_CPF%>" value="<%=cpf%>"
 									onkeyup="formatarCPF(event);"
-									onkeypress='return SomenteNumero(event)' maxlength="14"
-									readonly="readonly"></td>
+									onkeypress='return SomenteNumero(event)' maxlength="14"></td>
 
 								<th align="left">Formação:</th>
-								<td><input type="text"
-									id="<%=ServletProfessor.NM_PARAMETRO_FORMACAO%>"
-									name="<%=ServletProfessor.NM_PARAMETRO_FORMACAO%>"
-									value="<%=formacao%>" onkeypress='return letras(event)'></td>
+								<td>
+									<%
+										int contador = 0;
+									boolean formacaoSelecionada = false;
+										for (int x = 0; x < 3; x++) {
+
+											if (x + 1 == Integer.valueOf(formacao)) {
+												formacaoSelecionada = true;
+											}
+											if (x == 0) {
+									%> <%=Select.getInstancia().getHTML(ServletProfessor.NM_PARAMETRO_FORMACAO,
+							ServletProfessor.NM_PARAMETRO_FORMACAO, String.valueOf(x + 1),
+							ServletProfessor.NM_MAGISTERIO, formacaoSelecionada, contador, false, "")%><%
+							
+											}else if (x == 1) {%>
+												<%=Select.getInstancia().getHTML(ServletProfessor.NM_PARAMETRO_FORMACAO,
+														ServletProfessor.NM_PARAMETRO_FORMACAO, String.valueOf(x + 1),
+														ServletProfessor.NM_PEDAGOGIA, formacaoSelecionada, contador, false, "")%><%
+ 	} else {
+ %> <%=Select.getInstancia().getHTML(ServletProfessor.NM_PARAMETRO_FORMACAO,
+							ServletProfessor.NM_PARAMETRO_FORMACAO, String.valueOf(x + 1),
+							ServletProfessor.NM_OUTROS, formacaoSelecionada, contador, true, "")%> <%
+ 	}
+ 		contador++;
+ %> <%
+ formacaoSelecionada = false;
+ 	}
+ %>
+								</td>
 							</tr>
 							<tr>
 								<th align="left">Estado Civil:</th>
@@ -251,6 +289,19 @@ function mostrarDP(){
 						</tbody>
 					</table>
 					<br>
+					<table width="50%" align="center">
+						<tr>
+							<td align="center">
+								<button type="button" id="botaoAlterar" name="botaoAlterar"
+									onclick="alterar();">Alterar</button>
+							</td>
+
+							<td align="center">
+								<button type="button" id="botaoDesistir" name="botaoDesistir"
+									onclick="desistir();">Voltar</button>
+							</td>
+						</tr>
+					</table> <br>
 					<table align="center">
 						<tr>
 							<TD class="adicionarEvento" colspan="9" align="center" style="border-color: #A5B9D7; border-style: dotted;">
@@ -307,28 +358,11 @@ function mostrarDP(){
 						checked = "";
 						}%>
 					</table>
-					<br>
-					<table width="50%" align="center">
-						<tr>
-							<td align="center">
-								<button type="submit" id="botaoAlterar" name="botaoAlterar"
-									onclick="alterar();">Alterar</button>
-							</td>
-
-							<td align="center">
-								<button type="submit" id="botaoDesistir" name="botaoDesistir"
-									onclick="desistir();">Voltar</button>
-							</td>
-						</tr>
-					</table>
-
 				</td>
 			</tr>
-
 		</table>
 		<br>
 	</form>
-
 </body>
 
 

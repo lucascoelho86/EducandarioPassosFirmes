@@ -33,7 +33,6 @@
 
 function desistir(){
 	document.getElementById("<%=ServletProgramacao.NM_EVENTO%>").value = "<%=ServletProgramacao.NM_JSP_CONSULTAR%>";
-	window.open('/projeto/ServletProfessor', "botaoDesistir");
 	document.frm_principal.submit();
 }
 
@@ -43,8 +42,20 @@ function cadastrar(){
 	var valorSelectTurma = document.getElementById("<%=ServletProgramacao.NM_PARAMETRO_SELECT_TURMA%>").value;
 	var valorSelectProfessor = document.getElementById("<%=ServletProgramacao.NM_PARAMETRO_SELECT_PROFESSOR%>").value;
 	var valorSelectDisciplina = document.getElementById("<%=ServletProgramacao.NM_PARAMETRO_SELECT_DISCIPLINA%>").value;
-	
-	if(valorSelectTurma != 0 && valorSelectProfessor != 0 && valorSelectDisciplina != 0){
+	var tamanho = document.getElementById("tamanho").value;
+	var programacaoDiferente = true;
+	for(x = 0; x < tamanho; x++){
+		var turma = document.getElementById("turma" + x).value;
+		var professor = document.getElementById("professor" + x).value;
+		var disciplina = document.getElementById("disciplina" + x).value;
+		
+		if(turma == valorSelectTurma && professor == valorSelectProfessor && disciplina == valorSelectDisciplina){
+			programacaoDiferente = false;
+			alert("Já existe uma programação cadastrada para essa turma, com o mesmo professor e disciplina!");
+		}
+	}
+		
+	if(valorSelectTurma != 0 && valorSelectProfessor != 0 && valorSelectDisciplina != 0 && programacaoDiferente){
 		document.frm_principal.submit();
 	}else if(valorSelectTurma == 0){
 		alert("Selecione uma turma!");
@@ -78,6 +89,7 @@ function consultaSelectDisciplina(){
 	String txTerceiraUnidade = "";
 	String txQuartaUnidade = "";
 	String cargaHoraria = "";
+	String programacao = "";
 	
 	eventoSelectProfessor = (String)request.getAttribute(ServletProgramacao.NM_EVENTO_PROCESSAR_CONSULTA_SELECT_PROFESSOR);
 	eventoSelectDisciplina = (String)request.getAttribute(ServletProgramacao.NM_EVENTO_PROCESSAR_CONSULTA_SELECT_DISCIPLINA);
@@ -90,6 +102,10 @@ function consultaSelectDisciplina(){
 	txTerceiraUnidade = (String)request.getAttribute(ServletProgramacao.NM_PARAMETRO_TX_TERCEIRA_UNIDADE);
 	txQuartaUnidade = (String)request.getAttribute(ServletProgramacao.NM_PARAMETRO_TX_QUARTA_UNIDADE);
 	cargaHoraria = (String)request.getAttribute(ServletProgramacao.NM_PARAMETRO_CAMPO_CARGA_HORARIA);
+	programacao = (String)request.getAttribute(ServletProgramacao.NM_PARAMETRO_PROGRAMACAO);
+	
+	String[] valoresProgramacao = new String[programacao.length()];
+	valoresProgramacao = programacao.split(":");
 	
 	if(eventoSelectProfessor == null){
 		eventoSelectProfessor = "";
@@ -150,6 +166,34 @@ function consultaSelectDisciplina(){
 	<form name="frm_principal" action="ServletProgramacao" method="post">
 		<input type="hidden" id="<%=ServletProgramacao.NM_EVENTO%>"
 			name="<%=ServletProgramacao.NM_EVENTO%>" value="">
+		<input type="hidden" id="<%=ServletProgramacao.NM_EVENTO_TELA%>"
+			name="<%=ServletProgramacao.NM_EVENTO_TELA%>" value="<%=ServletProgramacao.NM_JSP_INCLUIR_SERVICO%>">
+		<input type="hidden" id="<%="tamanho"%>"
+			name="<%="tamanho"%>" value="<%=valoresProgramacao.length%>">
+		<input type="hidden" id="<%=ServletProgramacao.NM_PARAMETRO_PROGRAMACAO%>"
+			name="<%=ServletProgramacao.NM_PARAMETRO_PROGRAMACAO%>" value="<%=programacao%>">
+<%
+String[] valores = new String[valoresProgramacao.length];
+for(int x = 0; x < valoresProgramacao.length; x++){
+	String valor = valoresProgramacao[x];
+	valores = valor.split(";");
+	
+	String turma = valores[0];
+	String professor = "";
+	String disciplina = "";
+	
+	if(!turma.equals("")){
+		professor = valores[1];
+		disciplina = valores[2];
+	}
+%>
+		<input type="hidden" id="<%="turma" + x%>"
+			name="<%="turma" + x%>" value="<%=turma%>">
+		<input type="hidden" id="<%="professor" + x%>"
+			name="<%="professor" + x%>" value="<%=professor%>">
+		<input type="hidden" id="<%="disciplina" + x%>"
+			name="<%="disciplina" + x%>" value="<%=disciplina%>">
+<%} %>
 		<h2 align="center" style="margin-top: 0">CADASTRAR PROGRAMAÇÃO</h2>
 		<table width="100%">
 			<tr>

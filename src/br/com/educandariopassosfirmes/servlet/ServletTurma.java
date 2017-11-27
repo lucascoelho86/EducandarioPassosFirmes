@@ -9,8 +9,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.com.educandariopassosfirmes.dao.AlunoDAO;
+import br.com.educandariopassosfirmes.dao.PessoaDAO;
 import br.com.educandariopassosfirmes.dao.TurmaDAO;
+import br.com.educandariopassosfirmes.documentos.FrequenciaTurma;
+import br.com.educandariopassosfirmes.documentos.RelacaoAlunosTurma;
+import br.com.educandariopassosfirmes.entidades.Aluno;
+import br.com.educandariopassosfirmes.entidades.Pessoa;
 import br.com.educandariopassosfirmes.entidades.Turma;
+import br.com.educandariopassosfirmes.rn.RegraNegocioAlteracaoTurma;
 
 
 /**
@@ -21,20 +28,30 @@ public class ServletTurma extends ServletGenerico {
 
 	public static final String NM_JSP_CONSULTAR = "/turma/consultarTurma.jsp";
 
+	public static final String NM_JSP_EXCECAO = "/turma/excecao.jsp";
+
 	private static final String NM_JSP_INCLUIR_SERVICO = "/turma/cadastrarTurma.jsp";
 
 	private static final String NM_JSP_ALTERAR_TURMA = "/turma/alterarTurma.jsp";
 	
 	public static final String NM_PARAMETRO_CHAVE = "chave";
 	
+	public static final String NM_EVENTO_IMPRIMIR = "imprimirRelacao";
+
+	public static final String NM_EVENTO_CHAMADA = "imprimirChamada";
+	
 	//Parâmetros inclusão disciplina
+	public static final String NM_PARAMETRO_SIGLA_TURMA_ANT = "siglaTurmaAnt";
 	public static final String NM_PARAMETRO_SIGLA_TURMA = "siglaTurma";
 	public static final String NM_PARAMETRO_DS_TURMA = "descricaoTurma";
 	public static final String NM_PARAMETRO_TURNO = "turno";
 	public static final String NM_PARAMETRO_QT_MAX_ALUNOS = "qtMaxAlunos";
 	public static final String NM_PARAMETRO_SALA = "sala";
+	public static final String NM_PARAMETRO_SALA_ANT = "salaAnterior";
 	public static final String NM_PARAMETRO_SELECT_TURNO = "selectTurno";
 	public static final String NM_PARAMETRO_COLECAO_TURMA = "colecaoTurma";
+	public static final String NM_PARAMETRO_COLECAO_SALAS_MANHA = "salasManha";
+	public static final String NM_PARAMETRO_COLECAO_SALAS_TARDE = "salasTarde";
 	
 	//Constantes utilizadas na inclusão de turmas
 	public static final String NM_TURNO_MANHA = "Matutino";
@@ -77,6 +94,12 @@ public class ServletTurma extends ServletGenerico {
 		} else if (acao != null
 				&& acao.equalsIgnoreCase(this.NM_EVENTO_PROCESSAR_ALTERACAO)) {
 			this.processarAlteracao(request, response);
+		} else if (acao != null
+				&& acao.equalsIgnoreCase(NM_EVENTO_IMPRIMIR)) {
+			this.imprimirRelacao(request, response);
+		} else if (acao != null
+				&& acao.equalsIgnoreCase(NM_EVENTO_CHAMADA)) {
+			this.imprimirChamada(request, response);
 		} else {
 			// caso nao tenha nenhum evento, redireciona para a pagina de consulta
 			this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
@@ -89,12 +112,28 @@ public class ServletTurma extends ServletGenerico {
 			HttpServletResponse response) throws ServletException, IOException {
 		String descricao = "";
 		String qtMaxAlunos = "";
-		
+		String salasManha = "";
+		String salasTarde = "";
 		descricao = request.getParameter(NM_PARAMETRO_DS_TURMA);
 		qtMaxAlunos = request.getParameter(NM_PARAMETRO_QT_MAX_ALUNOS);
 		
+		TurmaDAO turmaDAO = new TurmaDAO();
+		ArrayList<Turma> consultaTurma = turmaDAO.consultar("", "", "");
+
+		for(int x = 0; x < consultaTurma.size(); x++) {
+			Turma turma = consultaTurma.get(x);
+			
+			if(turma.getTurno().equals(NM_TURNO_MANHA)) {
+				salasManha += turma.getSala() + ";";
+			}else {
+				salasTarde += turma.getSala()  + ";";
+			}
+		}
+		
 		request.setAttribute(NM_PARAMETRO_DS_TURMA, descricao);
 		request.setAttribute(NM_PARAMETRO_QT_MAX_ALUNOS, qtMaxAlunos);
+		request.setAttribute(NM_PARAMETRO_COLECAO_SALAS_MANHA, salasManha);
+		request.setAttribute(NM_PARAMETRO_COLECAO_SALAS_TARDE, salasTarde);
 		
 		// redireciona para a pagina de inclusao
 		this.redirecionarPagina(request, response,	NM_JSP_INCLUIR_SERVICO);
@@ -185,10 +224,30 @@ public class ServletTurma extends ServletGenerico {
 		String[] chaveTurma = chave.split(";");
 		String idTurma = chaveTurma[0];
 
-		TurmaDAO turmaDAO = new TurmaDAO();		
-		turmaDAO.excluir(idTurma);
+		AlunoDAO alunoDAO = new AlunoDAO();
+		PessoaDAO pessoaDAO = new PessoaDAO();
+		ArrayList<String> alunosTurma = new ArrayList<String>();
+		ArrayList<Aluno> consultaAluno = alunoDAO.consultar("", idTurma, "");
 		
-		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
+		for(int x = 0; x < consultaAluno.size(); x++) {
+			Aluno aluno = consultaAluno.get(x);
+			
+			ArrayList<Pessoa> consultaPessoa = pessoaDAO.consultar(aluno.getId(), "");
+			Pessoa pessoa = consultaPessoa.get(0);
+			
+			alunosTurma.add(pessoa.getId() + ";" + pessoa.getNome());
+		}
+		
+		if(alunosTurma.isEmpty()) {
+			TurmaDAO turmaDAO = new TurmaDAO();
+			turmaDAO.excluir(idTurma);
+			this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
+		}else {
+			request.setAttribute(NM_PARAMETRO_SIGLA_TURMA, idTurma);
+			request.setAttribute(NM_PARAMETRO_COLECAO_TURMA, alunosTurma);
+			this.redirecionarPagina(request, response, NM_JSP_EXCECAO);
+		}
+		
 	}
 
 	@Override
@@ -197,6 +256,8 @@ public class ServletTurma extends ServletGenerico {
 
 		// declara as variaveis
 		String chave = "";
+		String salasManha = "";
+		String salasTarde = "";
 		
 		// recupera os parametros do request
 		chave = request.getParameter(NM_PARAMETRO_CHAVE);
@@ -208,9 +269,23 @@ public class ServletTurma extends ServletGenerico {
 		ArrayList<Turma> consultaTurma = turmaDAO.consultar(idTurma, "", "");
 		Turma turma = consultaTurma.get(0);
 		
+		ArrayList<Turma> consultarTordasTurmas = turmaDAO.consultar("", "", "");
+
+		for(int x = 0; x < consultarTordasTurmas.size(); x++) {
+			Turma turmaAux = consultarTordasTurmas.get(x);
+			
+			if(turmaAux.getTurno().equals(NM_TURNO_MANHA)) {
+				salasManha += turmaAux.getIdTurma() + ";" + turmaAux.getSala() + ":";
+			}else {
+				salasTarde += turmaAux.getIdTurma() + ";" + turmaAux.getSala() + ":";
+			}
+		}
+		
 		//seta os atributos no request para recuperar na JSP
 		request.setAttribute(NM_PARAMETRO_SIGLA_TURMA, idTurma);
 		request.setAttribute(NM_PARAMETRO_DS_TURMA, turma.getDsTurma());
+		request.setAttribute(NM_PARAMETRO_COLECAO_SALAS_MANHA, salasManha);
+		request.setAttribute(NM_PARAMETRO_COLECAO_SALAS_TARDE, salasTarde);
 		
 		if(turma.getTurno().equals(NM_TURNO_MANHA)) {
 			request.setAttribute(NM_PARAMETRO_TURNO, "1");			
@@ -229,6 +304,7 @@ public class ServletTurma extends ServletGenerico {
 
 		// declara as variaveis
 		String idTurma = "";
+		String idTurmaAnt = "";
 		String descricao = "";
 		String turno = "";
 		String dsTurno = "";
@@ -237,6 +313,7 @@ public class ServletTurma extends ServletGenerico {
 
 		// recupera os parametros do request
 		idTurma = request.getParameter(NM_PARAMETRO_SIGLA_TURMA);
+		idTurmaAnt = request.getParameter(NM_PARAMETRO_SIGLA_TURMA_ANT);
 		descricao = request.getParameter(NM_PARAMETRO_DS_TURMA);
 		turno = request.getParameter(NM_PARAMETRO_SELECT_TURNO);
 		qtMaxAlunos = request.getParameter(NM_PARAMETRO_QT_MAX_ALUNOS);
@@ -259,10 +336,49 @@ public class ServletTurma extends ServletGenerico {
 			turma.setQtMaxAlunos(Integer.valueOf(qtMaxAlunos));
 		}
 
-		//altera em TURMA
 		TurmaDAO turmaDAO = new TurmaDAO();
-		turmaDAO.alterar(turma);
+
+		if(idTurma.equals(idTurmaAnt)) {
+			//altera em TURMA
+			turmaDAO.alterar(turma);
+		}else {
+			RegraNegocioAlteracaoTurma regra = new RegraNegocioAlteracaoTurma();
+			regra.executar(idTurmaAnt, idTurma, turma);
+		}
 				
+		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
+	}
+
+	public void imprimirRelacao(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		
+		// declara as variaveis
+		String turma = "";
+		String colecaoTurmaAluno = "";
+		
+		turma = request.getParameter(NM_PARAMETRO_SIGLA_TURMA);
+		colecaoTurmaAluno = request.getParameter(NM_PARAMETRO_COLECAO_TURMA);
+		
+		RelacaoAlunosTurma relatorio = new RelacaoAlunosTurma();
+		relatorio.gerar(turma, colecaoTurmaAluno);
+		
+		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
+	}
+
+	public void imprimirChamada(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		
+		// declara as variaveis
+		String chave = "";
+		
+		chave = request.getParameter(NM_PARAMETRO_CHAVE);
+		
+		String[] chaveTurma = chave.split(";");
+		String idTurma = chaveTurma[0];
+		
+		FrequenciaTurma relatorio = new FrequenciaTurma();
+		relatorio.gerar(idTurma);
+		
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
 	}
 

@@ -32,6 +32,16 @@ function excluir(){
 	}
 }
 
+function imprimirChamada(){
+	document.getElementById("<%=ServletTurma.NM_EVENTO%>").value = "<%=ServletTurma.NM_EVENTO_CHAMADA%>";
+	
+	if (isRadioButtonConsultaSelecionado("document.frm_principal.rdb_consulta")){
+		document.frm_principal.submit();		
+	}else{
+		alert("Selecione uma turma!");
+	}
+}
+
 function exibirAlteracao(){
 	document.getElementById("<%=ServletTurma.NM_EVENTO%>").value = "<%=ServletTurma.NM_EVENTO_EXIBIR_ALTERACAO%>";
 	
@@ -147,8 +157,9 @@ function exibirInclusao(){
 					<table width="50%" align="center">
 						<tr class="cabecalhoRetornoDados">
 							<TH align="center" width="1%">X</TH>
-							<TH align="left" width="3%">Descrição Turma</TH>
-							<TH align="left" width="10%">Turno</TH>
+							<TH align="left" width="5%">Descrição Turma</TH>
+							<TH align="left" width="2%">Turno</TH>
+							<TH align="left" width="1%">Sala</TH>
 						</tr>
 						<%
 							String cssCorlinha;
@@ -181,6 +192,7 @@ function exibirInclusao(){
 							</td>
 							<td style="width: 310px; display: block; text-align: left"><%=turma.getDsTurma().toUpperCase()%></td>
 							<td><%=turma.getTurno().toUpperCase()%></td>
+							<td><%=turma.getSala()%></td>
 						</tr>
 
 
@@ -202,8 +214,13 @@ function exibirInclusao(){
 							<td style="width: 700px; text-align: center">
 								<button type="button" id="botaoAlterar" name="botaoAlterar"
 									onclick="exibirAlteracao();">Alterar</button>
-
 							</td>
+							
+							<td style="width: 700px; text-align: center">
+								<button type="button" id="botaoChamada" name="botaoChamada"
+									onclick="imprimirChamada();">Imprimir Chamada</button>
+							</td>
+							
 							<td style="width: 800px; text-align: center">
 								<button type="button" id="botaoExcluir" name="botaoExcluir"
 									onclick="excluir();">Excluir</button>
@@ -214,8 +231,13 @@ function exibirInclusao(){
 							<td style="width: 700px; text-align: center">
 								<button type="button" id="botaoAlterar" name="botaoAlterar"
 									onclick="exibirAlteracao();" disabled>Alterar</button>
-
 							</td>
+							
+							<td style="width: 700px; text-align: center">
+								<button type="button" id="botaoChamada" name="botaoChamada"
+									onclick="imprimirChamada();" disabled>Imprimir Chamada</button>
+							</td>
+							
 							<td style="width: 800px; text-align: center">
 								<button type="button" id="botaoExcluir" name="botaoExcluir"
 									onclick="excluir();" disabled>Excluir</button>

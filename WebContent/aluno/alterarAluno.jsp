@@ -40,9 +40,10 @@ function desistir(){
 function alterar(){
 	document.getElementById("<%=ServletAluno.NM_EVENTO%>").value = "<%=ServletAluno.NM_EVENTO_PROCESSAR_ALTERACAO%>";
 	var muitosDependentes = document.getElementById("<%=ServletAluno.NM_PARAMETRO_RESP_POR_MUITOS%>").value;
+	var cpfResp = document.getElementById("<%=ServletAluno.NM_PARAMETRO_CPF%>").value;
+	var cpfRespAnterior = document.getElementById("<%=ServletAluno.NM_PARAMETRO_CPF_ANTERIOR%>").value;
 	
-	if(muitosDependentes > 1){
-		var cpfRespAnterior = document.getElementById("<%=ServletAluno.NM_PARAMETRO_CPF_ANTERIOR%>").value;
+	if(cpfResp != cpfRespAnterior && muitosDependentes > 1){
 		var qtAlunoRestante = muitosDependentes - 1;
 		var mensagem1 = "O responsável do CPF Anterior: ";
 		var mensagem2 = mensagem1.concat(cpfRespAnterior);

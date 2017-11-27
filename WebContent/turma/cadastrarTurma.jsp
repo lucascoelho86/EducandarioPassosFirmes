@@ -1,3 +1,4 @@
+<%@page import="br.com.educandariopassosfirmes.entidades.Turma"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -25,8 +26,48 @@ function cadastrar(){
 	var campoSigla = document.getElementById("<%=ServletTurma.NM_PARAMETRO_SIGLA_TURMA%>").value;
 	var campoDescricao = document.getElementById("<%=ServletTurma.NM_PARAMETRO_DS_TURMA%>").value;
 	var valorSelectTurno = document.getElementById("<%=ServletTurma.NM_PARAMETRO_SELECT_TURNO%>").value;
+	var salaTela = document.getElementById("<%=ServletTurma.NM_PARAMETRO_SALA%>").value;
+	var salasManha = document.getElementById("<%=ServletTurma.NM_PARAMETRO_COLECAO_SALAS_MANHA%>").value;
+	var salasTarde = document.getElementById("<%=ServletTurma.NM_PARAMETRO_COLECAO_SALAS_TARDE%>").value;
+	var continuar = true;
 	
-	if(campoSigla != "" && campoDescricao != "" && valorSelectTurno != 0){
+	if(valorSelectTurno == 1){
+		var turno = "Manhã";
+		var colecaoSalasManha = salasManha.split(";");
+		for(i = 0; i < colecaoSalasManha.length; i++){
+			sala = colecaoSalasManha[i];
+			
+			if(sala != null && sala != "" && salaTela == sala){
+				var mensagem1 = "Já existe uma turma que utiliza está sala no turno da ";
+				var mensagem2 = mensagem1.concat(turno);
+				var mensagem3 = mensagem2.concat("!");
+				alert(mensagem3);
+				
+				continuar = false;
+				document.getElementById("<%=ServletTurma.NM_PARAMETRO_SALA%>").focus();
+			}			
+		}
+	}
+
+	if(valorSelectTurno == 2){
+		var turno = "Tarde";
+		var colecaoSalasTarde = salasTarde.split(";");
+		for(i = 0; i < colecaoSalasTarde.length; i++){
+			sala = colecaoSalasTarde[i];
+			
+			if(sala != null && sala != "" && salaTela == sala){
+				var mensagem1 = "Já existe uma turma que utiliza está sala no turno da ";
+				var mensagem2 = mensagem1.concat(turno);
+				var mensagem3 = mensagem2.concat("!");
+				window.confirm(mensagem3);
+				
+				continuar = false;
+				document.getElementById("<%=ServletTurma.NM_PARAMETRO_SALA%>").focus();
+			}			
+		}
+	}
+	
+	if(campoSigla != "" && campoDescricao != "" && valorSelectTurno != 0 && continuar){
 		document.frm_principal.submit();
 	}else if(campoSigla == ""){
 		alert("Preencha o campo sigla!");
@@ -43,6 +84,8 @@ function cadastrar(){
 	String siglaTurma;
 	String qtMaxAlunos;
 	String sala;
+	String salasManha;
+	String salasTarde;
 
 	descricao = (String) request
 			.getAttribute(ServletTurma.NM_PARAMETRO_DS_TURMA);
@@ -52,6 +95,10 @@ function cadastrar(){
 			.getAttribute(ServletTurma.NM_PARAMETRO_QT_MAX_ALUNOS);
 	sala = (String) request
 			.getAttribute(ServletTurma.NM_PARAMETRO_SALA);
+	salasManha = (String) request
+			.getAttribute(ServletTurma.NM_PARAMETRO_COLECAO_SALAS_MANHA);
+	salasTarde = (String) request
+			.getAttribute(ServletTurma.NM_PARAMETRO_COLECAO_SALAS_TARDE);
 
 	if (descricao == null) {
 		descricao = "";
@@ -68,6 +115,14 @@ function cadastrar(){
 	if (sala == null) {
 		sala = "";
 	}
+
+	if (salasManha == null) {
+		salasManha = "";
+	}
+
+	if (salasTarde == null) {
+		salasTarde = "";
+	}
 %>
 
 <body>
@@ -77,6 +132,10 @@ function cadastrar(){
 	<form name="frm_principal" action="ServletTurma" method="post">
 		<input type="hidden" id="<%=ServletTurma.NM_EVENTO%>"
 			name="<%=ServletTurma.NM_EVENTO%>" value="">
+		<input type="hidden" id="<%=ServletTurma.NM_PARAMETRO_COLECAO_SALAS_MANHA%>"
+			name="<%=ServletTurma.NM_PARAMETRO_COLECAO_SALAS_MANHA%>" value="<%=salasManha%>">
+		<input type="hidden" id="<%=ServletTurma.NM_PARAMETRO_COLECAO_SALAS_TARDE%>"
+			name="<%=ServletTurma.NM_PARAMETRO_COLECAO_SALAS_MANHA%>" value="<%=salasTarde%>">
 		<h2 align="center">CADASTRAR TURMA</h2>
 		<table width="100%">
 			<tr>

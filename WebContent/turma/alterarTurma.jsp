@@ -22,11 +22,78 @@ function desistir(){
 
 function alterar(){
 	document.getElementById("<%=ServletTurma.NM_EVENTO%>").value = "<%=ServletTurma.NM_EVENTO_PROCESSAR_ALTERACAO%>";
+	
+	var campoSiglaAnt = document.getElementById("<%=ServletTurma.NM_PARAMETRO_SIGLA_TURMA_ANT%>").value;
 	var campoSigla = document.getElementById("<%=ServletTurma.NM_PARAMETRO_SIGLA_TURMA%>").value;
 	var campoDescricao = document.getElementById("<%=ServletTurma.NM_PARAMETRO_DS_TURMA%>").value;
 	var valorSelectTurno = document.getElementById("<%=ServletTurma.NM_PARAMETRO_SELECT_TURNO%>").value;
+	var salaTela = document.getElementById("<%=ServletTurma.NM_PARAMETRO_SALA%>").value;
+	var tamanhoColecaoTurmaManha = document.getElementById("tamanhoTurmaManha").value;
+	var tamanhoColecaoTurmaTarde = document.getElementById("tamanhoTurmaTarde").value;
 	
-	if(campoSigla != "" && campoDescricao != "" && valorSelectTurno != 0){
+	var turmaDiferente = false;
+	if(campoSigla != campoSiglaAnt){
+		turmaDiferente = true;
+	}
+	
+	var continuar = true;
+	
+	if(valorSelectTurno == "1"){
+		
+		var turno = "Manhã";
+		for(x = 0; x < tamanhoColecaoTurmaManha; x++){
+			if(document.getElementById("turmaManha" + x).value != ""){
+				var turma = document.getElementById("turmaManha" + x).value;
+				var sala = document.getElementById("salaManha" + x).value;
+					
+				if(turma == campoSiglaAnt && turmaDiferente){
+					continue;
+				}
+				
+				if(turma != campoSigla){
+					if(sala == salaTela){
+						var mensagem1 = "Já existe uma turma que utiliza está sala no turno da ";
+						var mensagem2 = mensagem1.concat(turno);
+						var mensagem3 = mensagem2.concat("!");
+						alert(mensagem3);
+								
+						continuar = false;
+						document.getElementById("<%=ServletTurma.NM_PARAMETRO_SALA%>").focus();
+					}
+				}
+			}
+		}
+		
+	}else if(valorSelectTurno == "2"){
+			
+		var turno = "Tarde";
+		for(x = 0; x < tamanhoColecaoTurmaTarde; x++){
+			if(document.getElementById("turmaTarde" + x).value != ""){
+				var turma = document.getElementById("turmaTarde" + x).value;
+				var sala = document.getElementById("salaTarde" + x).value;
+				
+				if(turma == campoSiglaAnt && turmaDiferente){
+					continue;
+				}
+				
+				if(turma != campoSigla){
+					if(sala == salaTela){
+						var mensagem1 = "Já existe uma turma que utiliza está sala no turno da ";
+						var mensagem2 = mensagem1.concat(turno);
+						var mensagem3 = mensagem2.concat("!");
+						alert(mensagem3);
+								
+						continuar = false;
+						document.getElementById("<%=ServletTurma.NM_PARAMETRO_SALA%>").focus();
+					}
+				}
+					
+			}
+		}
+		
+	}
+	
+	if(campoSigla != "" && campoDescricao != "" && valorSelectTurno != 0 && continuar){
 		document.frm_principal.submit();
 	}else if(campoSigla == ""){
 		alert("Preencha o campo sigla!");
@@ -44,6 +111,8 @@ function alterar(){
 	String turno = "";
 	String qtMaxAlunos = "";
 	String sala = "";
+	String salasManha;
+	String salasTarde;
 
 	idTurma = (String) request
 			.getAttribute(ServletTurma.NM_PARAMETRO_SIGLA_TURMA);
@@ -55,6 +124,16 @@ function alterar(){
 			.getAttribute(ServletTurma.NM_PARAMETRO_QT_MAX_ALUNOS);
 	sala = (String) request
 			.getAttribute(ServletTurma.NM_PARAMETRO_SALA);
+	salasManha = (String) request
+			.getAttribute(ServletTurma.NM_PARAMETRO_COLECAO_SALAS_MANHA);
+	salasTarde = (String) request
+			.getAttribute(ServletTurma.NM_PARAMETRO_COLECAO_SALAS_TARDE);
+	
+	String[] valoresTurmaManha = new String[salasManha.length()];
+	valoresTurmaManha = salasManha.split(":");
+
+	String[] valoresTurmaTarde = new String[salasTarde.length()];
+	valoresTurmaTarde = salasTarde.split(":");
 %>
 
 <body>
@@ -64,6 +143,46 @@ function alterar(){
 	<form name="frm_principal" action="ServletTurma" method="post">
 	<input type="hidden" id="<%=ServletTurma.NM_EVENTO%>"
 			name="<%=ServletTurma.NM_EVENTO%>" value="">
+	<input type="hidden" id="<%="tamanhoTurmaManha"%>"
+			name="<%="tamanhoTurmaManha"%>" value="<%=valoresTurmaManha.length%>">
+	<input type="hidden" id="<%="tamanhoTurmaTarde"%>"
+			name="<%="tamanhoTurmaTarde"%>" value="<%=valoresTurmaTarde.length%>">
+<%
+String[] valores = new String[valoresTurmaManha.length];
+for(int x = 0; x < valoresTurmaManha.length; x++){
+	String valor = valoresTurmaManha[x];
+	valores = valor.split(";");
+	
+	String turma = valores[0];
+	String salaManha = "";
+	if(!turma.equals("")){
+		salaManha = valores[1];
+	}
+%>
+	<input type="hidden" id="<%="turmaManha" + x%>"
+			name="<%="turmaManha" + x%>" value="<%=turma%>">
+	<input type="hidden" id="<%="salaManha" + x%>"
+			name="<%="salaManha" + x%>" value="<%=salaManha%>">
+<%} %>
+<%
+String[] valores2 = new String[valoresTurmaTarde.length];
+for(int x = 0; x < valoresTurmaTarde.length; x++){
+	String valor = valoresTurmaTarde[x];
+	valores2 = valor.split(";");
+	
+	String turma = valores2[0];
+	String salaTarde = "";
+	if(!turma.equals("")){
+		salaTarde = valores2[1];
+	}
+%>
+	<input type="hidden" id="<%="turmaTarde" + x%>"
+			name="<%="turmaTarde" + x%>" value="<%=turma%>">
+	<input type="hidden" id="<%="salaTarde" + x%>"
+			name="<%="salaTarde" + x%>" value="<%=salaTarde%>">
+<%} %>
+	<input type="hidden" id="<%=ServletTurma.NM_PARAMETRO_SIGLA_TURMA_ANT%>"
+			name="<%=ServletTurma.NM_PARAMETRO_SIGLA_TURMA_ANT%>" value="<%=idTurma%>">
 		<h2 align="center">ALTERAR TURMA</h2>
 		<table width="100%">
 			<tr>
@@ -75,7 +194,7 @@ function alterar(){
 								<td><input type="text"
 									id="<%=ServletTurma.NM_PARAMETRO_SIGLA_TURMA%>"
 									name="<%=ServletTurma.NM_PARAMETRO_SIGLA_TURMA%>"
-									value="<%=idTurma%>" size="10" readonly></td>
+									value="<%=idTurma%>" size="10" maxlength="5"></td>
 									
 								<th align="left">Descrição Turma:</th>
 								<td><input type="text"

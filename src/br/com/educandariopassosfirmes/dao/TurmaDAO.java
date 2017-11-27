@@ -102,7 +102,7 @@ public class TurmaDAO extends Conexao{
 	 
 	 public void alterar(Turma pTurma){
 			
-		String sql = "UPDATE TURMA SET DS_TURMA=?, TURNO=?, QUANTIDADE_MAX_ALUNOS=? SALA=? WHERE ID_TURMA=?";
+		String sql = "UPDATE TURMA SET DS_TURMA=?, TURNO=?, QUANTIDADE_MAX_ALUNOS=?, SALA=? WHERE ID_TURMA=?";
 				
 		try {
 			PreparedStatement preparador = getPreparedStatement(sql);

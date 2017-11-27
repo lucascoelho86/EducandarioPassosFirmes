@@ -22,12 +22,15 @@ public class ServletProgramacao extends ServletGenerico {
 
 	public static final String NM_JSP_CONSULTAR = "/programacaoTurma/consultarProgramacao.jsp";
 
-	private static final String NM_JSP_INCLUIR_SERVICO = "/programacaoTurma/cadastrarProgramacao.jsp";
+	public static final String NM_JSP_INCLUIR_SERVICO = "/programacaoTurma/cadastrarProgramacao.jsp";
 
-	private static final String NM_JSP_ALTERAR_TURMA = "/programacaoTurma/alterarProgramacao.jsp";
+	public static final String NM_JSP_ALTERAR_TURMA = "/programacaoTurma/alterarProgramacao.jsp";
 
 	public static final String NM_EVENTO_PROCESSAR_CONSULTA_SELECT_PROFESSOR = "processarConsultaSelectProfessor";
+	
 	public static final String NM_EVENTO_PROCESSAR_CONSULTA_SELECT_DISCIPLINA = "processarConsultaSelectDisciplina";
+	
+	public static final String NM_EVENTO_TELA = "eventoTela";
 
 	public static final String NM_PARAMETRO_CHAVE = "chave";
 
@@ -35,6 +38,9 @@ public class ServletProgramacao extends ServletGenerico {
 	public static final String NM_PARAMETRO_SELECT_TURMA = "selectTurma";
 	public static final String NM_PARAMETRO_SELECT_PROFESSOR = "selectProfessor";
 	public static final String NM_PARAMETRO_SELECT_DISCIPLINA = "selectDisciplina";
+	public static final String NM_PARAMETRO_SELECT_TURMA_ANT = "selectTurmaAnt";
+	public static final String NM_PARAMETRO_SELECT_PROFESSOR_ANT = "selectProfessorAnt";
+	public static final String NM_PARAMETRO_SELECT_DISCIPLINA_ANT = "selectDisciplinaAnt";
 	public static final String NM_PARAMETRO_DS_TURMA = "descricaoTurma";
 	public static final String NM_PARAMETRO_TURNO = "turno";
 	public static final String NM_PARAMETRO_QT_MAX_ALUNOS = "qtMaxAlunos";
@@ -46,6 +52,7 @@ public class ServletProgramacao extends ServletGenerico {
 	public static final String NM_PARAMETRO_TX_TERCEIRA_UNIDADE = "txTerceiraUnidade";
 	public static final String NM_PARAMETRO_TX_QUARTA_UNIDADE = "txQuartaUnidade";
 	public static final String NM_PARAMETRO_CAMPO_CARGA_HORARIA = "cargaHoraria";
+	public static final String NM_PARAMETRO_PROGRAMACAO = "programacao";
 
 	// Constantes utilizadas na inclusão de turmas
 	public static final String NM_TURNO_MANHA = "Matutino";
@@ -98,12 +105,24 @@ public class ServletProgramacao extends ServletGenerico {
 			throws ServletException, IOException {
 		String descricao = "";
 		String qtMaxAlunos = "";
+		String programacao = "";
 
 		descricao = request.getParameter(NM_PARAMETRO_DS_TURMA);
 		qtMaxAlunos = request.getParameter(NM_PARAMETRO_QT_MAX_ALUNOS);
+		
+		TurmaProfessorDisciplinaDAO turmaProfessorDisciplinaDAO = new TurmaProfessorDisciplinaDAO();
+		ArrayList<TurmaProfessorDisciplina> consultaProgramacao = turmaProfessorDisciplinaDAO.consultar("", "", "");
+		
+		for(int x = 0; x < consultaProgramacao.size(); x++) {
+			TurmaProfessorDisciplina turmaProfessorDisciplina = consultaProgramacao.get(x);
+			
+			programacao += turmaProfessorDisciplina.getIdTurma() + ";" + turmaProfessorDisciplina.getIdProfessor()
+			+ ";" + turmaProfessorDisciplina.getIdDisciplina() + ":";
+		}
 
 		request.setAttribute(NM_PARAMETRO_DS_TURMA, descricao);
 		request.setAttribute(NM_PARAMETRO_QT_MAX_ALUNOS, qtMaxAlunos);
+		request.setAttribute(NM_PARAMETRO_PROGRAMACAO, programacao);
 
 		// redireciona para a pagina de inclusao
 		this.redirecionarPagina(request, response, NM_JSP_INCLUIR_SERVICO);
@@ -164,11 +183,15 @@ public class ServletProgramacao extends ServletGenerico {
 
 		// recupera os parametros do request
 		String idTurma = (String) request.getParameter(NM_PARAMETRO_SELECT_TURMA);
+		String idProfessor = (String) request.getParameter(NM_PARAMETRO_SELECT_PROFESSOR);
+		String idDisciplina = (String) request.getParameter(NM_PARAMETRO_SELECT_DISCIPLINA);
 
 		ConsultaPrincipalTurmaProfessorDisciplina consultaTurmaProfessorDisciplina = new ConsultaPrincipalTurmaProfessorDisciplina();
-		ArrayList<LinkedHashMap<String, String>> consulta = consultaTurmaProfessorDisciplina.consultar(idTurma, "", "");
+		ArrayList<LinkedHashMap<String, String>> consulta = consultaTurmaProfessorDisciplina.consultar(idTurma, idProfessor, idDisciplina);
 
 		request.setAttribute(NM_PARAMETRO_SELECT_TURMA, idTurma);
+		request.setAttribute(NM_PARAMETRO_SELECT_PROFESSOR, idProfessor);
+		request.setAttribute(NM_PARAMETRO_SELECT_DISCIPLINA, idDisciplina);
 		request.setAttribute(NM_PARAMETRO_COLECAO_TURMA, consulta);
 
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
@@ -200,6 +223,7 @@ public class ServletProgramacao extends ServletGenerico {
 
 		// declara as variaveis
 		String chave = "";
+		String programacao = "";
 
 		// recupera os parametros do request
 		chave = request.getParameter(NM_PARAMETRO_CHAVE);
@@ -214,7 +238,17 @@ public class ServletProgramacao extends ServletGenerico {
 				idDisciplina);
 
 		TurmaProfessorDisciplina turmaProfessorDisciplina = colecao.get(0);
+		
+		ArrayList<TurmaProfessorDisciplina> consultaProgramacao = turmaProfessorDisciplinaDAO.consultar("", "", "");
+		
+		for(int x = 0; x < consultaProgramacao.size(); x++) {
+			TurmaProfessorDisciplina turmaProfessorDisciplinaAux = consultaProgramacao.get(x);
+			
+			programacao += turmaProfessorDisciplinaAux.getIdTurma() + ";" + turmaProfessorDisciplinaAux.getIdProfessor()
+			+ ";" + turmaProfessorDisciplinaAux.getIdDisciplina() + ":";
+		}
 
+		request.setAttribute(NM_PARAMETRO_PROGRAMACAO, programacao);
 		request.setAttribute(NM_PARAMETRO_SELECT_TURMA, turmaProfessorDisciplina.getIdTurma());
 		request.setAttribute(NM_PARAMETRO_SELECT_PROFESSOR, turmaProfessorDisciplina.getIdProfessor());
 		request.setAttribute(NM_PARAMETRO_SELECT_DISCIPLINA,
@@ -285,6 +319,11 @@ public class ServletProgramacao extends ServletGenerico {
 		String txTerceiraUnidade = "";
 		String txQuartaUnidade = "";
 		String cargaHoraria = "";
+		String programacao = "";
+		String eventoTela = "";
+		String turmaAnt = "";
+		String professorAnt = "";
+		String disciplinaAnt = "";
 
 		// recupera os parametros do request
 		valorSelectTurma = request.getParameter(NM_PARAMETRO_SELECT_TURMA);
@@ -295,7 +334,18 @@ public class ServletProgramacao extends ServletGenerico {
 		txTerceiraUnidade = request.getParameter(NM_PARAMETRO_TX_TERCEIRA_UNIDADE);
 		txQuartaUnidade = request.getParameter(NM_PARAMETRO_TX_QUARTA_UNIDADE);
 		cargaHoraria = request.getParameter(NM_PARAMETRO_CAMPO_CARGA_HORARIA);
+		programacao = request.getParameter(NM_PARAMETRO_PROGRAMACAO);
+		eventoTela = request.getParameter(NM_EVENTO_TELA);
 
+		turmaAnt = request.getParameter(NM_PARAMETRO_SELECT_TURMA_ANT);
+		professorAnt = request.getParameter(NM_PARAMETRO_SELECT_PROFESSOR_ANT);
+		disciplinaAnt = request.getParameter(NM_PARAMETRO_SELECT_DISCIPLINA_ANT);
+		
+		request.setAttribute(NM_PARAMETRO_SELECT_TURMA_ANT, turmaAnt);
+		request.setAttribute(NM_PARAMETRO_SELECT_PROFESSOR_ANT, professorAnt);
+		request.setAttribute(NM_PARAMETRO_SELECT_DISCIPLINA_ANT, disciplinaAnt);
+		
+		request.setAttribute(NM_PARAMETRO_PROGRAMACAO, programacao);
 		request.setAttribute(NM_EVENTO_PROCESSAR_CONSULTA_SELECT_PROFESSOR, eventoSelectProfessor);
 		request.setAttribute(NM_PARAMETRO_SELECT_PROFESSOR, valorSelectProfessor);
 		request.setAttribute(NM_PARAMETRO_SELECT_TURMA, valorSelectTurma);
@@ -304,7 +354,14 @@ public class ServletProgramacao extends ServletGenerico {
 		request.setAttribute(NM_PARAMETRO_TX_TERCEIRA_UNIDADE, txTerceiraUnidade);
 		request.setAttribute(NM_PARAMETRO_TX_QUARTA_UNIDADE, txQuartaUnidade);
 		request.setAttribute(NM_PARAMETRO_CAMPO_CARGA_HORARIA, cargaHoraria);
-		this.redirecionarPagina(request, response, NM_JSP_INCLUIR_SERVICO);
+		
+		if(eventoTela.equals(NM_JSP_INCLUIR_SERVICO)) {
+			this.redirecionarPagina(request, response, NM_JSP_INCLUIR_SERVICO);
+		}else if(eventoTela.equals(NM_JSP_CONSULTAR)) {
+			this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
+		}else {
+			this.redirecionarPagina(request, response, NM_JSP_ALTERAR_TURMA);
+		}
 
 	}
 
@@ -320,6 +377,11 @@ public class ServletProgramacao extends ServletGenerico {
 		String txTerceiraUnidade = "";
 		String txQuartaUnidade = "";
 		String cargaHoraria = "";
+		String programacao = "";
+		String eventoTela = "";
+		String turmaAnt = "";
+		String professorAnt = "";
+		String disciplinaAnt = "";
 
 		// recupera os parametros do request
 		valorSelectTurma = request.getParameter(NM_PARAMETRO_SELECT_TURMA);
@@ -330,7 +392,18 @@ public class ServletProgramacao extends ServletGenerico {
 		txTerceiraUnidade = request.getParameter(NM_PARAMETRO_TX_TERCEIRA_UNIDADE);
 		txQuartaUnidade = request.getParameter(NM_PARAMETRO_TX_QUARTA_UNIDADE);
 		cargaHoraria = request.getParameter(NM_PARAMETRO_CAMPO_CARGA_HORARIA);
+		programacao = request.getParameter(NM_PARAMETRO_PROGRAMACAO);
+		eventoTela = request.getParameter(NM_EVENTO_TELA);
 
+		turmaAnt = request.getParameter(NM_PARAMETRO_SELECT_TURMA_ANT);
+		professorAnt = request.getParameter(NM_PARAMETRO_SELECT_PROFESSOR_ANT);
+		disciplinaAnt = request.getParameter(NM_PARAMETRO_SELECT_DISCIPLINA_ANT);
+		
+		request.setAttribute(NM_PARAMETRO_SELECT_TURMA_ANT, turmaAnt);
+		request.setAttribute(NM_PARAMETRO_SELECT_PROFESSOR_ANT, professorAnt);
+		request.setAttribute(NM_PARAMETRO_SELECT_DISCIPLINA_ANT, disciplinaAnt);
+		
+		request.setAttribute(NM_PARAMETRO_PROGRAMACAO, programacao);
 		request.setAttribute(NM_EVENTO_PROCESSAR_CONSULTA_SELECT_DISCIPLINA, eventoSelectDisciplina);
 		request.setAttribute(NM_PARAMETRO_SELECT_DISCIPLINA, valorSelectDisciplina);
 		request.setAttribute(NM_PARAMETRO_SELECT_TURMA, valorSelectTurma);
@@ -339,7 +412,14 @@ public class ServletProgramacao extends ServletGenerico {
 		request.setAttribute(NM_PARAMETRO_TX_TERCEIRA_UNIDADE, txTerceiraUnidade);
 		request.setAttribute(NM_PARAMETRO_TX_QUARTA_UNIDADE, txQuartaUnidade);
 		request.setAttribute(NM_PARAMETRO_CAMPO_CARGA_HORARIA, cargaHoraria);
-		this.redirecionarPagina(request, response, NM_JSP_INCLUIR_SERVICO);
+		
+		if(eventoTela.equals(NM_JSP_INCLUIR_SERVICO)) {
+			this.redirecionarPagina(request, response, NM_JSP_INCLUIR_SERVICO);
+		}else if(eventoTela.equals(NM_JSP_CONSULTAR)) {
+			this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
+		}else {
+			this.redirecionarPagina(request, response, NM_JSP_ALTERAR_TURMA);
+		}
 	}
 
 }
