@@ -32,8 +32,7 @@
 <script type="text/javascript">
 
 function desistir(){
-	document.getElementById("<%=ServletProgramacao.NM_EVENTO%>").value = "<%=ServletProgramacao.NM_JSP_CONSULTAR%>";
-	document.frm_principal.submit();
+	window.history.back();
 }
 
 function cadastrar(){

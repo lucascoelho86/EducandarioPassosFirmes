@@ -11,7 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.com.educandariopassosfirmes.dao.DisciplinaDAO;
+import br.com.educandariopassosfirmes.dao.ProfessorDisciplinaDAO;
+import br.com.educandariopassosfirmes.dao.TurmaProfessorDisciplinaDAO;
 import br.com.educandariopassosfirmes.entidades.Disciplina;
+import br.com.educandariopassosfirmes.entidades.TurmaProfessorDisciplina;
 
 
 /**
@@ -25,6 +28,8 @@ public class ServletDisciplina extends ServletGenerico {
 	private static final String NM_JSP_INCLUIR_SERVICO = "/disciplina/cadastrarDisciplina.jsp";
 
 	private static final String NM_JSP_ALTERAR_DISCIPLINA = "/disciplina/alterarDisciplina.jsp";
+	
+	private static final String NM_JSP_EXCECAO_PROGRAMACAO = "/disciplina/excecaoProgramacao.jsp";
 
 	public static final String NM_PARAMETRO_CodigoCategoriaProduto = "cdCategoriaProduto";
 	public static final String NM_PARAMETRO_NomeCategoriaProduto = "nmCategoriaProduto";
@@ -44,6 +49,9 @@ public class ServletDisciplina extends ServletGenerico {
 	public static final String NM_PARAMETRO_CAMPO_CARGA_HORARIA = "cargaHoraria";
 	public static final String NM_PARAMETRO_SELECT_TIPO_ENSINO = "selectTipoEnsino";
 	public static final String NM_PARAMETRO_COLECAO_DISCIPLINA = "colecaoDisciplina";
+	
+	public static final String NM_EVENTO_EXCLUIR_PROGRAMACAO_E_DISCIPLINA = "excluirProgramacaoDisciplina";
+	public static final String NM_PARAMETRO_TAMANHO = "tamanho";
 	
 	//Constantes utilizadas na inclusão de disciplinas
 	public static final String NM_TIPO_ENSINO_BASICO = "Educação Infantil";
@@ -86,6 +94,9 @@ public class ServletDisciplina extends ServletGenerico {
 		} else if (acao != null
 				&& acao.equalsIgnoreCase(this.NM_EVENTO_PROCESSAR_ALTERACAO)) {
 			this.processarAlteracao(request, response);
+		} else if (acao != null
+				&& acao.equalsIgnoreCase(NM_EVENTO_EXCLUIR_PROGRAMACAO_E_DISCIPLINA)) {
+			this.excluirProgramacaoDisciplina(request, response);
 		} else {
 			// caso nao tenha nenhum evento, redireciona para a pagina de consulta
 			this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
@@ -165,11 +176,34 @@ public class ServletDisciplina extends ServletGenerico {
 				
 		String[] chaveDisciplina = chave.split(";");
 		String idDisciplina = chaveDisciplina[0];
+		
+		TurmaProfessorDisciplinaDAO turmaProfessorDisciplinaDAO = new TurmaProfessorDisciplinaDAO();
+		ArrayList<TurmaProfessorDisciplina> consultaTurmaProfessorDisciplina = turmaProfessorDisciplinaDAO.consultar("", "", idDisciplina);
+		
+		if(!consultaTurmaProfessorDisciplina.isEmpty()) {
+			DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
+			ArrayList<Disciplina> consultaDisciplina = disciplinaDAO.consultar(Integer.valueOf(idDisciplina), "", "");
+			Disciplina disciplina = consultaDisciplina.get(0);
+			
+			String nome = disciplina.getDsDisciplina();
+			
+			if(nome == null) {
+				nome = "";
+			}
+			
+			request.setAttribute(NM_PARAMETRO_ID_DISCIPLINA, idDisciplina);
+			request.setAttribute(NM_PARAMETRO_DS_DISCIPLINA, nome.equals("") ? nome : nome.toUpperCase());
+			request.setAttribute(NM_PARAMETRO_TAMANHO, String.valueOf(consultaTurmaProfessorDisciplina.size()));
+			this.redirecionarPagina(request, response, NM_JSP_EXCECAO_PROGRAMACAO);
+		}else {
+			ProfessorDisciplinaDAO professorDisciplinaDAO = new ProfessorDisciplinaDAO();
+			professorDisciplinaDAO.excluir("", idDisciplina);
 
-		DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
-		disciplinaDAO.excluir(Integer.valueOf(idDisciplina));
+			DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
+			disciplinaDAO.excluir(Integer.valueOf(idDisciplina));
 
-		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
+			this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
+		}
 	}
 
 	@Override
@@ -232,6 +266,40 @@ public class ServletDisciplina extends ServletGenerico {
 		disciplinaDAO.alterar(disciplina);
 		
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
+	}
+	
+	public void excluirProgramacaoDisciplina(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
+		// declara as variaveis
+		String chave = "";
+						
+		// recupera os parametros do request
+		chave = request.getParameter(NM_PARAMETRO_ID_DISCIPLINA);
+						
+		String idDisciplina = chave;
+		
+		TurmaProfessorDisciplinaDAO turmaProfessorDisciplinaDAO = new TurmaProfessorDisciplinaDAO();
+		ArrayList<TurmaProfessorDisciplina> consultaturmaProfessorDisciplina = turmaProfessorDisciplinaDAO.consultar("", "", idDisciplina);
+		
+		for(int x = 0; x < consultaturmaProfessorDisciplina.size(); x++) {
+			TurmaProfessorDisciplina turmaProfessorDisciplina = consultaturmaProfessorDisciplina.get(x);
+			
+			String turma = turmaProfessorDisciplina.getIdTurma();
+			String professor = turmaProfessorDisciplina.getIdProfessor();
+			Integer disciplina = turmaProfessorDisciplina.getIdDisciplina();
+			
+			turmaProfessorDisciplinaDAO.excluir(turma, professor, String.valueOf(disciplina));
+		}
+		
+		ProfessorDisciplinaDAO professorDisciplinaDAO = new ProfessorDisciplinaDAO();
+		professorDisciplinaDAO.excluir("", idDisciplina);
+
+		DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
+		disciplinaDAO.excluir(Integer.valueOf(idDisciplina));
+
+		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
+		
 	}
 
 }

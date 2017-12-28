@@ -106,7 +106,7 @@ if(disciplinaTela == null){
 						
 							<th width="10%" align="right"> Nome: </th>
 							<td>
-								<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_NOME%>" name="<%=ServletProfessor.NM_PARAMETRO_NOME%>" value="<%=nome%>" size="50" onkeypress='return letras(event)'>
+								<input type="text" id="<%=ServletProfessor.NM_PARAMETRO_NOME%>" name="<%=ServletProfessor.NM_PARAMETRO_NOME%>" value="<%=nome%>" size="50" onkeypress='return letras(event)' maxlength="50">
 							
 							</td>
 						

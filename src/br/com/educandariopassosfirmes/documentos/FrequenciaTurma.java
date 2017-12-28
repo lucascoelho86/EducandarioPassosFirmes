@@ -34,18 +34,25 @@ public class FrequenciaTurma{
         	AlunoDAO alunoDAO = new AlunoDAO();
         	ArrayList<Aluno> consultaAlunos = alunoDAO.consultar("", pTurma, "");
         	
-    		for(int x = 0; x < consultaAlunos.size(); x++){
-    			Aluno aluno = consultaAlunos.get(x);
-    			    			
-    			PessoaDAO pessoaDAO = new PessoaDAO();
-    			ArrayList<Pessoa> consultaPessoa = pessoaDAO.consultar(aluno.getId(), "");
-    			Pessoa pessoa = consultaPessoa.get(0);
-    			
-    			hashDados.put("TITULO", "CHAMADA DA TURMA (" + turma.getDsTurma().toUpperCase() + ")");
-    			hashDados.put("MATRICULA", BibliotecaFormatarDados.formatarMatricula(pessoa.getId()));
-    			hashDados.put("NOME", pessoa.getNome().toUpperCase());
-    			colecaoDados.add(hashDados);
-    		}
+        	if(!consultaAlunos.isEmpty()) {
+	    		for(int x = 0; x < consultaAlunos.size(); x++){
+	    			Aluno aluno = consultaAlunos.get(x);
+	    			hashDados = new HashMap<String, Object>();
+	    			PessoaDAO pessoaDAO = new PessoaDAO();
+	    			ArrayList<Pessoa> consultaPessoa = pessoaDAO.consultar(aluno.getId(), "");
+	    			Pessoa pessoa = consultaPessoa.get(0);
+	    			
+	    			hashDados.put("TITULO", "CHAMADA DA TURMA (" + turma.getDsTurma().toUpperCase() + ")");
+	    			hashDados.put("MATRICULA", BibliotecaFormatarDados.formatarMatricula(pessoa.getId()));
+	    			hashDados.put("NOME", pessoa.getNome().toUpperCase());
+	    			colecaoDados.add(hashDados);
+	    		}
+        	}else {
+        		hashDados.put("TITULO", "CHAMADA DA TURMA (" + turma.getDsTurma().toUpperCase() + ")");
+        		hashDados.put("MATRICULA", "-");
+    			hashDados.put("NOME", "NÃO EXISTE ALUNOS MATRÍCULADOS NESTA TURMA");
+        		colecaoDados.add(hashDados);
+        	}
         	
             JasperReport report = JasperCompileManager.compileReport("C:\\Users\\lucas\\FrequenciaTurma.jrxml");
             

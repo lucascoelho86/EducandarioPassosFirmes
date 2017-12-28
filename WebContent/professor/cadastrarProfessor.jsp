@@ -21,8 +21,7 @@
 <script type="text/javascript">
 
 function desistir(){
-	document.getElementById("<%=ServletProfessor.NM_EVENTO%>").value = "<%=ServletProfessor.NM_JSP_CONSULTAR%>";
-	document.frm_principal.submit();
+	window.history.back();
 }
 
 function cadastrar(){
@@ -95,7 +94,7 @@ function cadastrar(){
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_NOME%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_NOME%>" value=""
-									size="50" onkeypress='return letras(event)'></td>
+									size="50" onkeypress='return letras(event)' maxlength="50"></td>
 
 								<th width="15%" align="left">Data de Nascimento:</th>
 								<td><input type="text"
@@ -108,53 +107,53 @@ function cadastrar(){
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_NATURALIDADE%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_NATURALIDADE%>" value=""
-									onkeypress='return letras(event)'></td>
+									onkeypress='return letras(event)' maxlength="50"></td>
 							</tr>
 							<tr>
 								<th align="left">Endereço:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_ENDERECO%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_ENDERECO%>" value=""
-									size="50"></td>
+									size="50" maxlength="50"></td>
 
 								<th align="left">Número:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_NUMERO%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_NUMERO%>" value=""
-									onkeypress='return SomenteNumero(event)'></td>
+									onkeypress='return SomenteNumero(event)' maxlength="11"></td>
 
 								<th align="left">Bairro:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_BAIRRO%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_BAIRRO%>" value=""
-									onkeypress='return letras(event)'></td>
+									onkeypress='return letras(event)' maxlength="20"></td>
 							</tr>
 							<tr>
 								<th align="left">Cidade:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_CIDADE%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_CIDADE%>" value=""
-									size="20" onkeypress='return letras(event)'></td>
+									size="20" onkeypress='return letras(event)' maxlength="20"></td>
 
 								<th align="left">Estado:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_ESTADO%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_ESTADO%>" value=""
-									onkeypress='return letras(event)'></td>
+									onkeypress='return letras(event)' maxlength="20"></td>
 
 								<th align="left">Telefone:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_TELEFONE%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_TELEFONE%>" value=""
 									onkeyup="formatarCampoTelefone(this.name, this, event);"
-									onkeypress='return SomenteNumero(event)'></td>
+									onkeypress='return SomenteNumero(event)' maxlength="14"></td>
 							</tr>
 							<tr>
 								<th align="left">Identidade:</th>
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_IDENTIDADE%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_IDENTIDADE%>" value=""
-									size="20" onkeypress='return SomenteNumero(event)'></td>
+									size="20" onkeypress='return SomenteNumero(event)' maxlength="10"></td>
 
 								<th align="left">CPF:</th>
 								<td><input type="text"
@@ -195,7 +194,7 @@ function cadastrar(){
 								<td><input type="text"
 									id="<%=ServletProfessor.NM_PARAMETRO_ESTADO_CIVIL%>"
 									name="<%=ServletProfessor.NM_PARAMETRO_ESTADO_CIVIL%>" value=""
-									size="20" onkeypress='return letras(event)'></td>
+									size="20" onkeypress='return letras(event)' maxlength="20"></td>
 
 								<th align="left">Quantidade Dependentes:</th>
 								<td><input type="text"

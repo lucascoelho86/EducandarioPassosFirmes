@@ -16,8 +16,7 @@
 <script type="text/javascript">
 
 function desistir(){
-	document.getElementById("<%=ServletDisciplina.NM_EVENTO%>").value = "<%=ServletDisciplina.NM_JSP_CONSULTAR%>";
-	document.frm_principal.submit();
+	window.history.back();
 }
 
 function cadastrar(){
@@ -53,13 +52,13 @@ function cadastrar(){
 							<tr>			
 								<th width="15%" align="right"> Sigla Disciplina: </th>
 								<td>
-									<input type="text" id="<%=ServletDisciplina.NM_PARAMETRO_SIGLA_DISCIPLINA%>" name="<%=ServletDisciplina.NM_PARAMETRO_SIGLA_DISCIPLINA%>" value="">
+									<input type="text" id="<%=ServletDisciplina.NM_PARAMETRO_SIGLA_DISCIPLINA%>" name="<%=ServletDisciplina.NM_PARAMETRO_SIGLA_DISCIPLINA%>" value="" maxlength="20">
 								
 								</td>			
 							
 								<th width="20%" align="right"> Descrição Disciplina: </th>
 								<td>
-									<input type="text" id="<%=ServletDisciplina.NM_PARAMETRO_DS_DISCIPLINA%>" name="<%=ServletDisciplina.NM_PARAMETRO_DS_DISCIPLINA%>" value="" size="40">
+									<input type="text" id="<%=ServletDisciplina.NM_PARAMETRO_DS_DISCIPLINA%>" name="<%=ServletDisciplina.NM_PARAMETRO_DS_DISCIPLINA%>" value="" size="40" maxlength="20">
 								
 								</td>
 							</tr>

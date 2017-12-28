@@ -25,8 +25,7 @@
 <script type="text/javascript">
 
 function desistir(){
-	document.getElementById("<%=ServletProfessor.NM_EVENTO%>").value = "<%=ServletProfessor.NM_JSP_CONSULTAR%>";
-	document.frm_principal.submit();
+	window.history.back();
 }
 
 function alterar(){

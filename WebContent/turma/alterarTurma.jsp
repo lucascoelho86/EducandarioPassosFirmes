@@ -16,8 +16,7 @@
 <script type="text/javascript">
 
 function desistir(){
-	document.getElementById("<%=ServletTurma.NM_EVENTO%>").value = "<%=ServletTurma.NM_JSP_CONSULTAR%>";
-	document.frm_principal.submit();
+	window.history.back();
 }
 
 function alterar(){
@@ -221,21 +220,29 @@ for(int x = 0; x < valoresTurmaTarde.length; x++){
 									<%
 										int contador = 0;
 										boolean turmaSelecionada = false;
-										for (int x = 0; x < 2; x++) {
+										for (int x = 0; x < 3; x++) {
 
-											if (x + 1 == Integer.valueOf(turno)) {
+											if (x == Integer.valueOf(turno)) {
 												turmaSelecionada = true;
 											}
+											
 											if (x == 0) {
+												%> <%=Select.getInstancia().getHTML(
+										ServletTurma.NM_PARAMETRO_SELECT_TURNO,
+										ServletTurma.NM_PARAMETRO_SELECT_TURNO, String.valueOf(x),
+										"", turmaSelecionada,
+										contador, false, "")%> <%
+											
+											}else if (x == 1) {
 									%> <%=Select.getInstancia().getHTML(
 							ServletTurma.NM_PARAMETRO_SELECT_TURNO,
-							ServletTurma.NM_PARAMETRO_SELECT_TURNO, String.valueOf(x + 1),
+							ServletTurma.NM_PARAMETRO_SELECT_TURNO, String.valueOf(x),
 							ServletTurma.NM_TURNO_MANHA, turmaSelecionada,
 							contador, false, "")%> <%
  	} else {
  %> <%=Select.getInstancia().getHTML(
 							ServletTurma.NM_PARAMETRO_SELECT_TURNO,
-							ServletTurma.NM_PARAMETRO_SELECT_TURNO, String.valueOf(x + 1),
+							ServletTurma.NM_PARAMETRO_SELECT_TURNO, String.valueOf(x),
 							ServletTurma.NM_TURNO_TARDE, turmaSelecionada,
 							contador, true, "")%> <%
  	}

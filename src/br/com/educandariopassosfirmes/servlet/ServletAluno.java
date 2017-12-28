@@ -794,12 +794,11 @@ public class ServletAluno extends ServletGenerico {
 
 		cpf = cpf.replace(".", "");
 		cpf = cpf.replace("-", "");
-		
-		cpfAnterior = cpfAnterior.replace(".", "");
-		cpfAnterior = cpfAnterior.replace("-", "");
-		
+				
 		ArrayList<Aluno> consultaQtRespAlunos = new ArrayList<Aluno>();
 		if(cpfAnterior != null && !cpfAnterior.equals("")){
+			cpfAnterior = cpfAnterior.replace(".", "");
+			cpfAnterior = cpfAnterior.replace("-", "");
 			AlunoDAO alunoDAO = new AlunoDAO();
 			
 			consultaQtRespAlunos = alunoDAO.consultar("", "", cpfAnterior);

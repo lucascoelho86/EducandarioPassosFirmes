@@ -35,13 +35,15 @@ public class Select {
 	public String getHTML(String pIdSelect, String pNmSelect, String pValue, String pDescricao, boolean pCampoSelecionado, int pPrimeiroCampo, boolean pUltimoCampo, String pJavaScript) {
 		String html = "";
 
-		if(pPrimeiroCampo == 0) {
+		if(pPrimeiroCampo == 0 && pCampoSelecionado) {
+			html = "<select id=\"" + pIdSelect + "\" name=\"" + pNmSelect + "\" " + pJavaScript +"> \n\t" + "<option " + "value=\"" + pPrimeiroCampo + "\"selected>" + "Selecione uma opção" + "</option> \n\t";
+		}else if(pPrimeiroCampo == 0) {
 			html = "<select id=\"" + pIdSelect + "\" name=\"" + pNmSelect + "\" " + pJavaScript +"> \n\t" + "<option " + "value=\"" + pPrimeiroCampo + "\">" + "Selecione uma opção" + "</option> \n\t";
 		}
 		
-		if(pCampoSelecionado) {
+		if(pCampoSelecionado && !pValue.equals("0")) {
 			html = html + "<option " + "value=\"" + pValue + "\"" + " selected>" + pDescricao + "</option> \n";
-		}else {
+		}else if(!pValue.equals("0")){
 			html = html + "<option " + "value=\"" + pValue + "\">" + pDescricao + "</option> \n";
 		}
 		

@@ -19,8 +19,7 @@
 <script type="text/javascript">
 
 function desistir(){
-	document.getElementById("<%=ServletTurma.NM_EVENTO%>").value = "<%=ServletTurma.NM_JSP_CONSULTAR%>";
-	document.frm_principal.submit();
+	window.history.back();
 }
 
 function imprimirRelacao(){

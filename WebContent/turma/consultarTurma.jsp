@@ -121,22 +121,29 @@ function exibirInclusao(){
 									<%
 										int contador = 0;
 										boolean mesmoTurno = false;
-										for (int x = 0; x < 2; x++) {
+										for (int x = 0; x < 3; x++) {
 
 											if(turno.equals(String.valueOf(x))){
 												mesmoTurno = true;
 											}
 											
 											if (x == 0) {
+												%> <%=Select.getInstancia()
+										.getHTML(ServletTurma.NM_PARAMETRO_SELECT_TURNO,
+												ServletTurma.NM_PARAMETRO_SELECT_TURNO,
+												String.valueOf(x), "", mesmoTurno,
+												contador, false, "")%> <%
+											
+											}else if (x == 1) {
 														%> <%=Select.getInstancia()
 												.getHTML(ServletTurma.NM_PARAMETRO_SELECT_TURNO,
 														ServletTurma.NM_PARAMETRO_SELECT_TURNO,
-														String.valueOf(x + 1), ServletTurma.NM_TURNO_MANHA, mesmoTurno,
+														String.valueOf(x), ServletTurma.NM_TURNO_MANHA, mesmoTurno,
 														contador, false, "")%> <%
  											} else {
 					 							%> <%=Select.getInstancia().getHTML(
 												ServletTurma.NM_PARAMETRO_SELECT_TURNO,
-												ServletTurma.NM_PARAMETRO_SELECT_TURNO, String.valueOf(x + 1),
+												ServletTurma.NM_PARAMETRO_SELECT_TURNO, String.valueOf(x),
 												ServletTurma.NM_TURNO_TARDE, mesmoTurno, contador, true, "")%> <%
  											}
  										contador++;

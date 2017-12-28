@@ -103,14 +103,31 @@ public class ProfessorDisciplinaDAO extends Conexao{
 		}
 	}
 	
-	public void excluir(String pIdProfessor){
+	public void excluir(String pIdProfessor, String pIdDisciplina){
 		
-		String sql = "DELETE FROM PROFESSOR_DISCIPLINA WHERE ID_PESSOA=?";
+		String sql = "DELETE FROM PROFESSOR_DISCIPLINA ";
+		String whereProfessor = "WHERE ID_PESSOA=?";
+		String whereDisciplina = "WHERE ID_DISCIPLINA=?";
 		
 		try {
+			
+			if(pIdProfessor != null && !pIdProfessor.equals("")) {
+				sql = sql + whereProfessor;
+			}
+			
+			if(pIdDisciplina != null && !pIdDisciplina.equals("") && !pIdDisciplina.equals("0")) {
+				sql = sql + whereDisciplina;
+			}
+			
 			PreparedStatement preparador = getPreparedStatement(sql);
 			
-			preparador.setString(1, pIdProfessor);
+			if(pIdProfessor != null && !pIdProfessor.equals("")) {
+				preparador.setString(1, pIdProfessor);
+			}
+			
+			if(pIdDisciplina != null && !pIdDisciplina.equals("") && !pIdDisciplina.equals("0")) {
+				preparador.setString(1, pIdDisciplina);
+			}
 			
 			preparador.execute();
 			preparador.close();

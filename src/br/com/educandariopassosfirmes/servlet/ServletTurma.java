@@ -12,11 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 import br.com.educandariopassosfirmes.dao.AlunoDAO;
 import br.com.educandariopassosfirmes.dao.PessoaDAO;
 import br.com.educandariopassosfirmes.dao.TurmaDAO;
+import br.com.educandariopassosfirmes.dao.TurmaProfessorDisciplinaDAO;
 import br.com.educandariopassosfirmes.documentos.FrequenciaTurma;
 import br.com.educandariopassosfirmes.documentos.RelacaoAlunosTurma;
 import br.com.educandariopassosfirmes.entidades.Aluno;
 import br.com.educandariopassosfirmes.entidades.Pessoa;
 import br.com.educandariopassosfirmes.entidades.Turma;
+import br.com.educandariopassosfirmes.entidades.TurmaProfessorDisciplina;
 import br.com.educandariopassosfirmes.rn.RegraNegocioAlteracaoTurma;
 
 
@@ -29,6 +31,8 @@ public class ServletTurma extends ServletGenerico {
 	public static final String NM_JSP_CONSULTAR = "/turma/consultarTurma.jsp";
 
 	public static final String NM_JSP_EXCECAO = "/turma/excecao.jsp";
+	
+	private static final String NM_JSP_EXCECAO_PROGRAMACAO = "/turma/excecaoProgramacao.jsp";
 
 	private static final String NM_JSP_INCLUIR_SERVICO = "/turma/cadastrarTurma.jsp";
 
@@ -37,6 +41,8 @@ public class ServletTurma extends ServletGenerico {
 	public static final String NM_PARAMETRO_CHAVE = "chave";
 	
 	public static final String NM_EVENTO_IMPRIMIR = "imprimirRelacao";
+
+	public static final String NM_EVENTO_EXCLUIR_PROGRAMACAO_E_TURMA = "excluirProgramacaoTurma";
 
 	public static final String NM_EVENTO_CHAMADA = "imprimirChamada";
 	
@@ -52,6 +58,7 @@ public class ServletTurma extends ServletGenerico {
 	public static final String NM_PARAMETRO_COLECAO_TURMA = "colecaoTurma";
 	public static final String NM_PARAMETRO_COLECAO_SALAS_MANHA = "salasManha";
 	public static final String NM_PARAMETRO_COLECAO_SALAS_TARDE = "salasTarde";
+	public static final String NM_PARAMETRO_TAMANHO = "tamanho";
 	
 	//Constantes utilizadas na inclusão de turmas
 	public static final String NM_TURNO_MANHA = "Matutino";
@@ -100,6 +107,9 @@ public class ServletTurma extends ServletGenerico {
 		} else if (acao != null
 				&& acao.equalsIgnoreCase(NM_EVENTO_CHAMADA)) {
 			this.imprimirChamada(request, response);
+		} else if (acao != null
+				&& acao.equalsIgnoreCase(NM_EVENTO_EXCLUIR_PROGRAMACAO_E_TURMA)) {
+			this.excluirProgramacaoTurma(request, response);
 		} else {
 			// caso nao tenha nenhum evento, redireciona para a pagina de consulta
 			this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
@@ -238,15 +248,65 @@ public class ServletTurma extends ServletGenerico {
 			alunosTurma.add(pessoa.getId() + ";" + pessoa.getNome());
 		}
 		
-		if(alunosTurma.isEmpty()) {
+		TurmaProfessorDisciplinaDAO turmaProfessorDisciplinaDAO = new TurmaProfessorDisciplinaDAO();
+		ArrayList<TurmaProfessorDisciplina> consultaTurmaProfessorDisciplina = turmaProfessorDisciplinaDAO.consultar(idTurma, "", "");
+
+		if(alunosTurma.isEmpty() && consultaTurmaProfessorDisciplina.isEmpty()) {
 			TurmaDAO turmaDAO = new TurmaDAO();
 			turmaDAO.excluir(idTurma);
 			this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
-		}else {
+		}else if(!alunosTurma.isEmpty()){
 			request.setAttribute(NM_PARAMETRO_SIGLA_TURMA, idTurma);
 			request.setAttribute(NM_PARAMETRO_COLECAO_TURMA, alunosTurma);
 			this.redirecionarPagina(request, response, NM_JSP_EXCECAO);
+		}else if(!consultaTurmaProfessorDisciplina.isEmpty()) {
+			TurmaDAO turmaDAO = new TurmaDAO();
+			ArrayList<Turma> consultaTurma = turmaDAO.consultar(idTurma, "", "");
+			Turma turma = consultaTurma.get(0);
+			
+			String dsTurma = turma.getDsTurma();
+			
+			if(dsTurma == null) {
+				dsTurma = "";
+			}
+			
+			request.setAttribute(NM_PARAMETRO_SIGLA_TURMA, idTurma);
+			request.setAttribute(NM_PARAMETRO_DS_TURMA, dsTurma.equals("") ? dsTurma : dsTurma.toUpperCase());
+			request.setAttribute(NM_PARAMETRO_TAMANHO, String.valueOf(consultaTurmaProfessorDisciplina.size()));
+			this.redirecionarPagina(request, response, NM_JSP_EXCECAO_PROGRAMACAO);
 		}
+		
+	}
+
+	public void excluirProgramacaoTurma(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
+		// declara as variaveis
+		String chave = "";
+		
+		// recupera os parametros do request
+		chave = request.getParameter(NM_PARAMETRO_SIGLA_TURMA);
+		
+		String[] chaveTurma = chave.split(";");
+		String idTurma = chaveTurma[0];
+						
+		TurmaProfessorDisciplinaDAO turmaProfessorDisciplinaDAO = new TurmaProfessorDisciplinaDAO();
+		ArrayList<TurmaProfessorDisciplina> consultaturmaProfessorDisciplina = turmaProfessorDisciplinaDAO.consultar(idTurma, "", "");
+		
+		for(int x = 0; x < consultaturmaProfessorDisciplina.size(); x++) {
+			TurmaProfessorDisciplina turmaProfessorDisciplina = consultaturmaProfessorDisciplina.get(x);
+			
+			String turma = turmaProfessorDisciplina.getIdTurma();
+			String professor = turmaProfessorDisciplina.getIdProfessor();
+			Integer disciplina = turmaProfessorDisciplina.getIdDisciplina();
+			
+			turmaProfessorDisciplinaDAO.excluir(turma, professor, String.valueOf(disciplina));
+		}
+		
+		TurmaDAO turmaDAO = new TurmaDAO();
+		turmaDAO.excluir(idTurma);
+		
+		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
 		
 	}
 

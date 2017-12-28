@@ -27,7 +27,7 @@ public class RelacaoAlunosTurma{
     		for(int x = 0; x < arrayChave.length; x++){
     			String valor = arrayChave[x];
     			valores = valor.split(";");
-    			
+    			hashDados = new HashMap<String, Object>();
     			String matricula = valores[0];
     			String nome = valores[1];
     			

@@ -26,6 +26,7 @@ import br.com.educandariopassosfirmes.entidades.Pessoa;
 import br.com.educandariopassosfirmes.entidades.Professor;
 import br.com.educandariopassosfirmes.entidades.ProfessorDisciplina;
 import br.com.educandariopassosfirmes.entidades.TurmaProfessorDisciplina;
+import br.com.educandariopassosfirmes.util.BibliotecaFormatarDados;
 
 
 /**
@@ -39,6 +40,10 @@ public class ServletProfessor extends ServletGenerico {
 	private static final String NM_JSP_INCLUIR_SERVICO = "/professor/cadastrarProfessor.jsp";
 
 	private static final String NM_JSP_ALTERAR_PROFESSOR = "/professor/alterarProfessor.jsp";
+	
+	private static final String NM_JSP_EXCECAO_PROGRAMACAO = "/professor/excecaoProgramacao.jsp";
+
+	private static final String NM_JSP_EXCECAO_PROFESSOR_EXISTE = "/professor/excecaoProfessorCadastrado.jsp";
 
 	public static final String NM_PARAMETRO_CHAVE = "chave";
 	
@@ -53,6 +58,8 @@ public class ServletProfessor extends ServletGenerico {
 	public static final String NM_PARAMETRO_DS_DISCIPLINA = "descricaoDisciplina";
 	public static final String NM_PARAMETRO_TAMANHO_COLECAO_DISCIPLINA = "tamanhoColecaoDisciplina";
 	public static final String NM_PARAMETRO_COLECAO_PROFESSOR_DISCIPLINA = "colecaoProfessorDisciplina";
+	public static final String NM_EVENTO_EXCLUIR_PROGRAMACAO_E_PROFESSOR = "excluirProgramacaoProfessor";
+	public static final String NM_PARAMETRO_TAMANHO = "tamanho";
 
 	public static final String NM_PARAMETRO_NOME = "nome";
 	public static final String NM_PARAMETRO_DT_NASCIMENTO = "dtNascimento";
@@ -118,6 +125,9 @@ public class ServletProfessor extends ServletGenerico {
 		} else if (acao != null
 				&& acao.equalsIgnoreCase(this.NM_EVENTO_PROCESSAR_ALTERACAO)) {
 			this.processarAlteracao(request, response);
+		} else if (acao != null
+				&& acao.equalsIgnoreCase(NM_EVENTO_EXCLUIR_PROGRAMACAO_E_PROFESSOR)) {
+			this.excluirProgramacaoProfessor(request, response);
 		} else {
 			// caso nao tenha nenhum evento, redireciona para a pagina de consulta
 			this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
@@ -214,7 +224,9 @@ public class ServletProfessor extends ServletGenerico {
 		DecimalFormatSymbols dfs = new DecimalFormatSymbols (new Locale ("pt", "BR"));
 		DecimalFormat df = new DecimalFormat ("#,##0.00", dfs);
 		try {
-			valorSalario = df.parse (salario).doubleValue();
+			if(salario != null && !salario.equals("")) {
+				valorSalario = df.parse (salario).doubleValue();
+			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -244,7 +256,12 @@ public class ServletProfessor extends ServletGenerico {
 		
 		//inclui em PESSOA
 		PessoaDAO pessoaDAO = new PessoaDAO();
-		pessoaDAO.incluir(pessoa);
+		ArrayList<Pessoa> consultaPessoa = pessoaDAO.consultar(cpf, "");
+		
+		if(consultaPessoa.isEmpty()) {
+			pessoaDAO.incluir(pessoa);
+		}
+		
 		
 		//monta a entidade professor para incluir
 		Professor professor = new Professor();
@@ -283,21 +300,39 @@ public class ServletProfessor extends ServletGenerico {
 		
 		//inclui em PESSOA
 		ProfessorDAO professorDAO = new ProfessorDAO();
-		professorDAO.incluir(professor);
 		
-		for(int x = 0; x < Integer.valueOf(tamanhoColecaoDisciplina); x++) {
-			idDisciplina = request.getParameter(NM_PARAMETRO_ID_DISCIPLINA + x);
-			if(idDisciplina != null) {
-				ProfessorDisciplina professorDisciplina = new ProfessorDisciplina();
-				professorDisciplina.setId_professor(cpf);
-				professorDisciplina.setId_disciplina(Integer.valueOf(idDisciplina));
-				
-				ProfessorDisciplinaDAO professorDisciplinaDAO = new ProfessorDisciplinaDAO();
-				professorDisciplinaDAO.cadastrar(professorDisciplina);
+		ArrayList<Professor> consultaProfessor = professorDAO.consultar(cpf);
+		
+		if(consultaProfessor.isEmpty()) {
+			professorDAO.incluir(professor);
+			
+			for(int x = 0; x < Integer.valueOf(tamanhoColecaoDisciplina); x++) {
+				idDisciplina = request.getParameter(NM_PARAMETRO_ID_DISCIPLINA + x);
+				if(idDisciplina != null) {
+					ProfessorDisciplina professorDisciplina = new ProfessorDisciplina();
+					professorDisciplina.setId_professor(cpf);
+					professorDisciplina.setId_disciplina(Integer.valueOf(idDisciplina));
+					
+					ProfessorDisciplinaDAO professorDisciplinaDAO = new ProfessorDisciplinaDAO();
+					professorDisciplinaDAO.cadastrar(professorDisciplina);
+				}
 			}
+			
+			this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
+		}else {
+			request.setAttribute(NM_PARAMETRO_CPF, BibliotecaFormatarDados.formatarCPF(cpf));
+			Pessoa pessoaExiste = consultaPessoa.get(0);
+			
+			String nomePessoa = pessoaExiste.getNome();
+			
+			if(nomePessoa == null) {
+				nomePessoa = "";
+			}
+			
+			request.setAttribute(NM_PARAMETRO_NOME, nomePessoa.equals("") ? nomePessoa : nomePessoa.toUpperCase());
+			
+			this.redirecionarPagina(request, response, NM_JSP_EXCECAO_PROFESSOR_EXISTE);
 		}
-		
-		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
 
 	};
 
@@ -340,16 +375,37 @@ public class ServletProfessor extends ServletGenerico {
 				
 		String idProfessor = chave;
 		
-		ProfessorDisciplinaDAO professorDisciplinaDAO = new ProfessorDisciplinaDAO();
-		professorDisciplinaDAO.excluir(idProfessor);
-
-		ProfessorDAO professorDAO = new ProfessorDAO();		
-		professorDAO.excluir(idProfessor);
+		TurmaProfessorDisciplinaDAO turmaProfessorDisciplinaDAO = new TurmaProfessorDisciplinaDAO();
+		ArrayList<TurmaProfessorDisciplina> consultaTurmaProfessorDisciplina = turmaProfessorDisciplinaDAO.consultar("", idProfessor, "");
 		
-		PessoaDAO pessoaDAO = new PessoaDAO();
-		pessoaDAO.excluir(idProfessor);
+		if(!consultaTurmaProfessorDisciplina.isEmpty()) {
+			PessoaDAO pessoaDAO = new PessoaDAO();
+			ArrayList<Pessoa> consultaPessoa = pessoaDAO.consultar(idProfessor, "");
+			Pessoa pessoa = consultaPessoa.get(0);
+			
+			String nome = pessoa.getNome();
+			
+			if(nome == null) {
+				nome = "";
+			}
+			
+			request.setAttribute(NM_PARAMETRO_CPF, BibliotecaFormatarDados.formatarCPF(idProfessor));
+			request.setAttribute(NM_PARAMETRO_NOME, nome.equals("") ? nome : nome.toUpperCase());
+			request.setAttribute(NM_PARAMETRO_TAMANHO, String.valueOf(consultaTurmaProfessorDisciplina.size()));
+			this.redirecionarPagina(request, response, NM_JSP_EXCECAO_PROGRAMACAO);
+		}else {
+			ProfessorDisciplinaDAO professorDisciplinaDAO = new ProfessorDisciplinaDAO();
+			professorDisciplinaDAO.excluir(idProfessor, "");
+			
+			ProfessorDAO professorDAO = new ProfessorDAO();		
+			professorDAO.excluir(idProfessor);
+			
+			PessoaDAO pessoaDAO = new PessoaDAO();
+			pessoaDAO.excluir(idProfessor);
+			
+			this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
+		}
 		
-		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
 	}
 
 	@Override
@@ -496,7 +552,9 @@ public class ServletProfessor extends ServletGenerico {
 		DecimalFormatSymbols dfs = new DecimalFormatSymbols (new Locale ("pt", "BR"));
 		DecimalFormat df = new DecimalFormat ("#,##0.00", dfs);
 		try {
-			valorSalario = df.parse (salario).doubleValue();
+			if(salario != null && !salario.equals("")) {
+				valorSalario = df.parse (salario).doubleValue();
+			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -591,7 +649,7 @@ public class ServletProfessor extends ServletGenerico {
 
 		//primeiro exclui depois inclui novamente
 		ProfessorDisciplinaDAO professorDisciplinaDAO = new ProfessorDisciplinaDAO();
-		professorDisciplinaDAO.excluir(cpfAnt);
+		professorDisciplinaDAO.excluir(cpfAnt, "");
 		
 		for(int x = 0; x < Integer.valueOf(tamanhoColecaoDisciplina); x++) {
 			idDisciplina = request.getParameter(NM_PARAMETRO_ID_DISCIPLINA + x);
@@ -615,6 +673,46 @@ public class ServletProfessor extends ServletGenerico {
 		}
 				
 		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
+	}
+	
+	public void excluirProgramacaoProfessor(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
+		// declara as variaveis
+		String chave = "";
+						
+		// recupera os parametros do request
+		chave = request.getParameter(NM_PARAMETRO_CPF);
+						
+		String idProfessor = chave;
+		
+		idProfessor = idProfessor.replace(".", "");
+		idProfessor = idProfessor.replace("-", "");
+		
+		TurmaProfessorDisciplinaDAO turmaProfessorDisciplinaDAO = new TurmaProfessorDisciplinaDAO();
+		ArrayList<TurmaProfessorDisciplina> consultaturmaProfessorDisciplina = turmaProfessorDisciplinaDAO.consultar("", idProfessor, "");
+		
+		for(int x = 0; x < consultaturmaProfessorDisciplina.size(); x++) {
+			TurmaProfessorDisciplina turmaProfessorDisciplina = consultaturmaProfessorDisciplina.get(x);
+			
+			String turma = turmaProfessorDisciplina.getIdTurma();
+			String professor = turmaProfessorDisciplina.getIdProfessor();
+			Integer disciplina = turmaProfessorDisciplina.getIdDisciplina();
+			
+			turmaProfessorDisciplinaDAO.excluir(turma, professor, String.valueOf(disciplina));
+		}
+		
+		ProfessorDisciplinaDAO professorDisciplinaDAO = new ProfessorDisciplinaDAO();
+		professorDisciplinaDAO.excluir(idProfessor, "");
+
+		ProfessorDAO professorDAO = new ProfessorDAO();		
+		professorDAO.excluir(idProfessor);
+		
+		PessoaDAO pessoaDAO = new PessoaDAO();
+		pessoaDAO.excluir(idProfessor);
+		
+		this.redirecionarPagina(request, response, NM_JSP_CONSULTAR);
+		
 	}
 
 }

@@ -34,7 +34,7 @@
 <script type="text/javascript">
 
 function desistir(){
-	document.getElementById("<%=ServletAluno.NM_EVENTO%>").value = "<%=ServletAluno.NM_JSP_CONSULTAR%>";
+	window.history.back();
 }
 
 function alterar(){
@@ -466,7 +466,7 @@ function consultarResponsavel(pCampo){
 							</td>
 
 							<td align="center">
-								<button type="submit" id="botaoDesistir" name="botaoDesistir"
+								<button type="button" id="botaoDesistir" name="botaoDesistir"
 									onclick="desistir();">Voltar</button>
 							</td>
 						</tr>
